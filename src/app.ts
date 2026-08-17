@@ -9,8 +9,11 @@ app.use(cors());
 app.use(express.json());
 
 //health check
+app.get("/health", (req:Request, res: Response)=> {
+    res.status(200).json({ status: "OK", timestamp: new Date().toISOString()})
+})
 
-app.use(express.json());
-
+// Global Error handler 
+app.use(errorHandler)
 
 export default app;
