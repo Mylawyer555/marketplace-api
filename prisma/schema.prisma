@@ -1,0 +1,419 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model addresses {
+  address_id       Int         @id @default(autoincrement())
+  address_type     addresstype
+  house_number     String?     @db.VarChar(20)
+  apartment_number String?     @db.VarChar(20)
+  street           String      @db.VarChar(100)
+  state            String      @db.VarChar(100)
+  city             String      @db.VarChar(100)
+  country          String      @db.VarChar(100)
+  delivery_note    String?
+  is_default       Boolean     @default(false)
+  phone_number     String      @db.VarChar(100)
+  created_at       DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime?   @default(now()) @updatedAt @db.Timestamptz(6)
+}
+
+model auditlogs {
+  audit_log_id Int       @id @default(autoincrement())
+  user_id      Int?
+  action       String    @db.VarChar(100)
+  table_name   String    @db.VarChar(100)
+  record_id    Int
+  ip_address   String?   @db.VarChar(45)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model cart_items {
+  cart_item_id Int       @id @default(autoincrement())
+  cart_id      Int
+  product_id   Int
+  quantity     Int
+  price        Decimal   @db.Decimal(10, 2)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  carts        carts     @relation(fields: [cart_id], references: [cart_id], onDelete: NoAction, onUpdate: NoAction)
+  products     products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([product_id, cart_id], map: "unique_cart_product")
+}
+
+model carts {
+  cart_id    Int          @id @default(autoincrement())
+  user_id    Int          @unique
+  created_at DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?    @default(now()) @updatedAt @db.Timestamptz(6)
+  cart_items cart_items[]
+  users      users        @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model categories {
+  category_id   Int        @id @default(autoincrement())
+  category_name String     @db.VarChar(255)
+  created_at    DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?  @default(now()) @updatedAt @db.Timestamptz(6)
+  products      products[]
+}
+
+model coupons {
+  coupon_id            Int           @id @default(autoincrement())
+  coupon_code          String        @unique @db.VarChar(100)
+  discount_type        discount_type
+  discount_value       Decimal       @db.Decimal(10, 2)
+  minimum_order_amount Decimal       @db.Decimal(10, 2)
+  usage_limit          Int
+  start_date           DateTime      @db.Timestamptz(6)
+  end_date             DateTime      @db.Timestamptz(6)
+  status               coupon_status @default(ACTIVE)
+  created_at           DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?     @default(now()) @updatedAt @db.Timestamptz(6)
+}
+
+model inventory {
+  inventory_id      Int       @id @default(autoincrement())
+  product_id        Int       @unique
+  stock_quantity    Int
+  reserved_quantity Int?      @default(0)
+  updated_at        DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  products          products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model notifications {
+  notification_id   Int               @id @default(autoincrement())
+  user_id           Int
+  title             String            @db.VarChar(100)
+  message           String            @db.VarChar(100)
+  notification_type notification_type
+  reference_type    reference_type
+  reference_id      Int?
+  isread            Boolean?          @default(false)
+  read_at           DateTime?         @db.Timestamptz(6)
+  users             users             @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model order_items {
+  item_id           Int       @id @default(autoincrement())
+  product_id        Int
+  order_id          Int
+  quantity          Int
+  price_at_purchase Decimal   @db.Decimal(10, 2)
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  orders            orders    @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  products          products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  returns           returns[]
+}
+
+model orders {
+  order_id                  Int            @id @default(autoincrement())
+  order_number              String         @unique @db.VarChar(50)
+  buyer_id                  Int
+  status                    order_status   @default(PENDING)
+  total_amount              Decimal        @db.Decimal(10, 2)
+  shipping_name             String         @db.VarChar(50)
+  shipping_phone_number     String         @db.VarChar(20)
+  shipping_house_number     String?        @db.VarChar(20)
+  shipping_apartment_number String?        @db.VarChar(20)
+  shipping_street           String         @db.VarChar(100)
+  shippping_city            String         @db.VarChar(100)
+  shipping_state            String         @db.VarChar(100)
+  shipping_country          String         @db.VarChar(100)
+  shipping_postal_code      String         @db.VarChar(20)
+  delivery_note             String?
+  created_at                DateTime?      @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
+  order_items               order_items[]
+  users                     users          @relation(fields: [buyer_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  payments                  payments[]
+  shippinginfo              shippinginfo[]
+}
+
+model payments {
+  payment_id        Int            @id @default(autoincrement())
+  order_id          Int
+  payment_reference String         @unique @db.VarChar(100)
+  amount            Decimal        @db.Decimal(10, 2)
+  method            payment_method
+  status            payment_status
+  paid_at           DateTime?      @db.Timestamptz(6)
+  created_at        DateTime?      @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
+  orders            orders         @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  refunds           refunds?
+}
+
+model product_variant {
+  variant_id      Int            @id @default(autoincrement())
+  product_id      Int
+  sku             String         @unique @db.VarChar(100)
+  color           String         @db.VarChar(100)
+  variant_storage String?        @db.VarChar(255)
+  price           Decimal        @db.Decimal(10, 2)
+  stock_quantity  Int
+  status          variant_status @default(ACTIVE)
+  created_at      DateTime?      @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
+  products        products       @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model productimages {
+  productimage_id Int       @id @default(autoincrement())
+  product_id      Int
+  image_url       String    @db.VarChar(255)
+  display_order   Int?      @default(1)
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  products        products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model products {
+  product_id      Int               @id @default(autoincrement())
+  product_name    String            @db.VarChar(255)
+  description     String
+  price           Decimal           @db.Decimal(10, 2)
+  status          product_status    @default(DRAFT)
+  category_id     Int
+  store_id        Int
+  created_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?         @default(now()) @updatedAt @db.Timestamptz(6)
+  cart_items      cart_items[]
+  inventory       inventory?
+  order_items     order_items[]
+  product_variant product_variant[]
+  productimages   productimages[]
+  categories      categories        @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  stores          stores            @relation(fields: [store_id], references: [store_id], onDelete: NoAction, onUpdate: NoAction)
+  wishlists       wishlists[]
+}
+
+model refunds {
+  refund_id    Int           @id @default(autoincrement())
+  payment_id   Int           @unique
+  amount       Decimal       @db.Decimal(10, 2)
+  status       refund_status
+  processed_at DateTime?     @db.Timestamptz(6)
+  created_at   DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?     @default(now()) @updatedAt @db.Timestamptz(6)
+  payments     payments      @relation(fields: [payment_id], references: [payment_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model returns {
+  return_id     Int            @id @default(autoincrement())
+  order_item_id Int
+  reason        String
+  status        returns_status
+  requested_at  DateTime?      @db.Timestamptz(6)
+  approved_at   DateTime?      @db.Timestamptz(6)
+  created_at    DateTime?      @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
+  order_items   order_items    @relation(fields: [order_item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model reviews {
+  review_id  Int       @id @default(autoincrement())
+  buyer_id   Int
+  rating     Decimal   @db.Decimal(2, 1)
+  comment    String?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  users      users     @relation(fields: [buyer_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model sellers_payout {
+  payout_id  Int           @id @default(autoincrement())
+  seller_id  Int
+  amount     Decimal       @db.Decimal(10, 2)
+  status     payout_status
+  paid_at    DateTime?     @db.Timestamptz(6)
+  created_at DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?     @default(now()) @updatedAt @db.Timestamptz(6)
+  users      users         @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model shippinginfo {
+  shipping_id             Int             @id @default(autoincrement())
+  order_id                Int
+  courier_name            String          @db.VarChar(100)
+  tracking_number         String?         @unique @db.VarChar(100)
+  shipping_status         shipping_status @default(PENDING)
+  estimated_delivery_date DateTime?       @db.Timestamptz(6)
+  shipped_at              DateTime?       @db.Timestamptz(6)
+  delivered_at            DateTime?       @db.Timestamptz(6)
+  created_at              DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?       @default(now()) @updatedAt @db.Timestamptz(6)
+  orders                  orders          @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model stores {
+  store_id             Int        @id @default(autoincrement())
+  store_name           String     @db.VarChar(255)
+  description          String     @db.VarChar(255)
+  logo                 String?    @db.VarChar(255)
+  social_media_account String?    @db.VarChar(255)
+  seller_id            Int
+  created_at           DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?  @default(now()) @updatedAt @db.Timestamptz(6)
+  products             products[]
+  users                users      @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id        Int              @id @default(autoincrement())
+  first_name     String           @db.VarChar(255)
+  last_name      String           @db.VarChar(255)
+  email          String           @unique @db.VarChar(50)
+  phone_number   String?          @unique @db.VarChar(20)
+  hash_password  String           @db.VarChar(255)
+  role           user_role        @default(BUYER)
+  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?        @default(now()) @updatedAt @db.Timestamptz(6)
+  auditlogs      auditlogs[]
+  carts          carts?
+  notifications  notifications[]
+  orders         orders[]
+  reviews        reviews[]
+  sellers_payout sellers_payout[]
+  stores         stores[]
+  wishlists      wishlists[]
+}
+
+model wishlists {
+  wishlist_id Int       @id @default(autoincrement())
+  user_id     Int
+  product_id  Int
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
+  products    products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  users       users     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum addresstype {
+  HOME
+  OFFICE
+}
+
+enum coupon_status {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+}
+
+enum discount_type {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum notification_type {
+  ORDER
+  PAYMENT
+  SHIPPING
+  COUPON
+  PROMOTION
+  REVIEW
+  SYSTEM
+}
+
+enum order_status {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum payment_method {
+  CARD
+  BANK_TRANSFER
+  WALLET
+  CASH_ON_DELIVERY
+}
+
+enum payment_status {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum payout_status {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+enum product_status {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  DISABLED
+}
+
+enum reference_type {
+  ORDER
+  PRODUCT
+  USER
+  SELLER
+  PAYMENT
+  REVIEW
+  RETURN
+  COUPON
+  DISPUTE
+  PAYOUT
+  CATEGORY
+  SYSTEM
+}
+
+enum refund_status {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+  CANCELLED
+}
+
+enum returns_status {
+  REQUESTED
+  APPROVED
+  REJECTED
+  RECEIVED
+  COMPLETED
+}
+
+enum shipping_status {
+  PENDING
+  PACKED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  FAILED
+  RETURNED
+}
+
+enum user_role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum variant_status {
+  ACTIVE
+  OUT_OF_STOCK
+  DISABLED
+  ARCHIVED
+}
