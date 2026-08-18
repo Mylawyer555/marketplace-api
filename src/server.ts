@@ -14,7 +14,7 @@ async function startServer() {
 
         //start accepting incoming request
         app.listen(PORT, ()=> {
-            console.log(`Server is running on http://localhost:{PORT}`);
+            console.log(`Server is running on http://localhost:${PORT}`);
         });
         
     } catch (error) {
@@ -24,3 +24,5 @@ async function startServer() {
         process.exit(1);
     };
 };
+
+startServer();
