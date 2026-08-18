@@ -7,9 +7,10 @@ datasource db {
   provider = "postgresql"
 }
 
-model addresses {
+model Address {
   address_id       Int         @id @default(autoincrement())
   address_type     addresstype
+  user_id          Int
   house_number     String?     @db.VarChar(20)
   apartment_number String?     @db.VarChar(20)
   street           String      @db.VarChar(100)
@@ -20,10 +21,13 @@ model addresses {
   is_default       Boolean     @default(false)
   phone_number     String      @db.VarChar(100)
   created_at       DateTime?   @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime?   @default(now()) @updatedAt @db.Timestamptz(6)
+  updated_at       DateTime?   @updatedAt @db.Timestamptz(6)
+  user             User        @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("addresses")
 }
 
-model auditlogs {
+model Auditlog {
   audit_log_id Int       @id @default(autoincrement())
   user_id      Int?
   action       String    @db.VarChar(100)
@@ -31,41 +35,48 @@ model auditlogs {
   record_id    Int
   ip_address   String?   @db.VarChar(45)
   created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users        User?     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("auditlogs")
 }
 
-model cart_items {
-  cart_item_id Int       @id @default(autoincrement())
+model CartItem {
+  cart_item_id Int            @id @default(autoincrement())
   cart_id      Int
-  product_id   Int
+  variant_id   Int
   quantity     Int
-  price        Decimal   @db.Decimal(10, 2)
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
-  carts        carts     @relation(fields: [cart_id], references: [cart_id], onDelete: NoAction, onUpdate: NoAction)
-  products     products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  price        Decimal        @db.Decimal(10, 2)
+  created_at   DateTime?      @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?      @updatedAt @db.Timestamptz(6)
+  carts        Cart           @relation(fields: [cart_id], references: [cart_id], onDelete: NoAction, onUpdate: NoAction)
+  variant      ProductVariant @relation(fields: [variant_id], references: [variant_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([product_id, cart_id], map: "unique_cart_product")
+  @@unique([variant_id, cart_id], map: "unique_cart_product")
+  @@map("cart_items")
 }
 
-model carts {
-  cart_id    Int          @id @default(autoincrement())
-  user_id    Int          @unique
-  created_at DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at DateTime?    @default(now()) @updatedAt @db.Timestamptz(6)
-  cart_items cart_items[]
-  users      users        @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+model Cart {
+  cart_id    Int        @id @default(autoincrement())
+  user_id    Int        @unique
+  created_at DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?  @updatedAt @db.Timestamptz(6)
+  cart_items CartItem[]
+  users      User       @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("carts")
 }
 
-model categories {
-  category_id   Int        @id @default(autoincrement())
-  category_name String     @db.VarChar(255)
-  created_at    DateTime?  @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime?  @default(now()) @updatedAt @db.Timestamptz(6)
-  products      products[]
+model Category {
+  category_id   Int       @id @default(autoincrement())
+  category_name String    @db.VarChar(255)
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @updatedAt @db.Timestamptz(6)
+  products      Product[]
+
+  @@map("categories")
 }
 
-model coupons {
+model Coupon {
   coupon_id            Int           @id @default(autoincrement())
   coupon_code          String        @unique @db.VarChar(100)
   discount_type        discount_type
@@ -76,45 +87,56 @@ model coupons {
   end_date             DateTime      @db.Timestamptz(6)
   status               coupon_status @default(ACTIVE)
   created_at           DateTime?     @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime?     @default(now()) @updatedAt @db.Timestamptz(6)
+  updated_at           DateTime?     @updatedAt @db.Timestamptz(6)
+
+  @@map("coupons")
 }
 
-model inventory {
-  inventory_id      Int       @id @default(autoincrement())
-  product_id        Int       @unique
+model Inventory {
+  inventory_id      Int            @id @default(autoincrement())
+  variant_id        Int            @unique
   stock_quantity    Int
-  reserved_quantity Int?      @default(0)
-  updated_at        DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
-  products          products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  reserved_quantity Int            @default(0)
+  updated_at        DateTime?      @updatedAt @db.Timestamptz(6)
+  variant           ProductVariant @relation(fields: [variant_id], references: [variant_id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("inventory")
 }
 
-model notifications {
+model Notification {
   notification_id   Int               @id @default(autoincrement())
   user_id           Int
   title             String            @db.VarChar(100)
-  message           String            @db.VarChar(100)
+  message           String
   notification_type notification_type
   reference_type    reference_type
   reference_id      Int?
   isread            Boolean?          @default(false)
   read_at           DateTime?         @db.Timestamptz(6)
-  users             users             @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users             User              @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("notifications")
 }
 
-model order_items {
-  item_id           Int       @id @default(autoincrement())
+model OrderItem {
+  item_id           Int            @id @default(autoincrement())
   product_id        Int
   order_id          Int
+  variant_id        Int
   quantity          Int
-  price_at_purchase Decimal   @db.Decimal(10, 2)
-  created_at        DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at        DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
-  orders            orders    @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
-  products          products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
-  returns           returns[]
+  price_at_purchase Decimal        @db.Decimal(10, 2)
+  created_at        DateTime?      @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime?      @updatedAt @db.Timestamptz(6)
+  orders            Order          @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  products          Product        @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  variant           ProductVariant @relation(fields: [variant_id], references: [variant_id], onDelete: NoAction, onUpdate: NoAction)
+  returns           Return[]
+
+  @@index([variant_id, order_id])
+  @@map("order_items")
 }
 
-model orders {
+model Order {
   order_id                  Int            @id @default(autoincrement())
   order_number              String         @unique @db.VarChar(50)
   buyer_id                  Int
@@ -125,20 +147,23 @@ model orders {
   shipping_house_number     String?        @db.VarChar(20)
   shipping_apartment_number String?        @db.VarChar(20)
   shipping_street           String         @db.VarChar(100)
-  shippping_city            String         @db.VarChar(100)
+  shipping_city             String         @db.VarChar(100)
   shipping_state            String         @db.VarChar(100)
   shipping_country          String         @db.VarChar(100)
   shipping_postal_code      String         @db.VarChar(20)
   delivery_note             String?
   created_at                DateTime?      @default(now()) @db.Timestamptz(6)
-  updated_at                DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
-  order_items               order_items[]
-  users                     users          @relation(fields: [buyer_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  payments                  payments[]
-  shippinginfo              shippinginfo[]
+  updated_at                DateTime?      @updatedAt @db.Timestamptz(6)
+  order_items               OrderItem[]
+  users                     User           @relation(fields: [buyer_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  payments                  Payment[]
+  shippinginfo              ShippingInfo[]
+
+  @@index([buyer_id, status])
+  @@map("orders")
 }
 
-model payments {
+model Payment {
   payment_id        Int            @id @default(autoincrement())
   order_id          Int
   payment_reference String         @unique @db.VarChar(100)
@@ -147,67 +172,79 @@ model payments {
   status            payment_status
   paid_at           DateTime?      @db.Timestamptz(6)
   created_at        DateTime?      @default(now()) @db.Timestamptz(6)
-  updated_at        DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
-  orders            orders         @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
-  refunds           refunds?
+  updated_at        DateTime?      @updatedAt @db.Timestamptz(6)
+  orders            Order          @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  refunds           Refund?
+
+  @@map("payments")
 }
 
-model product_variant {
+model ProductVariant {
   variant_id      Int            @id @default(autoincrement())
   product_id      Int
   sku             String         @unique @db.VarChar(100)
   color           String         @db.VarChar(100)
   variant_storage String?        @db.VarChar(255)
   price           Decimal        @db.Decimal(10, 2)
-  stock_quantity  Int
   status          variant_status @default(ACTIVE)
   created_at      DateTime?      @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
-  products        products       @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at      DateTime?      @updatedAt @db.Timestamptz(6)
+  products        Product        @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  inventory       Inventory?
+  cartItems       CartItem[]
+  orderItems      OrderItem[]
+
+  @@map("product_variant")
 }
 
-model productimages {
+model ProductImage {
   productimage_id Int       @id @default(autoincrement())
   product_id      Int
   image_url       String    @db.VarChar(255)
   display_order   Int?      @default(1)
   created_at      DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
-  products        products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at      DateTime? @updatedAt @db.Timestamptz(6)
+  products        Product   @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("productimages")
 }
 
-model products {
-  product_id      Int               @id @default(autoincrement())
-  product_name    String            @db.VarChar(255)
+model Product {
+  product_id      Int              @id @default(autoincrement())
+  product_name    String           @db.VarChar(255)
   description     String
-  price           Decimal           @db.Decimal(10, 2)
-  status          product_status    @default(DRAFT)
+  price           Decimal          @db.Decimal(10, 2)
+  status          product_status   @default(DRAFT)
   category_id     Int
   store_id        Int
-  created_at      DateTime?         @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime?         @default(now()) @updatedAt @db.Timestamptz(6)
-  cart_items      cart_items[]
-  inventory       inventory?
-  order_items     order_items[]
-  product_variant product_variant[]
-  productimages   productimages[]
-  categories      categories        @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
-  stores          stores            @relation(fields: [store_id], references: [store_id], onDelete: NoAction, onUpdate: NoAction)
-  wishlists       wishlists[]
+  created_at      DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?        @updatedAt @db.Timestamptz(6)
+  order_items     OrderItem[]
+  product_variant ProductVariant[]
+  productimages   ProductImage[]
+  categories      Category         @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  stores          Store            @relation(fields: [store_id], references: [store_id], onDelete: NoAction, onUpdate: NoAction)
+  wishlists       Wishlist[]
+  reviews         Review[]
+
+  @@index([category_id, store_id, status])
+  @@map("products")
 }
 
-model refunds {
+model Refund {
   refund_id    Int           @id @default(autoincrement())
   payment_id   Int           @unique
   amount       Decimal       @db.Decimal(10, 2)
   status       refund_status
   processed_at DateTime?     @db.Timestamptz(6)
   created_at   DateTime?     @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime?     @default(now()) @updatedAt @db.Timestamptz(6)
-  payments     payments      @relation(fields: [payment_id], references: [payment_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at   DateTime?     @updatedAt @db.Timestamptz(6)
+  payments     Payment       @relation(fields: [payment_id], references: [payment_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("refunds")
 }
 
-model returns {
+model Return {
   return_id     Int            @id @default(autoincrement())
   order_item_id Int
   reason        String
@@ -215,33 +252,42 @@ model returns {
   requested_at  DateTime?      @db.Timestamptz(6)
   approved_at   DateTime?      @db.Timestamptz(6)
   created_at    DateTime?      @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime?      @default(now()) @updatedAt @db.Timestamptz(6)
-  order_items   order_items    @relation(fields: [order_item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at    DateTime?      @updatedAt @db.Timestamptz(6)
+  order_items   OrderItem      @relation(fields: [order_item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("returns")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model reviews {
+model Review {
   review_id  Int       @id @default(autoincrement())
   buyer_id   Int
+  product_id Int
   rating     Decimal   @db.Decimal(2, 1)
   comment    String?
   created_at DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
-  users      users     @relation(fields: [buyer_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at DateTime? @updatedAt @db.Timestamptz(6)
+  users      User      @relation(fields: [buyer_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  products   Product   @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([buyer_id, product_id])
+  @@map("reviews")
 }
 
-model sellers_payout {
+model SellersPayout {
   payout_id  Int           @id @default(autoincrement())
   seller_id  Int
   amount     Decimal       @db.Decimal(10, 2)
   status     payout_status
   paid_at    DateTime?     @db.Timestamptz(6)
   created_at DateTime?     @default(now()) @db.Timestamptz(6)
-  updated_at DateTime?     @default(now()) @updatedAt @db.Timestamptz(6)
-  users      users         @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at DateTime?     @updatedAt @db.Timestamptz(6)
+  users      User          @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("sellers_payout")
 }
 
-model shippinginfo {
+model ShippingInfo {
   shipping_id             Int             @id @default(autoincrement())
   order_id                Int
   courier_name            String          @db.VarChar(100)
@@ -251,51 +297,61 @@ model shippinginfo {
   shipped_at              DateTime?       @db.Timestamptz(6)
   delivered_at            DateTime?       @db.Timestamptz(6)
   created_at              DateTime?       @default(now()) @db.Timestamptz(6)
-  updated_at              DateTime?       @default(now()) @updatedAt @db.Timestamptz(6)
-  orders                  orders          @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at              DateTime?       @updatedAt @db.Timestamptz(6)
+  orders                  Order           @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("shippinginfo")
 }
 
-model stores {
-  store_id             Int        @id @default(autoincrement())
-  store_name           String     @db.VarChar(255)
-  description          String     @db.VarChar(255)
-  logo                 String?    @db.VarChar(255)
-  social_media_account String?    @db.VarChar(255)
-  seller_id            Int
-  created_at           DateTime?  @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime?  @default(now()) @updatedAt @db.Timestamptz(6)
-  products             products[]
-  users                users      @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+model Store {
+  store_id             Int       @id @default(autoincrement())
+  store_name           String    @db.VarChar(255)
+  description          String    @db.VarChar(255)
+  logo                 String?   @db.VarChar(255)
+  social_media_account String?   @db.VarChar(255)
+  seller_id            Int       @unique
+  created_at           DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime? @updatedAt @db.Timestamptz(6)
+  products             Product[]
+  users                User      @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("stores")
 }
 
-model users {
-  user_id        Int              @id @default(autoincrement())
-  first_name     String           @db.VarChar(255)
-  last_name      String           @db.VarChar(255)
-  email          String           @unique @db.VarChar(50)
-  phone_number   String?          @unique @db.VarChar(20)
-  hash_password  String           @db.VarChar(255)
-  role           user_role        @default(BUYER)
-  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
-  updated_at     DateTime?        @default(now()) @updatedAt @db.Timestamptz(6)
-  auditlogs      auditlogs[]
-  carts          carts?
-  notifications  notifications[]
-  orders         orders[]
-  reviews        reviews[]
-  sellers_payout sellers_payout[]
-  stores         stores[]
-  wishlists      wishlists[]
+model User {
+  user_id        Int             @id @default(autoincrement())
+  first_name     String          @db.VarChar(255)
+  last_name      String          @db.VarChar(255)
+  email          String          @unique @db.VarChar(50)
+  phone_number   String?         @unique @db.VarChar(20)
+  hash_password  String          @db.VarChar(255)
+  role           user_role       @default(BUYER)
+  created_at     DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?       @updatedAt @db.Timestamptz(6)
+  auditlogs      Auditlog[]
+  carts          Cart?
+  notifications  Notification[]
+  orders         Order[]
+  reviews        Review[]
+  sellers_payout SellersPayout[]
+  wishlists      Wishlist[]
+  stores         Store?
+  addresses      Address[]
+
+  @@map("users")
 }
 
-model wishlists {
+model Wishlist {
   wishlist_id Int       @id @default(autoincrement())
   user_id     Int
   product_id  Int
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime? @default(now()) @updatedAt @db.Timestamptz(6)
-  products    products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
-  users       users     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  updated_at  DateTime? @updatedAt @db.Timestamptz(6)
+  products    Product   @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  users       User      @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, product_id])
+  @@map("wishlists")
 }
 
 enum addresstype {
