@@ -337,6 +337,7 @@ model User {
   wishlists      Wishlist[]
   stores         Store?
   addresses      Address[]
+  refreshTokens RefreshToken[]
 
   @@map("users")
 }
@@ -352,6 +353,20 @@ model Wishlist {
 
   @@unique([user_id, product_id])
   @@map("wishlists")
+}
+
+model RefreshToken {
+  refresh_token_id Int @id @default(autoincrement())
+  user_id Int
+  token_hash String
+  expires_at DateTime
+  revoked_at DateTime?
+  created_at DateTime @default(now())
+
+  users User @relation(fields: [user_id], references: [user_id], onDelete:Cascade)
+  @@index([user_id])
+  @@index([token_hash])
+  @@map("refresh_tokens")
 }
 
 enum addresstype {
