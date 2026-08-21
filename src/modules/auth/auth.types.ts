@@ -1,6 +1,14 @@
 import {z} from "zod";
-import { registerSchema } from "./auth.validation";
+import { loginSchema, registerSchema } from "./auth.validation";
 
-// infer types in other to sync validation with types
 
+//Register
 export type RegisterInput = z.infer<typeof registerSchema>;
+
+//login
+export type LoginInput = z.infer<typeof loginSchema>;
+
+export type AuthUser = {
+    userId: number,
+    role: string
+}
