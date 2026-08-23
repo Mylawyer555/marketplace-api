@@ -1,5 +1,5 @@
 import {z} from "zod";
-import { loginSchema,  refreshTokenShema, registerSchema } from "./auth.validation";
+import {loginSchema,  logOutSchema,  refreshTokenShema, registerSchema } from "./auth.validation";
 
 
 //Register
@@ -14,4 +14,8 @@ export type AuthUser = {
 };
 
 export type RefreshToken = z.infer<typeof refreshTokenShema>;
+
+export type LogOut = z.infer<typeof logOutSchema>;
+
+
 

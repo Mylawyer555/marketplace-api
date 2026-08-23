@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { loginUser, refreshAccessToken, registerUser } from "./auth.service";
+import {
+  loginUser,
+  refreshAccessToken,
+  registerUser,
+  logOutUser,
+} from "./auth.service";
 import { StatusCodes } from "http-status-codes";
+import { AppError } from "../../utils/AppError";
 
 export const register = async (
   req: Request,
@@ -19,34 +25,55 @@ export const login = async (
   res: Response,
   next: NextFunction,
 ) => {
- try {
+  try {
     const result = await loginUser(req.body);
 
     res.status(StatusCodes.OK).json({
-        success: true,
-        message: "Login successful",
-        data: result
-    })
- } catch (error) {
-    next(error)
- }
+      success: true,
+      message: "Login successful",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const refreshToken = async (
-  req:Request,
-  res:Response,
-  next:NextFunction
-) =>{
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const {refreshToken} = req.body;
+    const { refreshToken } = req.body;
     const result = await refreshAccessToken(refreshToken);
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Access token refreshed",
-      data: result
+      data: result,
     });
-
   } catch (error) {
-    next(error)
-  };
+    next(error);
+  }
+};
+
+export const logOut = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("Aunthentication required", StatusCodes.UNAUTHORIZED);
+    }
+    const userId = req.user.userId;
+    const { refreshToken } = req.body;
+    const result = await logOutUser(userId, refreshToken);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Logout successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };

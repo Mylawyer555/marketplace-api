@@ -100,3 +100,26 @@ export const refreshAccessToken = async (refreshToken: string) => {
 
   return { accessToken, refreshToken: plainRefreshToken };
 };
+
+export const logOutUser = async (userId:number, refreshToken:string) =>{
+    //hash refresh token
+    const hashedToken = hashRefreshToken(refreshToken);
+    //find refresh token
+    const token = await findRefreshTokenByHash(hashedToken);
+    //check is token exist
+    if(!token){
+        throw new AppError("Invalid refresh token", StatusCodes.UNAUTHORIZED);
+    };
+    //verify token belongs to userId
+    if(userId !== token.user_id){
+        throw new AppError("Invalid user", StatusCodes.FORBIDDEN);
+    };
+    // verify revoke status
+    if (token.revoked_at === null) {
+        await revokeRefreshToken(token.refresh_token_id);
+    }
+
+    return {
+        success: true,
+    };
+};

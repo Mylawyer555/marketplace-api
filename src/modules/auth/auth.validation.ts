@@ -17,3 +17,8 @@ export const refreshTokenShema = z.object({
     refreshToken: z.string()
 });
 
+export const logOutSchema = z.object({
+    refreshToken: z.string().min(1, "Refresh token is required")
+});
+
+
