@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -337,7 +337,7 @@ model User {
   wishlists      Wishlist[]
   stores         Store?
   addresses      Address[]
-  refreshTokens RefreshToken[]
+  refreshTokens  RefreshToken[]
 
   @@map("users")
 }
@@ -356,14 +356,15 @@ model Wishlist {
 }
 
 model RefreshToken {
-  refresh_token_id Int @id @default(autoincrement())
-  user_id Int
-  token_hash String
-  expires_at DateTime
-  revoked_at DateTime?
-  created_at DateTime @default(now())
+  refresh_token_id Int       @id @default(autoincrement())
+  user_id          Int
+  token_hash       String    @unique
+  expires_at       DateTime
+  revoked_at       DateTime?
+  created_at       DateTime  @default(now())
 
-  users User @relation(fields: [user_id], references: [user_id], onDelete:Cascade)
+  users User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
   @@index([user_id])
   @@index([token_hash])
   @@map("refresh_tokens")

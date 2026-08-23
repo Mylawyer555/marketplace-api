@@ -51,28 +51,29 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  addresses: 'addresses',
-  auditlogs: 'auditlogs',
-  cart_items: 'cart_items',
-  carts: 'carts',
-  categories: 'categories',
-  coupons: 'coupons',
-  inventory: 'inventory',
-  notifications: 'notifications',
-  order_items: 'order_items',
-  orders: 'orders',
-  payments: 'payments',
-  product_variant: 'product_variant',
-  productimages: 'productimages',
-  products: 'products',
-  refunds: 'refunds',
-  returns: 'returns',
-  reviews: 'reviews',
-  sellers_payout: 'sellers_payout',
-  shippinginfo: 'shippinginfo',
-  stores: 'stores',
-  users: 'users',
-  wishlists: 'wishlists'
+  Address: 'Address',
+  Auditlog: 'Auditlog',
+  CartItem: 'CartItem',
+  Cart: 'Cart',
+  Category: 'Category',
+  Coupon: 'Coupon',
+  Inventory: 'Inventory',
+  Notification: 'Notification',
+  OrderItem: 'OrderItem',
+  Order: 'Order',
+  Payment: 'Payment',
+  ProductVariant: 'ProductVariant',
+  ProductImage: 'ProductImage',
+  Product: 'Product',
+  Refund: 'Refund',
+  Return: 'Return',
+  Review: 'Review',
+  SellersPayout: 'SellersPayout',
+  ShippingInfo: 'ShippingInfo',
+  Store: 'Store',
+  User: 'User',
+  Wishlist: 'Wishlist',
+  RefreshToken: 'RefreshToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -91,9 +92,10 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const AddressesScalarFieldEnum = {
+export const AddressScalarFieldEnum = {
   address_id: 'address_id',
   address_type: 'address_type',
+  user_id: 'user_id',
   house_number: 'house_number',
   apartment_number: 'apartment_number',
   street: 'street',
@@ -107,10 +109,10 @@ export const AddressesScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type AddressesScalarFieldEnum = (typeof AddressesScalarFieldEnum)[keyof typeof AddressesScalarFieldEnum]
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
 
 
-export const AuditlogsScalarFieldEnum = {
+export const AuditlogScalarFieldEnum = {
   audit_log_id: 'audit_log_id',
   user_id: 'user_id',
   action: 'action',
@@ -120,43 +122,43 @@ export const AuditlogsScalarFieldEnum = {
   created_at: 'created_at'
 } as const
 
-export type AuditlogsScalarFieldEnum = (typeof AuditlogsScalarFieldEnum)[keyof typeof AuditlogsScalarFieldEnum]
+export type AuditlogScalarFieldEnum = (typeof AuditlogScalarFieldEnum)[keyof typeof AuditlogScalarFieldEnum]
 
 
-export const Cart_itemsScalarFieldEnum = {
+export const CartItemScalarFieldEnum = {
   cart_item_id: 'cart_item_id',
   cart_id: 'cart_id',
-  product_id: 'product_id',
+  variant_id: 'variant_id',
   quantity: 'quantity',
   price: 'price',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type Cart_itemsScalarFieldEnum = (typeof Cart_itemsScalarFieldEnum)[keyof typeof Cart_itemsScalarFieldEnum]
+export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
 
 
-export const CartsScalarFieldEnum = {
+export const CartScalarFieldEnum = {
   cart_id: 'cart_id',
   user_id: 'user_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type CartsScalarFieldEnum = (typeof CartsScalarFieldEnum)[keyof typeof CartsScalarFieldEnum]
+export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
 
 
-export const CategoriesScalarFieldEnum = {
+export const CategoryScalarFieldEnum = {
   category_id: 'category_id',
   category_name: 'category_name',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type CategoriesScalarFieldEnum = (typeof CategoriesScalarFieldEnum)[keyof typeof CategoriesScalarFieldEnum]
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
-export const CouponsScalarFieldEnum = {
+export const CouponScalarFieldEnum = {
   coupon_id: 'coupon_id',
   coupon_code: 'coupon_code',
   discount_type: 'discount_type',
@@ -170,12 +172,12 @@ export const CouponsScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type CouponsScalarFieldEnum = (typeof CouponsScalarFieldEnum)[keyof typeof CouponsScalarFieldEnum]
+export type CouponScalarFieldEnum = (typeof CouponScalarFieldEnum)[keyof typeof CouponScalarFieldEnum]
 
 
 export const InventoryScalarFieldEnum = {
   inventory_id: 'inventory_id',
-  product_id: 'product_id',
+  variant_id: 'variant_id',
   stock_quantity: 'stock_quantity',
   reserved_quantity: 'reserved_quantity',
   updated_at: 'updated_at'
@@ -184,7 +186,7 @@ export const InventoryScalarFieldEnum = {
 export type InventoryScalarFieldEnum = (typeof InventoryScalarFieldEnum)[keyof typeof InventoryScalarFieldEnum]
 
 
-export const NotificationsScalarFieldEnum = {
+export const NotificationScalarFieldEnum = {
   notification_id: 'notification_id',
   user_id: 'user_id',
   title: 'title',
@@ -196,23 +198,24 @@ export const NotificationsScalarFieldEnum = {
   read_at: 'read_at'
 } as const
 
-export type NotificationsScalarFieldEnum = (typeof NotificationsScalarFieldEnum)[keyof typeof NotificationsScalarFieldEnum]
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
-export const Order_itemsScalarFieldEnum = {
+export const OrderItemScalarFieldEnum = {
   item_id: 'item_id',
   product_id: 'product_id',
   order_id: 'order_id',
+  variant_id: 'variant_id',
   quantity: 'quantity',
   price_at_purchase: 'price_at_purchase',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type Order_itemsScalarFieldEnum = (typeof Order_itemsScalarFieldEnum)[keyof typeof Order_itemsScalarFieldEnum]
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
-export const OrdersScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   order_id: 'order_id',
   order_number: 'order_number',
   buyer_id: 'buyer_id',
@@ -223,7 +226,7 @@ export const OrdersScalarFieldEnum = {
   shipping_house_number: 'shipping_house_number',
   shipping_apartment_number: 'shipping_apartment_number',
   shipping_street: 'shipping_street',
-  shippping_city: 'shippping_city',
+  shipping_city: 'shipping_city',
   shipping_state: 'shipping_state',
   shipping_country: 'shipping_country',
   shipping_postal_code: 'shipping_postal_code',
@@ -232,10 +235,10 @@ export const OrdersScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type OrdersScalarFieldEnum = (typeof OrdersScalarFieldEnum)[keyof typeof OrdersScalarFieldEnum]
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
-export const PaymentsScalarFieldEnum = {
+export const PaymentScalarFieldEnum = {
   payment_id: 'payment_id',
   order_id: 'order_id',
   payment_reference: 'payment_reference',
@@ -247,26 +250,25 @@ export const PaymentsScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type PaymentsScalarFieldEnum = (typeof PaymentsScalarFieldEnum)[keyof typeof PaymentsScalarFieldEnum]
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
-export const Product_variantScalarFieldEnum = {
+export const ProductVariantScalarFieldEnum = {
   variant_id: 'variant_id',
   product_id: 'product_id',
   sku: 'sku',
   color: 'color',
   variant_storage: 'variant_storage',
   price: 'price',
-  stock_quantity: 'stock_quantity',
   status: 'status',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type Product_variantScalarFieldEnum = (typeof Product_variantScalarFieldEnum)[keyof typeof Product_variantScalarFieldEnum]
+export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]
 
 
-export const ProductimagesScalarFieldEnum = {
+export const ProductImageScalarFieldEnum = {
   productimage_id: 'productimage_id',
   product_id: 'product_id',
   image_url: 'image_url',
@@ -275,10 +277,10 @@ export const ProductimagesScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type ProductimagesScalarFieldEnum = (typeof ProductimagesScalarFieldEnum)[keyof typeof ProductimagesScalarFieldEnum]
+export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
 
 
-export const ProductsScalarFieldEnum = {
+export const ProductScalarFieldEnum = {
   product_id: 'product_id',
   product_name: 'product_name',
   description: 'description',
@@ -290,10 +292,10 @@ export const ProductsScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type ProductsScalarFieldEnum = (typeof ProductsScalarFieldEnum)[keyof typeof ProductsScalarFieldEnum]
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
-export const RefundsScalarFieldEnum = {
+export const RefundScalarFieldEnum = {
   refund_id: 'refund_id',
   payment_id: 'payment_id',
   amount: 'amount',
@@ -303,10 +305,10 @@ export const RefundsScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type RefundsScalarFieldEnum = (typeof RefundsScalarFieldEnum)[keyof typeof RefundsScalarFieldEnum]
+export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
 
 
-export const ReturnsScalarFieldEnum = {
+export const ReturnScalarFieldEnum = {
   return_id: 'return_id',
   order_item_id: 'order_item_id',
   reason: 'reason',
@@ -317,22 +319,23 @@ export const ReturnsScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type ReturnsScalarFieldEnum = (typeof ReturnsScalarFieldEnum)[keyof typeof ReturnsScalarFieldEnum]
+export type ReturnScalarFieldEnum = (typeof ReturnScalarFieldEnum)[keyof typeof ReturnScalarFieldEnum]
 
 
-export const ReviewsScalarFieldEnum = {
+export const ReviewScalarFieldEnum = {
   review_id: 'review_id',
   buyer_id: 'buyer_id',
+  product_id: 'product_id',
   rating: 'rating',
   comment: 'comment',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
 
-export type ReviewsScalarFieldEnum = (typeof ReviewsScalarFieldEnum)[keyof typeof ReviewsScalarFieldEnum]
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
-export const Sellers_payoutScalarFieldEnum = {
+export const SellersPayoutScalarFieldEnum = {
   payout_id: 'payout_id',
   seller_id: 'seller_id',
   amount: 'amount',
@@ -342,10 +345,10 @@ export const Sellers_payoutScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type Sellers_payoutScalarFieldEnum = (typeof Sellers_payoutScalarFieldEnum)[keyof typeof Sellers_payoutScalarFieldEnum]
+export type SellersPayoutScalarFieldEnum = (typeof SellersPayoutScalarFieldEnum)[keyof typeof SellersPayoutScalarFieldEnum]
 
 
-export const ShippinginfoScalarFieldEnum = {
+export const ShippingInfoScalarFieldEnum = {
   shipping_id: 'shipping_id',
   order_id: 'order_id',
   courier_name: 'courier_name',
@@ -358,10 +361,10 @@ export const ShippinginfoScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type ShippinginfoScalarFieldEnum = (typeof ShippinginfoScalarFieldEnum)[keyof typeof ShippinginfoScalarFieldEnum]
+export type ShippingInfoScalarFieldEnum = (typeof ShippingInfoScalarFieldEnum)[keyof typeof ShippingInfoScalarFieldEnum]
 
 
-export const StoresScalarFieldEnum = {
+export const StoreScalarFieldEnum = {
   store_id: 'store_id',
   store_name: 'store_name',
   description: 'description',
@@ -372,10 +375,10 @@ export const StoresScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type StoresScalarFieldEnum = (typeof StoresScalarFieldEnum)[keyof typeof StoresScalarFieldEnum]
+export type StoreScalarFieldEnum = (typeof StoreScalarFieldEnum)[keyof typeof StoreScalarFieldEnum]
 
 
-export const UsersScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   user_id: 'user_id',
   first_name: 'first_name',
   last_name: 'last_name',
@@ -387,10 +390,10 @@ export const UsersScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const WishlistsScalarFieldEnum = {
+export const WishlistScalarFieldEnum = {
   wishlist_id: 'wishlist_id',
   user_id: 'user_id',
   product_id: 'product_id',
@@ -398,7 +401,19 @@ export const WishlistsScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type WishlistsScalarFieldEnum = (typeof WishlistsScalarFieldEnum)[keyof typeof WishlistsScalarFieldEnum]
+export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typeof WishlistScalarFieldEnum]
+
+
+export const RefreshTokenScalarFieldEnum = {
+  refresh_token_id: 'refresh_token_id',
+  user_id: 'user_id',
+  token_hash: 'token_hash',
+  expires_at: 'expires_at',
+  revoked_at: 'revoked_at',
+  created_at: 'created_at'
+} as const
+
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
 export const SortOrder = {

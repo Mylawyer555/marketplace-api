@@ -30,7 +30,7 @@ export * from "./enums"
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
  * // Fetch zero or more Addresses
- * const addresses = await prisma.addresses.findMany()
+ * const addresses = await prisma.address.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,112 +40,117 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model addresses
+ * Model Address
  * 
  */
-export type addresses = Prisma.addressesModel
+export type Address = Prisma.AddressModel
 /**
- * Model auditlogs
+ * Model Auditlog
  * 
  */
-export type auditlogs = Prisma.auditlogsModel
+export type Auditlog = Prisma.AuditlogModel
 /**
- * Model cart_items
+ * Model CartItem
  * 
  */
-export type cart_items = Prisma.cart_itemsModel
+export type CartItem = Prisma.CartItemModel
 /**
- * Model carts
+ * Model Cart
  * 
  */
-export type carts = Prisma.cartsModel
+export type Cart = Prisma.CartModel
 /**
- * Model categories
+ * Model Category
  * 
  */
-export type categories = Prisma.categoriesModel
+export type Category = Prisma.CategoryModel
 /**
- * Model coupons
+ * Model Coupon
  * 
  */
-export type coupons = Prisma.couponsModel
+export type Coupon = Prisma.CouponModel
 /**
- * Model inventory
+ * Model Inventory
  * 
  */
-export type inventory = Prisma.inventoryModel
+export type Inventory = Prisma.InventoryModel
 /**
- * Model notifications
+ * Model Notification
  * 
  */
-export type notifications = Prisma.notificationsModel
+export type Notification = Prisma.NotificationModel
 /**
- * Model order_items
+ * Model OrderItem
  * 
  */
-export type order_items = Prisma.order_itemsModel
+export type OrderItem = Prisma.OrderItemModel
 /**
- * Model orders
+ * Model Order
  * 
  */
-export type orders = Prisma.ordersModel
+export type Order = Prisma.OrderModel
 /**
- * Model payments
+ * Model Payment
  * 
  */
-export type payments = Prisma.paymentsModel
+export type Payment = Prisma.PaymentModel
 /**
- * Model product_variant
+ * Model ProductVariant
  * 
  */
-export type product_variant = Prisma.product_variantModel
+export type ProductVariant = Prisma.ProductVariantModel
 /**
- * Model productimages
+ * Model ProductImage
  * 
  */
-export type productimages = Prisma.productimagesModel
+export type ProductImage = Prisma.ProductImageModel
 /**
- * Model products
+ * Model Product
  * 
  */
-export type products = Prisma.productsModel
+export type Product = Prisma.ProductModel
 /**
- * Model refunds
+ * Model Refund
  * 
  */
-export type refunds = Prisma.refundsModel
+export type Refund = Prisma.RefundModel
 /**
- * Model returns
+ * Model Return
  * 
  */
-export type returns = Prisma.returnsModel
+export type Return = Prisma.ReturnModel
 /**
- * Model reviews
+ * Model Review
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
  */
-export type reviews = Prisma.reviewsModel
+export type Review = Prisma.ReviewModel
 /**
- * Model sellers_payout
+ * Model SellersPayout
  * 
  */
-export type sellers_payout = Prisma.sellers_payoutModel
+export type SellersPayout = Prisma.SellersPayoutModel
 /**
- * Model shippinginfo
+ * Model ShippingInfo
  * 
  */
-export type shippinginfo = Prisma.shippinginfoModel
+export type ShippingInfo = Prisma.ShippingInfoModel
 /**
- * Model stores
+ * Model Store
  * 
  */
-export type stores = Prisma.storesModel
+export type Store = Prisma.StoreModel
 /**
- * Model users
+ * Model User
  * 
  */
-export type users = Prisma.usersModel
+export type User = Prisma.UserModel
 /**
- * Model wishlists
+ * Model Wishlist
  * 
  */
-export type wishlists = Prisma.wishlistsModel
+export type Wishlist = Prisma.WishlistModel
+/**
+ * Model RefreshToken
+ * 
+ */
+export type RefreshToken = Prisma.RefreshTokenModel

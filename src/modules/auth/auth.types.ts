@@ -1,5 +1,5 @@
 import {z} from "zod";
-import { loginSchema, registerSchema } from "./auth.validation";
+import { loginSchema,  refreshTokenShema, registerSchema } from "./auth.validation";
 
 
 //Register
@@ -11,4 +11,7 @@ export type LoginInput = z.infer<typeof loginSchema>;
 export type AuthUser = {
     userId: number,
     role: string
-}
+};
+
+export type RefreshToken = z.infer<typeof refreshTokenShema>;
+

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { loginUser, registerUser } from "./auth.service";
+import { loginUser, refreshAccessToken, registerUser } from "./auth.service";
 import { StatusCodes } from "http-status-codes";
 
 export const register = async (
@@ -30,4 +30,23 @@ export const login = async (
  } catch (error) {
     next(error)
  }
+};
+
+export const refreshToken = async (
+  req:Request,
+  res:Response,
+  next:NextFunction
+) =>{
+  try {
+    const {refreshToken} = req.body;
+    const result = await refreshAccessToken(refreshToken);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Access token refreshed",
+      data: result
+    });
+
+  } catch (error) {
+    next(error)
+  };
 };
