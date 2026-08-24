@@ -258,6 +258,7 @@ export type UserWhereInput = {
   stores?: Prisma.XOR<Prisma.StoreNullableScalarRelationFilter, Prisma.StoreWhereInput> | null
   addresses?: Prisma.AddressListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  resetTokens?: Prisma.ResetTokenListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -280,6 +281,7 @@ export type UserOrderByWithRelationInput = {
   stores?: Prisma.StoreOrderByWithRelationInput
   addresses?: Prisma.AddressOrderByRelationAggregateInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
+  resetTokens?: Prisma.ResetTokenOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +307,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   stores?: Prisma.XOR<Prisma.StoreNullableScalarRelationFilter, Prisma.StoreWhereInput> | null
   addresses?: Prisma.AddressListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  resetTokens?: Prisma.ResetTokenListRelationFilter
 }, "user_id" | "email" | "phone_number">
 
 export type UserOrderByWithAggregationInput = {
@@ -358,6 +361,7 @@ export type UserCreateInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -380,6 +384,7 @@ export type UserUncheckedCreateInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserUpdateInput = {
@@ -401,6 +406,7 @@ export type UserUpdateInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -423,6 +429,7 @@ export type UserUncheckedUpdateInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -660,6 +667,20 @@ export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
 }
 
+export type UserCreateNestedOneWithoutResetTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResetTokensInput, Prisma.UserUncheckedCreateWithoutResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutResetTokensInput, Prisma.UserUncheckedCreateWithoutResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutResetTokensInput
+  upsert?: Prisma.UserUpsertWithoutResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutResetTokensInput, Prisma.UserUpdateWithoutResetTokensInput>, Prisma.UserUncheckedUpdateWithoutResetTokensInput>
+}
+
 export type UserCreateWithoutAddressesInput = {
   first_name: string
   last_name: string
@@ -678,6 +699,7 @@ export type UserCreateWithoutAddressesInput = {
   wishlists?: Prisma.WishlistCreateNestedManyWithoutUsersInput
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutAddressesInput = {
@@ -699,6 +721,7 @@ export type UserUncheckedCreateWithoutAddressesInput = {
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUsersInput
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutAddressesInput = {
@@ -735,6 +758,7 @@ export type UserUpdateWithoutAddressesInput = {
   wishlists?: Prisma.WishlistUpdateManyWithoutUsersNestedInput
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAddressesInput = {
@@ -756,6 +780,7 @@ export type UserUncheckedUpdateWithoutAddressesInput = {
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUsersNestedInput
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutAuditlogsInput = {
@@ -776,6 +801,7 @@ export type UserCreateWithoutAuditlogsInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutAuditlogsInput = {
@@ -797,6 +823,7 @@ export type UserUncheckedCreateWithoutAuditlogsInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutAuditlogsInput = {
@@ -833,6 +860,7 @@ export type UserUpdateWithoutAuditlogsInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditlogsInput = {
@@ -854,6 +882,7 @@ export type UserUncheckedUpdateWithoutAuditlogsInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutCartsInput = {
@@ -874,6 +903,7 @@ export type UserCreateWithoutCartsInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutCartsInput = {
@@ -895,6 +925,7 @@ export type UserUncheckedCreateWithoutCartsInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutCartsInput = {
@@ -931,6 +962,7 @@ export type UserUpdateWithoutCartsInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCartsInput = {
@@ -952,6 +984,7 @@ export type UserUncheckedUpdateWithoutCartsInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -972,6 +1005,7 @@ export type UserCreateWithoutNotificationsInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -993,6 +1027,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -1029,6 +1064,7 @@ export type UserUpdateWithoutNotificationsInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -1050,6 +1086,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -1070,6 +1107,7 @@ export type UserCreateWithoutOrdersInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -1091,6 +1129,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -1127,6 +1166,7 @@ export type UserUpdateWithoutOrdersInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -1148,6 +1188,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -1168,6 +1209,7 @@ export type UserCreateWithoutReviewsInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -1189,6 +1231,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1225,6 +1268,7 @@ export type UserUpdateWithoutReviewsInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -1246,6 +1290,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutSellers_payoutInput = {
@@ -1266,6 +1311,7 @@ export type UserCreateWithoutSellers_payoutInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutSellers_payoutInput = {
@@ -1287,6 +1333,7 @@ export type UserUncheckedCreateWithoutSellers_payoutInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutSellers_payoutInput = {
@@ -1323,6 +1370,7 @@ export type UserUpdateWithoutSellers_payoutInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSellers_payoutInput = {
@@ -1344,6 +1392,7 @@ export type UserUncheckedUpdateWithoutSellers_payoutInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutStoresInput = {
@@ -1364,6 +1413,7 @@ export type UserCreateWithoutStoresInput = {
   wishlists?: Prisma.WishlistCreateNestedManyWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutStoresInput = {
@@ -1385,6 +1435,7 @@ export type UserUncheckedCreateWithoutStoresInput = {
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutStoresInput = {
@@ -1421,6 +1472,7 @@ export type UserUpdateWithoutStoresInput = {
   wishlists?: Prisma.WishlistUpdateManyWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoresInput = {
@@ -1442,6 +1494,7 @@ export type UserUncheckedUpdateWithoutStoresInput = {
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutWishlistsInput = {
@@ -1462,6 +1515,7 @@ export type UserCreateWithoutWishlistsInput = {
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutWishlistsInput = {
@@ -1483,6 +1537,7 @@ export type UserUncheckedCreateWithoutWishlistsInput = {
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutWishlistsInput = {
@@ -1519,6 +1574,7 @@ export type UserUpdateWithoutWishlistsInput = {
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWishlistsInput = {
@@ -1540,6 +1596,7 @@ export type UserUncheckedUpdateWithoutWishlistsInput = {
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutRefreshTokensInput = {
@@ -1560,6 +1617,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   wishlists?: Prisma.WishlistCreateNestedManyWithoutUsersInput
   stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
+  resetTokens?: Prisma.ResetTokenCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -1581,6 +1639,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUsersInput
   stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
   addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
+  resetTokens?: Prisma.ResetTokenUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -1617,6 +1676,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   wishlists?: Prisma.WishlistUpdateManyWithoutUsersNestedInput
   stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
+  resetTokens?: Prisma.ResetTokenUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -1638,6 +1698,109 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUsersNestedInput
   stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
   addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
+  resetTokens?: Prisma.ResetTokenUncheckedUpdateManyWithoutUsersNestedInput
+}
+
+export type UserCreateWithoutResetTokensInput = {
+  first_name: string
+  last_name: string
+  email: string
+  phone_number?: string | null
+  hash_password: string
+  role?: $Enums.user_role
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+  auditlogs?: Prisma.AuditlogCreateNestedManyWithoutUsersInput
+  carts?: Prisma.CartCreateNestedOneWithoutUsersInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUsersInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUsersInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUsersInput
+  sellers_payout?: Prisma.SellersPayoutCreateNestedManyWithoutUsersInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUsersInput
+  stores?: Prisma.StoreCreateNestedOneWithoutUsersInput
+  addresses?: Prisma.AddressCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUsersInput
+}
+
+export type UserUncheckedCreateWithoutResetTokensInput = {
+  user_id?: number
+  first_name: string
+  last_name: string
+  email: string
+  phone_number?: string | null
+  hash_password: string
+  role?: $Enums.user_role
+  created_at?: Date | string | null
+  updated_at?: Date | string | null
+  auditlogs?: Prisma.AuditlogUncheckedCreateNestedManyWithoutUsersInput
+  carts?: Prisma.CartUncheckedCreateNestedOneWithoutUsersInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUsersInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUsersInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUsersInput
+  sellers_payout?: Prisma.SellersPayoutUncheckedCreateNestedManyWithoutUsersInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUsersInput
+  stores?: Prisma.StoreUncheckedCreateNestedOneWithoutUsersInput
+  addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUsersInput
+}
+
+export type UserCreateOrConnectWithoutResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutResetTokensInput, Prisma.UserUncheckedCreateWithoutResetTokensInput>
+}
+
+export type UserUpsertWithoutResetTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutResetTokensInput, Prisma.UserUncheckedUpdateWithoutResetTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutResetTokensInput, Prisma.UserUncheckedCreateWithoutResetTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutResetTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutResetTokensInput, Prisma.UserUncheckedUpdateWithoutResetTokensInput>
+}
+
+export type UserUpdateWithoutResetTokensInput = {
+  first_name?: Prisma.StringFieldUpdateOperationsInput | string
+  last_name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hash_password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditlogs?: Prisma.AuditlogUpdateManyWithoutUsersNestedInput
+  carts?: Prisma.CartUpdateOneWithoutUsersNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUsersNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUsersNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUsersNestedInput
+  sellers_payout?: Prisma.SellersPayoutUpdateManyWithoutUsersNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUsersNestedInput
+  stores?: Prisma.StoreUpdateOneWithoutUsersNestedInput
+  addresses?: Prisma.AddressUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUsersNestedInput
+}
+
+export type UserUncheckedUpdateWithoutResetTokensInput = {
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  first_name?: Prisma.StringFieldUpdateOperationsInput | string
+  last_name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hash_password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  auditlogs?: Prisma.AuditlogUncheckedUpdateManyWithoutUsersNestedInput
+  carts?: Prisma.CartUncheckedUpdateOneWithoutUsersNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUsersNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUsersNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUsersNestedInput
+  sellers_payout?: Prisma.SellersPayoutUncheckedUpdateManyWithoutUsersNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUsersNestedInput
+  stores?: Prisma.StoreUncheckedUpdateOneWithoutUsersNestedInput
+  addresses?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 
@@ -1654,6 +1817,7 @@ export type UserCountOutputType = {
   wishlists: number
   addresses: number
   refreshTokens: number
+  resetTokens: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1665,6 +1829,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   wishlists?: boolean | UserCountOutputTypeCountWishlistsArgs
   addresses?: boolean | UserCountOutputTypeCountAddressesArgs
   refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
+  resetTokens?: boolean | UserCountOutputTypeCountResetTokensArgs
 }
 
 /**
@@ -1733,6 +1898,13 @@ export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Ty
   where?: Prisma.RefreshTokenWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ResetTokenWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   user_id?: boolean
@@ -1754,6 +1926,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   stores?: boolean | Prisma.User$storesArgs<ExtArgs>
   addresses?: boolean | Prisma.User$addressesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
+  resetTokens?: boolean | Prisma.User$resetTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1805,6 +1978,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   stores?: boolean | Prisma.User$storesArgs<ExtArgs>
   addresses?: boolean | Prisma.User$addressesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
+  resetTokens?: boolean | Prisma.User$resetTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1823,6 +1997,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     stores: Prisma.$StorePayload<ExtArgs> | null
     addresses: Prisma.$AddressPayload<ExtArgs>[]
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+    resetTokens: Prisma.$ResetTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     user_id: number
@@ -2238,6 +2413,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   stores<T extends Prisma.User$storesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storesArgs<ExtArgs>>): Prisma.Prisma__StoreClient<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   addresses<T extends Prisma.User$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  resetTokens<T extends Prisma.User$resetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2896,6 +3072,30 @@ export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
+}
+
+/**
+ * User.resetTokens
+ */
+export type User$resetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ResetToken
+   */
+  select?: Prisma.ResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ResetToken
+   */
+  omit?: Prisma.ResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ResetTokenInclude<ExtArgs> | null
+  where?: Prisma.ResetTokenWhereInput
+  orderBy?: Prisma.ResetTokenOrderByWithRelationInput | Prisma.ResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.ResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ResetTokenScalarFieldEnum | Prisma.ResetTokenScalarFieldEnum[]
 }
 
 /**

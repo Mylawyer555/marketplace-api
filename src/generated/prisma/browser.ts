@@ -132,3 +132,8 @@ export type Wishlist = Prisma.WishlistModel
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model ResetToken
+ * 
+ */
+export type ResetToken = Prisma.ResetTokenModel

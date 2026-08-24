@@ -338,6 +338,7 @@ model User {
   stores         Store?
   addresses      Address[]
   refreshTokens  RefreshToken[]
+  resetTokens    ResetToken[]
 
   @@map("users")
 }
@@ -368,6 +369,20 @@ model RefreshToken {
   @@index([user_id])
   @@index([token_hash])
   @@map("refresh_tokens")
+}
+
+model ResetToken {
+  reset_token_id Int       @id @default(autoincrement())
+  user_id        Int
+  token_hash     String    @unique
+  expires_at     DateTime
+  used_at        DateTime?
+  created_at     DateTime  @default(now())
+
+  users User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("reset_token")
 }
 
 enum addresstype {

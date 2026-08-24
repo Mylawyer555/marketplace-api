@@ -73,7 +73,8 @@ export const ModelName = {
   Store: 'Store',
   User: 'User',
   Wishlist: 'Wishlist',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  ResetToken: 'ResetToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,6 +415,18 @@ export const RefreshTokenScalarFieldEnum = {
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const ResetTokenScalarFieldEnum = {
+  reset_token_id: 'reset_token_id',
+  user_id: 'user_id',
+  token_hash: 'token_hash',
+  expires_at: 'expires_at',
+  used_at: 'used_at',
+  created_at: 'created_at'
+} as const
+
+export type ResetTokenScalarFieldEnum = (typeof ResetTokenScalarFieldEnum)[keyof typeof ResetTokenScalarFieldEnum]
 
 
 export const SortOrder = {
