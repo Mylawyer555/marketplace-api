@@ -5,6 +5,9 @@ import {
   createRefreshToken,
   findRefreshTokenByHash,
   revokeRefreshToken,
+  findUserById,
+  updateUserPassword,
+  revokeAllUserRefreshToken,
 } from "./auth.repository";
 import { RegisterInput } from "./auth.types";
 import type { LoginInput } from "./auth.types";
@@ -14,6 +17,7 @@ import { generateAccessToken } from "../../utils/jwt";
 import { generateRefreshToken } from "../../utils/refreshToken";
 import { hashRefreshToken } from "../../utils/hashRefreshToken";
 import { generateRefreshExpiry } from "../../utils/refreshExpiry";
+import { BCRYPT_SALT_ROUNDS } from "../../config/salt_rounds";
 
 export const registerUser = async (data: RegisterInput) => {
   const isUserExist = await findUserByEmail(data.email);
@@ -22,7 +26,7 @@ export const registerUser = async (data: RegisterInput) => {
     throw new AppError("Email already exist", StatusCodes.CONFLICT);
   }
 
-  const hashPassword = await bcrypt.hash(data.password, 12);
+  const hashPassword = await bcrypt.hash(data.password, BCRYPT_SALT_ROUNDS);
 
   const user = await createUser({
     ...data,
@@ -122,4 +126,33 @@ export const logOutUser = async (userId:number, refreshToken:string) =>{
     return {
         success: true,
     };
+};
+
+
+export const changePassword = async (userId:number, currentPassword:string, newPassword:string)=>{
+    //authenticate user
+    const user = await findUserById(userId);
+    if (!user) {
+        throw new AppError("Invalid user", StatusCodes.FORBIDDEN);
+    };
+
+    //compare password
+    const comparedPassword = await bcrypt.compare(currentPassword, user.hash_password);
+    if (!comparedPassword) {
+        throw new AppError("Current password is incorrect", StatusCodes.UNAUTHORIZED);
+    };
+
+    //hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS)
+
+    //update db with new hashed password
+    await updateUserPassword(user.user_id, hashedPassword);
+
+    //revoke all refresh token
+    await revokeAllUserRefreshToken(user.user_id);
+
+    return {
+        success: true,
+    };
+
 };

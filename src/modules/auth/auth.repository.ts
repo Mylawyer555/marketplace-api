@@ -60,3 +60,34 @@ export const revokeRefreshToken = async(refreshId: number)=> {
         },
     });
 };
+
+export const findUserById = async (userId: number)=> {
+    return db.user.findUnique({
+        where: {
+            user_id: userId
+        },
+    });
+};
+
+export const updateUserPassword = async(userId: number, hashedPassword: string) =>{
+    return db.user.update({
+        where: {
+            user_id: userId
+        },
+        data: {
+            hash_password: hashedPassword
+        },
+    });
+};
+
+export const revokeAllUserRefreshToken = async (userId: number) => {
+    return db.refreshToken.updateMany({
+        where: {
+            user_id: userId, 
+            revoked_at: null
+        },
+        data: {
+            revoked_at : new Date()
+        },
+    });
+};

@@ -22,3 +22,14 @@ export const logOutSchema = z.object({
 });
 
 
+export const changePasswordSchema = z.object({
+    currentPassword: z.string().min(8, "Password must be atleast 8 characters"),
+    newPassword: z.string().min(8, "Password must be atleast 8 characters"),
+    confirmPassword: z.string().min(8, "Password must be atleast 8 characters")
+}).refine((data)=> 
+    data.newPassword === data.confirmPassword,
+    {
+        message: "Password does not match",
+        path: ["confirmPassword"]
+    }
+)
