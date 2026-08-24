@@ -91,3 +91,37 @@ export const revokeAllUserRefreshToken = async (userId: number) => {
         },
     });
 };
+
+export const createResetToken = async (userId:number, tokenHash:string, expiresAt: Date) => {
+   return db.resetToken.create({
+    data: {
+        user_id: userId,
+        token_hash: tokenHash,
+        expires_at: expiresAt
+    },
+   });
+};
+
+export const findResetTokenByHash = async (tokenHash: string) => {
+    return db.resetToken.findUnique({
+        where:{
+            token_hash: tokenHash,
+        },
+        include: {
+            users: true
+        }
+
+    });
+};
+
+export const invalidateResetToken = async (resetTokenId: number) => {
+    return db.resetToken.update({
+        where: {
+            reset_token_id: resetTokenId
+        }, 
+        data: {
+            used_at: new Date()
+        },
+    });
+};
+

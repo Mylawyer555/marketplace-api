@@ -8,6 +8,9 @@ import {
   findUserById,
   updateUserPassword,
   revokeAllUserRefreshToken,
+  createResetToken,
+  findResetTokenByHash,
+  invalidateResetToken,
 } from "./auth.repository";
 import { RegisterInput } from "./auth.types";
 import type { LoginInput } from "./auth.types";
@@ -18,6 +21,8 @@ import { generateRefreshToken } from "../../utils/refreshToken";
 import { hashRefreshToken } from "../../utils/hashRefreshToken";
 import { generateRefreshExpiry } from "../../utils/refreshExpiry";
 import { BCRYPT_SALT_ROUNDS } from "../../config/salt_rounds";
+import { generateResetToken } from "../../utils/resetToken";
+import { hashResetToken } from "../../utils/hashResetToken";
 
 export const registerUser = async (data: RegisterInput) => {
   const isUserExist = await findUserByEmail(data.email);
@@ -105,54 +110,129 @@ export const refreshAccessToken = async (refreshToken: string) => {
   return { accessToken, refreshToken: plainRefreshToken };
 };
 
-export const logOutUser = async (userId:number, refreshToken:string) =>{
-    //hash refresh token
-    const hashedToken = hashRefreshToken(refreshToken);
-    //find refresh token
-    const token = await findRefreshTokenByHash(hashedToken);
-    //check is token exist
-    if(!token){
-        throw new AppError("Invalid refresh token", StatusCodes.UNAUTHORIZED);
-    };
-    //verify token belongs to userId
-    if(userId !== token.user_id){
-        throw new AppError("Invalid user", StatusCodes.FORBIDDEN);
-    };
-    // verify revoke status
-    if (token.revoked_at === null) {
-        await revokeRefreshToken(token.refresh_token_id);
-    }
+export const logOutUser = async (userId: number, refreshToken: string) => {
+  //hash refresh token
+  const hashedToken = hashRefreshToken(refreshToken);
+  //find refresh token
+  const token = await findRefreshTokenByHash(hashedToken);
+  //check is token exist
+  if (!token) {
+    throw new AppError("Invalid refresh token", StatusCodes.UNAUTHORIZED);
+  }
+  //verify token belongs to userId
+  if (userId !== token.user_id) {
+    throw new AppError("Invalid user", StatusCodes.FORBIDDEN);
+  }
+  // verify revoke status
+  if (token.revoked_at === null) {
+    await revokeRefreshToken(token.refresh_token_id);
+  }
 
+  return {
+    success: true,
+  };
+};
+
+export const changePassword = async (
+  userId: number,
+  currentPassword: string,
+  newPassword: string,
+) => {
+  //authenticate user
+  const user = await findUserById(userId);
+  if (!user) {
+    throw new AppError("Invalid user", StatusCodes.FORBIDDEN);
+  }
+
+  //compare password
+  const comparedPassword = await bcrypt.compare(
+    currentPassword,
+    user.hash_password,
+  );
+  if (!comparedPassword) {
+    throw new AppError(
+      "Current password is incorrect",
+      StatusCodes.UNAUTHORIZED,
+    );
+  }
+
+  //hash new password
+  const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS);
+
+  //update db with new hashed password
+  await updateUserPassword(user.user_id, hashedPassword);
+
+  //revoke all refresh token
+  await revokeAllUserRefreshToken(user.user_id);
+
+  return {
+    success: true,
+  };
+};
+
+export const forgotPassword = async (email: string) => {
+  //authenticate user
+  const user = await findUserByEmail(email);
+  if (!user) {
     return {
-        success: true,
+      success: true,
+      message: "If the email exists, a password reset link has been sent.",
     };
+  }
+
+  const plainResetToken = generateResetToken();
+  //hash token
+  const hashedResetToken = hashResetToken(plainResetToken);
+
+  //expiry date
+
+  const expiresAt = new Date();
+  expiresAt.setMinutes(expiresAt.getMinutes() + 5);
+
+  //store hashtoken + expiry
+  await createResetToken(user.user_id, hashedResetToken, expiresAt);
+  return {
+    success: true,
+    resetToken: plainResetToken,
+    message: "If the email exists, a password reset link has been sent.",
+  };
 };
 
 
-export const changePassword = async (userId:number, currentPassword:string, newPassword:string)=>{
-    //authenticate user
-    const user = await findUserById(userId);
-    if (!user) {
-        throw new AppError("Invalid user", StatusCodes.FORBIDDEN);
-    };
+export const resetPassword = async (resetToken:string, newPassword: string) => {
+  //hash reset token
+  const tokenHash = hashResetToken(resetToken);
+  //find token in db
+  const token = await findResetTokenByHash(tokenHash);
+  if (!token) {
+    throw new AppError("Invalid token", StatusCodes.UNAUTHORIZED);
+  };
+  // check if token has been used or expired
+  if (token.used_at !== null) {
+    throw new AppError("token already used", StatusCodes.UNAUTHORIZED);
+  };
+  const now = new Date()
+  if (token.expires_at < now) {
+    throw new AppError("token expired!", StatusCodes.UNAUTHORIZED)
+  };
 
-    //compare password
-    const comparedPassword = await bcrypt.compare(currentPassword, user.hash_password);
-    if (!comparedPassword) {
-        throw new AppError("Current password is incorrect", StatusCodes.UNAUTHORIZED);
-    };
+  //get user
+  const user = token.users;
 
-    //hash new password
-    const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS)
+  //hash new password
+  const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS);
 
-    //update db with new hashed password
-    await updateUserPassword(user.user_id, hashedPassword);
+  //update password
+  await updateUserPassword(user.user_id, hashedPassword);
 
-    //revoke all refresh token
-    await revokeAllUserRefreshToken(user.user_id);
+  //update reset used at
+  await invalidateResetToken(token.reset_token_id);
 
-    return {
-        success: true,
-    };
+  //revoke all refresh tokem
+  await revokeAllUserRefreshToken(user.user_id);
 
+  return {
+    success: true,
+    message: "Password reset successful",
+  }
 };

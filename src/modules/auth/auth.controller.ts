@@ -5,6 +5,8 @@ import {
   registerUser,
   logOutUser,
   changePassword,
+  forgotPassword,
+  resetPassword,
 } from "./auth.service";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../utils/AppError";
@@ -91,14 +93,46 @@ export const changePasswordController = async (
 
     const userId = req.user.userId;
     const { currentPassword, newPassword } = req.body;
-    const result = await changePassword(
-      userId,
-      currentPassword,
-      newPassword,
-    );
+    const result = await changePassword(userId, currentPassword, newPassword);
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Change of password successful!",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const forgotPasswordController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email } = req.body;
+    const result = await forgotPassword(email);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "If the email exists, a password reset link has been sent.",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const resetPasswordController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { resetToken } = req.body;
+    const {newPassword} = req.body;
+    const result = await resetPassword(resetToken, newPassword);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "password reset successful",
       data: result,
     });
   } catch (error) {
