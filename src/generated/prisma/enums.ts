@@ -26,6 +26,15 @@ export const coupon_status = {
 export type coupon_status = (typeof coupon_status)[keyof typeof coupon_status]
 
 
+export const account_status = {
+  ACTIVE: 'ACTIVE',
+  DEACTIVATED: 'DEACTIVATED',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type account_status = (typeof account_status)[keyof typeof account_status]
+
+
 export const discount_type = {
   PERCENTAGE: 'PERCENTAGE',
   FIXED_AMOUNT: 'FIXED_AMOUNT'

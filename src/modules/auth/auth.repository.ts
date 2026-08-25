@@ -125,3 +125,21 @@ export const invalidateResetToken = async (resetTokenId: number) => {
     });
 };
 
+export const reactivateAccount = async (userId:number) => {
+    return db.user.update({
+        where: {
+            user_id: userId,
+        },
+        data: {
+            account_status: "ACTIVE",
+            deactivated_at: null,
+            deletion_at: null
+        },
+        select: {
+            user_id: true,
+            role: true,
+            account_status: true
+        },
+    });
+};
+

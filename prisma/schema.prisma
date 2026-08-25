@@ -325,7 +325,10 @@ model User {
   email          String          @unique @db.VarChar(50)
   phone_number   String?         @unique @db.VarChar(20)
   hash_password  String          @db.VarChar(255)
+  account_status account_status  @default(ACTIVE)
   role           user_role       @default(BUYER)
+  deactivated_at DateTime?
+  deletion_at    DateTime?
   created_at     DateTime?       @default(now()) @db.Timestamptz(6)
   updated_at     DateTime?       @updatedAt @db.Timestamptz(6)
   auditlogs      Auditlog[]
@@ -394,6 +397,12 @@ enum coupon_status {
   ACTIVE
   INACTIVE
   EXPIRED
+}
+
+enum account_status {
+  ACTIVE
+  DEACTIVATED
+  SUSPENDED
 }
 
 enum discount_type {

@@ -11,6 +11,7 @@ import {
   createResetToken,
   findResetTokenByHash,
   invalidateResetToken,
+  reactivateAccount,
 } from "./auth.repository";
 import { RegisterInput } from "./auth.types";
 import type { LoginInput } from "./auth.types";
@@ -52,6 +53,21 @@ export const loginUser = async (data: LoginInput) => {
 
   if (!isCheckPass) {
     throw new AppError("Invalid email or password", StatusCodes.UNAUTHORIZED);
+  }
+
+  //account status
+  if (user.account_status === "DEACTIVATED") {
+
+    const now = new Date();
+
+    if(!user.deletion_at || user.deletion_at <= now){
+      throw new AppError(
+        "Account recovery period has expired",
+        StatusCodes.FORBIDDEN
+      )
+    }
+
+    await reactivateAccount(user.user_id)
   }
 
   const accessToken = generateAccessToken(user.user_id, user.role);
