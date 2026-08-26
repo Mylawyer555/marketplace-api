@@ -26,3 +26,23 @@ export const createStoreService = async (
 
   return newStore;
 };
+
+
+export const getMyStore = async (sellerId: number) => {
+    const user = await findUserById(sellerId);
+    if (!user) {
+        throw new AppError("User not found", StatusCodes.NOT_FOUND);
+    };
+
+    if (user.role !== "SELLER") {
+        throw new AppError("User must be a seller", StatusCodes.FORBIDDEN);
+    };
+
+    const store = await findStoreBySellerId(user.user_id);
+
+    if (store === null) {
+        throw new AppError("Store not found", StatusCodes.NOT_FOUND);
+    };
+
+    return store;
+};
