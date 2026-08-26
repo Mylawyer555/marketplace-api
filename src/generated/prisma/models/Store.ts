@@ -315,16 +315,16 @@ export type StoreCreateInput = {
   created_at?: Date | string | null
   updated_at?: Date | string | null
   products?: Prisma.ProductCreateNestedManyWithoutStoresInput
-  users: Prisma.UserCreateNestedOneWithoutStoresInput
+  users: Prisma.UserCreateNestedOneWithoutStoresInput | undefined
 }
 
 export type StoreUncheckedCreateInput = {
-  store_id?: number
+  store_id?: number | undefined
   store_name: string
   description: string
   logo?: string | null
   social_media_account?: string | null
-  seller_id: number
+  seller_id: number | undefined
   created_at?: Date | string | null
   updated_at?: Date | string | null
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoresInput
