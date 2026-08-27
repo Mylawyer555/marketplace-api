@@ -327,7 +327,7 @@ export type StoreCreateInput = {
   status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
-  products?: Prisma.ProductCreateNestedManyWithoutStoresInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
   users: Prisma.UserCreateNestedOneWithoutStoresInput
 }
 
@@ -341,7 +341,7 @@ export type StoreUncheckedCreateInput = {
   seller_id: number
   created_at?: Date | string | null
   updated_at?: Date | string | null
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoresInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
 }
 
 export type StoreUpdateInput = {
@@ -352,7 +352,7 @@ export type StoreUpdateInput = {
   status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  products?: Prisma.ProductUpdateManyWithoutStoresNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateOneRequiredWithoutStoresNestedInput
 }
 
@@ -366,7 +366,7 @@ export type StoreUncheckedUpdateInput = {
   seller_id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoresNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
 }
 
 export type StoreCreateManyInput = {
@@ -579,7 +579,7 @@ export type StoreCreateWithoutUsersInput = {
   status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
-  products?: Prisma.ProductCreateNestedManyWithoutStoresInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
 }
 
 export type StoreUncheckedCreateWithoutUsersInput = {
@@ -591,7 +591,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoresInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
 }
 
 export type StoreCreateOrConnectWithoutUsersInput = {
@@ -618,7 +618,7 @@ export type StoreUpdateWithoutUsersInput = {
   status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  products?: Prisma.ProductUpdateManyWithoutStoresNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
 }
 
 export type StoreUncheckedUpdateWithoutUsersInput = {
@@ -630,7 +630,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoresNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
 }
 
 

@@ -189,7 +189,7 @@ model ProductVariant {
   status          variant_status @default(ACTIVE)
   created_at      DateTime?      @default(now()) @db.Timestamptz(6)
   updated_at      DateTime?      @updatedAt @db.Timestamptz(6)
-  products        Product        @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  product         Product        @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
   inventory       Inventory?
   cartItems       CartItem[]
   orderItems      OrderItem[]
@@ -201,33 +201,36 @@ model ProductImage {
   productimage_id Int       @id @default(autoincrement())
   product_id      Int
   image_url       String    @db.VarChar(255)
-  display_order   Int?      @default(1)
+  is_primary      Boolean   @default(false)
+  display_order   Int       @default(1)
   created_at      DateTime? @default(now()) @db.Timestamptz(6)
   updated_at      DateTime? @updatedAt @db.Timestamptz(6)
-  products        Product   @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  product         Product   @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("productimages")
 }
 
 model Product {
-  product_id      Int              @id @default(autoincrement())
-  product_name    String           @db.VarChar(255)
-  description     String
-  price           Decimal          @db.Decimal(10, 2)
-  status          product_status   @default(DRAFT)
-  category_id     Int
-  store_id        Int
-  created_at      DateTime?        @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime?        @updatedAt @db.Timestamptz(6)
-  order_items     OrderItem[]
-  product_variant ProductVariant[]
-  productimages   ProductImage[]
-  categories      Category         @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
-  stores          Store            @relation(fields: [store_id], references: [store_id], onDelete: NoAction, onUpdate: NoAction)
-  wishlists       Wishlist[]
-  reviews         Review[]
+  product_id   Int              @id @default(autoincrement())
+  product_name String           @db.VarChar(255)
+  description  String
+  slug         String           @unique @db.VarChar(255)
+  status       product_status   @default(DRAFT)
+  category_id  Int?
+  store_id     Int
+  metadata     Json?
+  created_at   DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?        @updatedAt @db.Timestamptz(6)
+  order_items  OrderItem[]
+  variants     ProductVariant[]
+  images       ProductImage[]
+  category     Category?        @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  store        Store            @relation(fields: [store_id], references: [store_id], onDelete: NoAction, onUpdate: NoAction)
+  wishlists    Wishlist[]
+  reviews      Review[]
 
-  @@index([category_id, store_id, status])
+  @@index([store_id, status])
+  @@index([category_id, status])
   @@map("products")
 }
 
@@ -304,17 +307,17 @@ model ShippingInfo {
 }
 
 model Store {
-  store_id             Int       @id @default(autoincrement())
-  store_name           String    @db.VarChar(255)
-  description          String    @db.VarChar(255)
-  logo                 String?   @db.VarChar(255)
-  social_media_account String?   @db.VarChar(255)
-  status store_status @default(ACTIVE)
-  seller_id            Int       @unique
-  created_at           DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime? @updatedAt @db.Timestamptz(6)
+  store_id             Int          @id @default(autoincrement())
+  store_name           String       @db.VarChar(255)
+  description          String       @db.VarChar(255)
+  logo                 String?      @db.VarChar(255)
+  social_media_account String?      @db.VarChar(255)
+  status               store_status @default(ACTIVE)
+  seller_id            Int          @unique
+  created_at           DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?    @updatedAt @db.Timestamptz(6)
   products             Product[]
-  users                User      @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users                User         @relation(fields: [seller_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("stores")
 }

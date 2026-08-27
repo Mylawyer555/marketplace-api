@@ -273,6 +273,7 @@ export const ProductImageScalarFieldEnum = {
   productimage_id: 'productimage_id',
   product_id: 'product_id',
   image_url: 'image_url',
+  is_primary: 'is_primary',
   display_order: 'display_order',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -285,10 +286,11 @@ export const ProductScalarFieldEnum = {
   product_id: 'product_id',
   product_name: 'product_name',
   description: 'description',
-  price: 'price',
+  slug: 'slug',
   status: 'status',
   category_id: 'category_id',
   store_id: 'store_id',
+  metadata: 'metadata',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -441,6 +443,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -455,4 +465,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
