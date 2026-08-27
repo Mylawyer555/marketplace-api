@@ -2533,6 +2533,7 @@ export const StoreScalarFieldEnum = {
   description: 'description',
   logo: 'logo',
   social_media_account: 'social_media_account',
+  status: 'status',
   seller_id: 'seller_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -2880,6 +2881,20 @@ export type Enumshipping_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'shipping_status[]'
  */
 export type ListEnumshipping_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'shipping_status[]'>
+    
+
+
+/**
+ * Reference to a field of type 'store_status'
+ */
+export type Enumstore_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'store_status'>
+    
+
+
+/**
+ * Reference to a field of type 'store_status[]'
+ */
+export type ListEnumstore_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'store_status[]'>
     
 
 

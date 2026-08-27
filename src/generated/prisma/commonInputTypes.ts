@@ -480,6 +480,23 @@ export type Enumshipping_statusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumshipping_statusFilter<$PrismaModel>
 }
 
+export type Enumstore_statusFilter<$PrismaModel = never> = {
+  equals?: $Enums.store_status | Prisma.Enumstore_statusFieldRefInput<$PrismaModel>
+  in?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumstore_statusFilter<$PrismaModel> | $Enums.store_status
+}
+
+export type Enumstore_statusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.store_status | Prisma.Enumstore_statusFieldRefInput<$PrismaModel>
+  in?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumstore_statusWithAggregatesFilter<$PrismaModel> | $Enums.store_status
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumstore_statusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumstore_statusFilter<$PrismaModel>
+}
+
 export type Enumaccount_statusFilter<$PrismaModel = never> = {
   equals?: $Enums.account_status | Prisma.Enumaccount_statusFieldRefInput<$PrismaModel>
   in?: $Enums.account_status[] | Prisma.ListEnumaccount_statusFieldRefInput<$PrismaModel>
@@ -991,6 +1008,23 @@ export type NestedEnumshipping_statusWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumshipping_statusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumshipping_statusFilter<$PrismaModel>
+}
+
+export type NestedEnumstore_statusFilter<$PrismaModel = never> = {
+  equals?: $Enums.store_status | Prisma.Enumstore_statusFieldRefInput<$PrismaModel>
+  in?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumstore_statusFilter<$PrismaModel> | $Enums.store_status
+}
+
+export type NestedEnumstore_statusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.store_status | Prisma.Enumstore_statusFieldRefInput<$PrismaModel>
+  in?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.store_status[] | Prisma.ListEnumstore_statusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumstore_statusWithAggregatesFilter<$PrismaModel> | $Enums.store_status
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumstore_statusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumstore_statusFilter<$PrismaModel>
 }
 
 export type NestedEnumaccount_statusFilter<$PrismaModel = never> = {

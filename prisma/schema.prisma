@@ -309,6 +309,7 @@ model Store {
   description          String    @db.VarChar(255)
   logo                 String?   @db.VarChar(255)
   social_media_account String?   @db.VarChar(255)
+  status store_status @default(ACTIVE)
   seller_id            Int       @unique
   created_at           DateTime? @default(now()) @db.Timestamptz(6)
   updated_at           DateTime? @updatedAt @db.Timestamptz(6)
@@ -403,6 +404,12 @@ enum account_status {
   ACTIVE
   DEACTIVATED
   SUSPENDED
+}
+
+enum store_status {
+  ACTIVE
+  SUSPENDED
+  CLOSED
 }
 
 enum discount_type {

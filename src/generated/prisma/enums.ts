@@ -35,6 +35,15 @@ export const account_status = {
 export type account_status = (typeof account_status)[keyof typeof account_status]
 
 
+export const store_status = {
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type store_status = (typeof store_status)[keyof typeof store_status]
+
+
 export const discount_type = {
   PERCENTAGE: 'PERCENTAGE',
   FIXED_AMOUNT: 'FIXED_AMOUNT'

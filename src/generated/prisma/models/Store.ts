@@ -42,6 +42,7 @@ export type StoreMinAggregateOutputType = {
   description: string | null
   logo: string | null
   social_media_account: string | null
+  status: $Enums.store_status | null
   seller_id: number | null
   created_at: Date | null
   updated_at: Date | null
@@ -53,6 +54,7 @@ export type StoreMaxAggregateOutputType = {
   description: string | null
   logo: string | null
   social_media_account: string | null
+  status: $Enums.store_status | null
   seller_id: number | null
   created_at: Date | null
   updated_at: Date | null
@@ -64,6 +66,7 @@ export type StoreCountAggregateOutputType = {
   description: number
   logo: number
   social_media_account: number
+  status: number
   seller_id: number
   created_at: number
   updated_at: number
@@ -87,6 +90,7 @@ export type StoreMinAggregateInputType = {
   description?: true
   logo?: true
   social_media_account?: true
+  status?: true
   seller_id?: true
   created_at?: true
   updated_at?: true
@@ -98,6 +102,7 @@ export type StoreMaxAggregateInputType = {
   description?: true
   logo?: true
   social_media_account?: true
+  status?: true
   seller_id?: true
   created_at?: true
   updated_at?: true
@@ -109,6 +114,7 @@ export type StoreCountAggregateInputType = {
   description?: true
   logo?: true
   social_media_account?: true
+  status?: true
   seller_id?: true
   created_at?: true
   updated_at?: true
@@ -207,6 +213,7 @@ export type StoreGroupByOutputType = {
   description: string
   logo: string | null
   social_media_account: string | null
+  status: $Enums.store_status
   seller_id: number
   created_at: Date | null
   updated_at: Date | null
@@ -241,6 +248,7 @@ export type StoreWhereInput = {
   description?: Prisma.StringFilter<"Store"> | string
   logo?: Prisma.StringNullableFilter<"Store"> | string | null
   social_media_account?: Prisma.StringNullableFilter<"Store"> | string | null
+  status?: Prisma.Enumstore_statusFilter<"Store"> | $Enums.store_status
   seller_id?: Prisma.IntFilter<"Store"> | number
   created_at?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
@@ -254,6 +262,7 @@ export type StoreOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   logo?: Prisma.SortOrderInput | Prisma.SortOrder
   social_media_account?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   seller_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -271,6 +280,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"Store"> | string
   logo?: Prisma.StringNullableFilter<"Store"> | string | null
   social_media_account?: Prisma.StringNullableFilter<"Store"> | string | null
+  status?: Prisma.Enumstore_statusFilter<"Store"> | $Enums.store_status
   created_at?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
   products?: Prisma.ProductListRelationFilter
@@ -283,6 +293,7 @@ export type StoreOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   logo?: Prisma.SortOrderInput | Prisma.SortOrder
   social_media_account?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   seller_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -302,6 +313,7 @@ export type StoreScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"Store"> | string
   logo?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   social_media_account?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  status?: Prisma.Enumstore_statusWithAggregatesFilter<"Store"> | $Enums.store_status
   seller_id?: Prisma.IntWithAggregatesFilter<"Store"> | number
   created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Store"> | Date | string | null
   updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Store"> | Date | string | null
@@ -312,19 +324,21 @@ export type StoreCreateInput = {
   description: string
   logo?: string | null
   social_media_account?: string | null
+  status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
   products?: Prisma.ProductCreateNestedManyWithoutStoresInput
-  users: Prisma.UserCreateNestedOneWithoutStoresInput | undefined
+  users: Prisma.UserCreateNestedOneWithoutStoresInput
 }
 
 export type StoreUncheckedCreateInput = {
-  store_id?: number | undefined
+  store_id?: number
   store_name: string
   description: string
   logo?: string | null
   social_media_account?: string | null
-  seller_id: number | undefined
+  status?: $Enums.store_status
+  seller_id: number
   created_at?: Date | string | null
   updated_at?: Date | string | null
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoresInput
@@ -335,6 +349,7 @@ export type StoreUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   products?: Prisma.ProductUpdateManyWithoutStoresNestedInput
@@ -347,6 +362,7 @@ export type StoreUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   seller_id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -359,6 +375,7 @@ export type StoreCreateManyInput = {
   description: string
   logo?: string | null
   social_media_account?: string | null
+  status?: $Enums.store_status
   seller_id: number
   created_at?: Date | string | null
   updated_at?: Date | string | null
@@ -369,6 +386,7 @@ export type StoreUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -379,6 +397,7 @@ export type StoreUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   seller_id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -395,6 +414,7 @@ export type StoreCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   social_media_account?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   seller_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -411,6 +431,7 @@ export type StoreMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   social_media_account?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   seller_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -422,6 +443,7 @@ export type StoreMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   social_media_account?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   seller_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -449,6 +471,10 @@ export type StoreUpdateOneRequiredWithoutProductsNestedInput = {
   upsert?: Prisma.StoreUpsertWithoutProductsInput
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutProductsInput, Prisma.StoreUpdateWithoutProductsInput>, Prisma.StoreUncheckedUpdateWithoutProductsInput>
+}
+
+export type Enumstore_statusFieldUpdateOperationsInput = {
+  set?: $Enums.store_status
 }
 
 export type StoreCreateNestedOneWithoutUsersInput = {
@@ -488,6 +514,7 @@ export type StoreCreateWithoutProductsInput = {
   description: string
   logo?: string | null
   social_media_account?: string | null
+  status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
   users: Prisma.UserCreateNestedOneWithoutStoresInput
@@ -499,6 +526,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   description: string
   logo?: string | null
   social_media_account?: string | null
+  status?: $Enums.store_status
   seller_id: number
   created_at?: Date | string | null
   updated_at?: Date | string | null
@@ -525,6 +553,7 @@ export type StoreUpdateWithoutProductsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UserUpdateOneRequiredWithoutStoresNestedInput
@@ -536,6 +565,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   seller_id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -546,6 +576,7 @@ export type StoreCreateWithoutUsersInput = {
   description: string
   logo?: string | null
   social_media_account?: string | null
+  status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
   products?: Prisma.ProductCreateNestedManyWithoutStoresInput
@@ -557,6 +588,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   description: string
   logo?: string | null
   social_media_account?: string | null
+  status?: $Enums.store_status
   created_at?: Date | string | null
   updated_at?: Date | string | null
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoresInput
@@ -583,6 +615,7 @@ export type StoreUpdateWithoutUsersInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   products?: Prisma.ProductUpdateManyWithoutStoresNestedInput
@@ -594,6 +627,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   social_media_account?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.Enumstore_statusFieldUpdateOperationsInput | $Enums.store_status
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   products?: Prisma.ProductUncheckedUpdateManyWithoutStoresNestedInput
@@ -636,6 +670,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   description?: boolean
   logo?: boolean
   social_media_account?: boolean
+  status?: boolean
   seller_id?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -650,6 +685,7 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   logo?: boolean
   social_media_account?: boolean
+  status?: boolean
   seller_id?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -662,6 +698,7 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   logo?: boolean
   social_media_account?: boolean
+  status?: boolean
   seller_id?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -674,12 +711,13 @@ export type StoreSelectScalar = {
   description?: boolean
   logo?: boolean
   social_media_account?: boolean
+  status?: boolean
   seller_id?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"store_id" | "store_name" | "description" | "logo" | "social_media_account" | "seller_id" | "created_at" | "updated_at", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"store_id" | "store_name" | "description" | "logo" | "social_media_account" | "status" | "seller_id" | "created_at" | "updated_at", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Store$productsArgs<ExtArgs>
   users?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -704,6 +742,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     description: string
     logo: string | null
     social_media_account: string | null
+    status: $Enums.store_status
     seller_id: number
     created_at: Date | null
     updated_at: Date | null
@@ -1137,6 +1176,7 @@ export interface StoreFieldRefs {
   readonly description: Prisma.FieldRef<"Store", 'String'>
   readonly logo: Prisma.FieldRef<"Store", 'String'>
   readonly social_media_account: Prisma.FieldRef<"Store", 'String'>
+  readonly status: Prisma.FieldRef<"Store", 'store_status'>
   readonly seller_id: Prisma.FieldRef<"Store", 'Int'>
   readonly created_at: Prisma.FieldRef<"Store", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Store", 'DateTime'>

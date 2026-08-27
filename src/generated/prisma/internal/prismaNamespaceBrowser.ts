@@ -371,6 +371,7 @@ export const StoreScalarFieldEnum = {
   description: 'description',
   logo: 'logo',
   social_media_account: 'social_media_account',
+  status: 'status',
   seller_id: 'seller_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
