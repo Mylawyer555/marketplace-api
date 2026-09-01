@@ -4,6 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import {
   createProductService,
   createProductVariantService,
+  getInventoryService,
+  updateInventoryService,
 } from "./products.service";
 
 export const createProductController = async (
@@ -56,3 +58,51 @@ export const createProductVariantController = async (
     next(error);
   }
 };
+
+export const getInventoryController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("Authenticate user", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = req.user.userId;
+    const variantId = Number(req.params.variantId);
+    const inventory = await getInventoryService(sellerId, variantId)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Inventory retrieved successfully",
+      data: inventory
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateInventoryController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("Authenticate user", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = req.user.userId;
+    const variantId = Number(req.params.variantId);
+    const data = req.body;
+    const inventoryUpdate = await updateInventoryService(sellerId, variantId, data)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Inventory updated successfully",
+      data: inventoryUpdate
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+

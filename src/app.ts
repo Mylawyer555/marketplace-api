@@ -24,6 +24,7 @@ app.use("/api/v1/sellers", sellerRoutes)
 app.use("/api/v1/stores", storeRoutes)
 app.use("/api/v1/products", productRoutes)
 
+
 // Global Error handler 
 app.use(errorHandler)
 

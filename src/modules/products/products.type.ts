@@ -10,3 +10,7 @@ export interface CreateProductVariant {
   price: number;
   stockQuantity: number;
 };
+
+export interface updateInventory {
+    stockQuantity: number;
+}

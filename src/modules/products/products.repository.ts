@@ -66,3 +66,40 @@ export const createProductVariant = async (
     return variant;
   });
 };
+
+export const findInventoryByVariantId = async (variantId: number) => {
+    return db.inventory.findUnique({
+        where: {
+            variant_id: variantId,
+        },
+    });
+};
+
+export const findVariantWithProduct = async (variantId: number) => {
+    return db.productVariant.findUnique({
+        where: {
+            variant_id: variantId,
+        },
+        select: {
+            product_id: true,
+            variant_id: true,
+            product: {
+                select: {
+                    product_id: true,
+                    store_id: true,
+                },
+            },
+        },
+    });
+};
+
+export const updatedInventory = async (variantId:number, stockQuantity: number) => {
+    return db.inventory.update({
+        where: {
+            variant_id: variantId,
+        },
+        data: {
+            stock_quantity: stockQuantity,
+        },
+    });
+};

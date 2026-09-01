@@ -16,3 +16,8 @@ export const createProductVariantSchema = z.object({
     price: z.number().nonnegative(),
     stockQuantity: z.number().int().nonnegative()
 })
+
+export const createUpdateInventorySchema = z.object({
+    stockQuantity: z.number().int().nonnegative("Stock quantity must be a non-negative integer")
+});
+
