@@ -148,3 +148,14 @@ export const createProductImage = async (
     return productImage;
   });
 };
+
+export const getProductImages = async (productId:number) => {
+    return db.productImage.findMany({
+        where: {
+            product_id: productId
+        },
+        orderBy: {
+            display_order: "asc"
+        }
+    });
+};

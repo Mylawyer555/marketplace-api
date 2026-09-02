@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 import {
-    createProductImageService,
+  createProductImageService,
   createProductService,
   createProductVariantService,
   getInventoryService,
+  getProductImageService,
   updateInventoryService,
 } from "./products.service";
 
@@ -72,11 +73,11 @@ export const getInventoryController = async (
 
     const sellerId = req.user.userId;
     const variantId = Number(req.params.variantId);
-    const inventory = await getInventoryService(sellerId, variantId)
+    const inventory = await getInventoryService(sellerId, variantId);
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Inventory retrieved successfully",
-      data: inventory
+      data: inventory,
     });
   } catch (error) {
     next(error);
@@ -95,11 +96,15 @@ export const updateInventoryController = async (
     const sellerId = req.user.userId;
     const variantId = Number(req.params.variantId);
     const data = req.body;
-    const inventoryUpdate = await updateInventoryService(sellerId, variantId, data)
+    const inventoryUpdate = await updateInventoryService(
+      sellerId,
+      variantId,
+      data,
+    );
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Inventory updated successfully",
-      data: inventoryUpdate
+      data: inventoryUpdate,
     });
   } catch (error) {
     next(error);
@@ -118,15 +123,34 @@ export const createProductImageController = async (
     const sellerId = req.user.userId;
     const productId = Number(req.params.productId);
     const data = req.body;
-    const productImage = await createProductImageService(sellerId,productId,data)
+    const productImage = await createProductImageService(
+      sellerId,
+      productId,
+      data,
+    );
     res.status(StatusCodes.CREATED).json({
       success: true,
       message: "Image added successfully",
-      data: productImage
+      data: productImage,
     });
   } catch (error) {
     next(error);
   }
 };
-
-
+export const getProductImagesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const productId = Number(req.params.productId);
+    const productImage = await getProductImageService(productId);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Images retrieved successfully",
+      data: productImage,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

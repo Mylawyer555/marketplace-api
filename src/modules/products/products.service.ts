@@ -17,6 +17,7 @@ import {
   findProductById,
   findProductBySlug,
   findVariantWithProduct,
+  getProductImages,
   updatedInventory,
 } from "./products.repository";
 import { generateSlug } from "../../utils/createSlug";
@@ -264,3 +265,12 @@ export const createProductImageService = async (
   return await createProductImage(product.product_id, data)
   
 };
+
+export const getProductImageService = async (productId:number) => {
+    const product = await findProductById(productId);
+    if(!product){
+        throw new AppError("Product does not exist", StatusCodes.NOT_FOUND);
+    };
+
+    return await getProductImages(product.product_id);
+}
