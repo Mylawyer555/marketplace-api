@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createProductSchema } from "./products.validation";
+import { createProductImageSchema, createProductSchema } from "./products.validation";
 
 export type CreateProduct = z.infer<typeof createProductSchema>;
 
@@ -14,3 +14,5 @@ export interface CreateProductVariant {
 export interface updateInventory {
     stockQuantity: number;
 }
+
+export type CreateProductImages = z.infer<typeof createProductImageSchema>;

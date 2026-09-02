@@ -21,3 +21,9 @@ export const createUpdateInventorySchema = z.object({
     stockQuantity: z.number().int().nonnegative("Stock quantity must be a non-negative integer")
 });
 
+export const createProductImageSchema = z.object({
+    imageUrl: z.url("Invalid image url"),
+    isPrimary: z.boolean().optional(),
+    displayOrder: z.number().int().positive().optional(),
+});
+

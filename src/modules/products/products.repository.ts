@@ -1,5 +1,9 @@
 import { db } from "../../config/db";
-import { CreateProduct, CreateProductVariant } from "./products.type";
+import {
+  CreateProduct,
+  CreateProductImages,
+  CreateProductVariant,
+} from "./products.type";
 
 export const createProduct = async (
   storeId: number,
@@ -68,38 +72,79 @@ export const createProductVariant = async (
 };
 
 export const findInventoryByVariantId = async (variantId: number) => {
-    return db.inventory.findUnique({
-        where: {
-            variant_id: variantId,
-        },
-    });
+  return db.inventory.findUnique({
+    where: {
+      variant_id: variantId,
+    },
+  });
 };
 
 export const findVariantWithProduct = async (variantId: number) => {
-    return db.productVariant.findUnique({
-        where: {
-            variant_id: variantId,
-        },
+  return db.productVariant.findUnique({
+    where: {
+      variant_id: variantId,
+    },
+    select: {
+      product_id: true,
+      variant_id: true,
+      product: {
         select: {
-            product_id: true,
-            variant_id: true,
-            product: {
-                select: {
-                    product_id: true,
-                    store_id: true,
-                },
-            },
+          product_id: true,
+          store_id: true,
         },
-    });
+      },
+    },
+  });
 };
 
-export const updatedInventory = async (variantId:number, stockQuantity: number) => {
-    return db.inventory.update({
+export const updatedInventory = async (
+  variantId: number,
+  stockQuantity: number,
+) => {
+  return db.inventory.update({
+    where: {
+      variant_id: variantId,
+    },
+    data: {
+      stock_quantity: stockQuantity,
+    },
+  });
+};
+
+export const createProductImage = async (
+  productId: number,
+  data: CreateProductImages,
+) => {
+  return db.$transaction(async (tx) => {
+    const imageCount = await tx.productImage.count({
+      where: {
+        product_id: productId,
+      },
+    });
+    const shouldBePrimary = imageCount === 0 || data.isPrimary === true;
+
+    if (shouldBePrimary) {
+      await tx.productImage.updateMany({
         where: {
-            variant_id: variantId,
+          product_id: productId,
+          is_primary: true,
         },
         data: {
-            stock_quantity: stockQuantity,
+          is_primary: false,
         },
+      });
+    }
+
+    const productImage = await tx.productImage.create({
+      data: {
+        product_id: productId,
+        image_url: data.imageUrl,
+        is_primary: shouldBePrimary,
+        ...(data.displayOrder !== undefined && {
+          display_order: data.displayOrder,
+        }),
+      },
     });
+    return productImage;
+  });
 };

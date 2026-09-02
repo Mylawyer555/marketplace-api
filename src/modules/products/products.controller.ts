@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 import {
+    createProductImageService,
   createProductService,
   createProductVariantService,
   getInventoryService,
@@ -99,6 +100,29 @@ export const updateInventoryController = async (
       success: true,
       message: "Inventory updated successfully",
       data: inventoryUpdate
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const createProductImageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("Authenticate user", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = req.user.userId;
+    const productId = Number(req.params.productId);
+    const data = req.body;
+    const productImage = await createProductImageService(sellerId,productId,data)
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      message: "Image added successfully",
+      data: productImage
     });
   } catch (error) {
     next(error);
