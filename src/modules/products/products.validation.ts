@@ -10,20 +10,38 @@ export const createProductSchema = z.object({
 });
 
 export const createProductVariantSchema = z.object({
-    sku: z.string().min(4, "SKU must be atleast 4 characters"),
-    color: z.string().nonempty("color cannot be empty"),
-    varaintStorage: z.string().optional(),
-    price: z.number().nonnegative(),
-    stockQuantity: z.number().int().nonnegative()
-})
+  sku: z.string().min(4, "SKU must be atleast 4 characters"),
+  color: z.string().nonempty("color cannot be empty"),
+  varaintStorage: z.string().optional(),
+  price: z.number().nonnegative(),
+  stockQuantity: z.number().int().nonnegative(),
+});
 
 export const createUpdateInventorySchema = z.object({
-    stockQuantity: z.number().int().nonnegative("Stock quantity must be a non-negative integer")
+  stockQuantity: z
+    .number()
+    .int()
+    .nonnegative("Stock quantity must be a non-negative integer"),
 });
 
 export const createProductImageSchema = z.object({
-    imageUrl: z.url("Invalid image url"),
-    isPrimary: z.boolean().optional(),
-    displayOrder: z.number().int().positive().optional(),
+  imageUrl: z.url("Invalid image url"),
+  isPrimary: z.boolean().optional(),
+  displayOrder: z.number().int().positive().optional(),
 });
 
+export const updateProductImageSchema = z
+  .object({
+    imageUrl: z.url("Invalid image url").optional(),
+    isPrimary: z.boolean().optional(),
+    displayOrder: z.number().int().positive().optional(),
+  })
+  .refine(
+    (data) =>
+      data.imageUrl !== undefined ||
+      data.isPrimary !== undefined ||
+      data.displayOrder !== undefined,
+    {
+      message: "Atleast one field is required!",
+    },
+  );

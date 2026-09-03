@@ -1,9 +1,13 @@
+import { STATUS_CODES } from "http";
 import { db } from "../../config/db";
+import { AppError } from "../../utils/AppError";
 import {
   CreateProduct,
   CreateProductImages,
   CreateProductVariant,
+  UpdateProductImages,
 } from "./products.type";
+import { StatusCodes } from "http-status-codes";
 
 export const createProduct = async (
   storeId: number,
@@ -159,3 +163,30 @@ export const getProductImages = async (productId:number) => {
         }
     });
 };
+
+export const findProductImage = async (imageId: number)=> {
+    return db.productImage.findUnique({
+        where: {
+            productimage_id: imageId
+        }
+    })
+}
+
+export const updateProductImages = async (ProductImageId:number, data: UpdateProductImages) =>{
+    return db.$transaction(async (tx) => {
+       
+
+        const updatedImages = await tx.productImage.update({
+            where: {
+                productimage_id: ProductImageId,
+            },
+            data: {
+                ...(data.imageUrl !== undefined && {image_url: data.imageUrl}),
+                ...(data.isPrimary !== undefined && {is_primary: data.isPrimary}),
+                ...(data.displayOrder !== undefined && {display_order: data.displayOrder}),
+            }
+        })
+
+        return updatedImages
+    })
+}

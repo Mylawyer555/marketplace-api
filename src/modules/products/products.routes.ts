@@ -3,6 +3,7 @@ import { validate } from "../../middlewares/validation.middleware";
 import {
   createProductSchema,
   createProductVariantSchema,
+  updateProductImageSchema,
 } from "./products.validation";
 import { authenticate } from "../../middlewares/auth.middleware";
 import {
@@ -12,6 +13,7 @@ import {
   getInventoryController,
   getProductImagesController,
   updateInventoryController,
+  updateProductImagesController,
 } from "./products.controller";
 
 const productRoutes = express.Router();
@@ -44,5 +46,11 @@ productRoutes.post(
   createProductImageController,
 );
 productRoutes.get("/:productId/product-image", getProductImagesController);
+productRoutes.post(
+  "/:productId/product-image/:productImageId",
+  validate(updateProductImageSchema),
+  authenticate,
+  updateProductImagesController,
+);
 
 export default productRoutes;

@@ -6,6 +6,7 @@ import {
   CreateProductImages,
   CreateProductVariant,
   updateInventory,
+  UpdateProductImages,
 } from "./products.type";
 import { findStoreBySellerId } from "../stores/stores.repository";
 import {
@@ -16,9 +17,11 @@ import {
   findInventoryByVariantId,
   findProductById,
   findProductBySlug,
+  findProductImage,
   findVariantWithProduct,
   getProductImages,
   updatedInventory,
+  updateProductImages,
 } from "./products.repository";
 import { generateSlug } from "../../utils/createSlug";
 
@@ -273,4 +276,42 @@ export const getProductImageService = async (productId:number) => {
     };
 
     return await getProductImages(product.product_id);
+}
+
+export const updateProductImageService = async(SellerId:number, productId:number, ProductImageId:number, data:UpdateProductImages)=>{
+    const user = await findUserById(SellerId);
+    if(!user){
+        throw new AppError("User does not exist", StatusCodes.NOT_FOUND);
+    };
+
+    if (user.role !== "SELLER"){
+        throw new AppError("user must be  a seller", StatusCodes.FORBIDDEN);
+    };
+
+    const store = await findStoreBySellerId(SellerId);
+    if(!store){
+        throw new AppError("Seller must have a store to update images", StatusCodes.FORBIDDEN);
+    };
+
+    const product = await findProductById(productId);
+    if(!product){
+        throw new AppError("Product does not exist", StatusCodes.NOT_FOUND);
+    };
+
+    if (product.store_id !== store.store_id){
+        throw new AppError("You're not authorized to perform this action", StatusCodes.FORBIDDEN)
+    }
+
+    const productImage = await findProductImage(ProductImageId)
+    if(!productImage){
+        throw new AppError("Image not found", StatusCodes.NOT_FOUND);
+    }
+
+    if(productImage.product_id !== product.product_id){
+        throw new AppError("You're not permitted to perform image updates", StatusCodes.FORBIDDEN)
+    }
+
+    const updatedImages = await updateProductImages(productImage.productimage_id, data);
+
+    return updatedImages;
 }

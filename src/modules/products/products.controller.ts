@@ -8,6 +8,7 @@ import {
   getInventoryService,
   getProductImageService,
   updateInventoryService,
+  updateProductImageService,
 } from "./products.service";
 
 export const createProductController = async (
@@ -149,6 +150,37 @@ export const getProductImagesController = async (
       success: true,
       message: "Images retrieved successfully",
       data: productImage,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProductImagesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("Authenticate user", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = req.user.userId;
+    const productId = Number(req.params.productId);
+    const imageId = Number(req.params.productImageId);
+    const data = req.body;
+
+    const productImageUpdate = await updateProductImageService(
+      sellerId,
+      productId,
+      imageId,
+      data,
+    );
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Image updated successfully",
+      data: productImageUpdate,
     });
   } catch (error) {
     next(error);
