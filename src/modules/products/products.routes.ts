@@ -10,6 +10,7 @@ import {
   createProductController,
   createProductImageController,
   createProductVariantController,
+  deleteProductImagesController,
   getInventoryController,
   getProductImagesController,
   updateInventoryController,
@@ -52,5 +53,7 @@ productRoutes.post(
   authenticate,
   updateProductImagesController,
 );
+
+productRoutes.delete("/:productId/product-image/:productImageId", authenticate, deleteProductImagesController)
 
 export default productRoutes;

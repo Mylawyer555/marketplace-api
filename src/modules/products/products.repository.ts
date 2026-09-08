@@ -153,40 +153,84 @@ export const createProductImage = async (
   });
 };
 
-export const getProductImages = async (productId:number) => {
-    return db.productImage.findMany({
-        where: {
-            product_id: productId
-        },
-        orderBy: {
-            display_order: "asc"
-        }
-    });
+export const getProductImages = async (productId: number) => {
+  return db.productImage.findMany({
+    where: {
+      product_id: productId,
+    },
+    orderBy: {
+      display_order: "asc",
+    },
+  });
 };
 
-export const findProductImage = async (imageId: number)=> {
-    return db.productImage.findUnique({
+export const findProductImage = async (imageId: number) => {
+  return db.productImage.findUnique({
+    where: {
+      productimage_id: imageId,
+    },
+  });
+};
+
+export const updateProductImages = async (
+  ProductImageId: number,
+  data: UpdateProductImages,
+) => {
+  return db.$transaction(async (tx) => {
+    const updatedImages = await tx.productImage.update({
+      where: {
+        productimage_id: ProductImageId,
+      },
+      data: {
+        ...(data.imageUrl !== undefined && { image_url: data.imageUrl }),
+        ...(data.isPrimary !== undefined && { is_primary: data.isPrimary }),
+        ...(data.displayOrder !== undefined && {
+          display_order: data.displayOrder,
+        }),
+      },
+    });
+
+    return updatedImages;
+  });
+};
+
+export const deleteProductImage = async (productImageId: number) => {
+  return db.$transaction(async (tx) => {
+    const image = await tx.productImage.findUnique({
+      where: {
+        productimage_id: productImageId,
+      },
+    });
+
+    if (image?.is_primary) {
+      const nextImage = await tx.productImage.findFirst({
         where: {
-            productimage_id: imageId
-        }
-    })
-}
+          product_id: image.product_id,
+          NOT: {
+            productimage_id: productImageId,
+          },
+        },
+        orderBy: {
+          display_order: "asc",
+        },
+      });
 
-export const updateProductImages = async (ProductImageId:number, data: UpdateProductImages) =>{
-    return db.$transaction(async (tx) => {
-       
+      if (nextImage) {
+        await tx.productImage.update({
+          where: {
+            productimage_id: nextImage.productimage_id,
+          },
+          data: {
+            is_primary: true,
+          },
+        });
+      }
+    }
 
-        const updatedImages = await tx.productImage.update({
-            where: {
-                productimage_id: ProductImageId,
-            },
-            data: {
-                ...(data.imageUrl !== undefined && {image_url: data.imageUrl}),
-                ...(data.isPrimary !== undefined && {is_primary: data.isPrimary}),
-                ...(data.displayOrder !== undefined && {display_order: data.displayOrder}),
-            }
-        })
-
-        return updatedImages
-    })
-}
+    return tx.productImage.delete({
+      where: {
+        productimage_id: productImageId,
+      },
+    });
+  });
+};

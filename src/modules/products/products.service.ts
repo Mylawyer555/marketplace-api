@@ -13,6 +13,7 @@ import {
   createProduct,
   createProductImage,
   createProductVariant,
+  deleteProductImage,
   findCategoryById,
   findInventoryByVariantId,
   findProductById,
@@ -315,3 +316,42 @@ export const updateProductImageService = async(SellerId:number, productId:number
 
     return updatedImages;
 }
+
+export const deleteProductImageService = async (sellerId: number, productId: number, productImageId:number) => {
+    const user = await findUserById(sellerId);
+    if (!user) {
+        throw new AppError("user does not exist", StatusCodes.NOT_FOUND);
+    };
+
+    if (user.role !== "SELLER") {
+        throw new AppError("User must be a seller", StatusCodes.FORBIDDEN);
+    };
+
+    const store = await findStoreBySellerId(sellerId);
+    if (!store) {
+        throw new AppError("Seller must have a store to delete image", StatusCodes.FORBIDDEN);
+    };
+
+    const product = await findProductById(productId);
+
+    if (!product) {
+        throw new AppError("Product does not exist", StatusCodes.NOT_FOUND);
+    };
+
+    if (store.store_id !== product.store_id){
+        throw new AppError("You're not authorized to perform this action", StatusCodes.FORBIDDEN);
+    };
+
+    const image = await findProductImage(productImageId);
+
+    if (!image) {
+        throw new AppError("Image does not exist", StatusCodes.NOT_FOUND);
+    };
+
+    if (image.product_id !== product.product_id) {
+        throw new AppError("You are not permitted to perform this action", StatusCodes.FORBIDDEN);
+    };
+
+    return await deleteProductImage(image.productimage_id);
+
+};
