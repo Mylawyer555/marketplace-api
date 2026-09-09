@@ -13,6 +13,7 @@ import {
   deleteProductImagesController,
   getInventoryController,
   getProductImagesController,
+  productListingsController,
   updateInventoryController,
   updateProductImagesController,
 } from "./products.controller";
@@ -55,5 +56,6 @@ productRoutes.post(
 );
 
 productRoutes.delete("/:productId/product-image/:productImageId", authenticate, deleteProductImagesController)
+productRoutes.get("/products", productListingsController)
 
 export default productRoutes;

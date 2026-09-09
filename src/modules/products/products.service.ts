@@ -5,6 +5,7 @@ import {
   CreateProduct,
   CreateProductImages,
   CreateProductVariant,
+  ProductQuery,
   updateInventory,
   UpdateProductImages,
 } from "./products.type";
@@ -21,6 +22,7 @@ import {
   findProductImage,
   findVariantWithProduct,
   getProductImages,
+  getProducts,
   updatedInventory,
   updateProductImages,
 } from "./products.repository";
@@ -355,3 +357,10 @@ export const deleteProductImageService = async (sellerId: number, productId: num
     return await deleteProductImage(image.productimage_id);
 
 };
+
+export const getProductListing = async (queryParams: ProductQuery) => {
+  let {page = 1, limit = 20} = queryParams;
+  if( limit > 50) limit = 50
+
+  return await getProducts(queryParams)
+}

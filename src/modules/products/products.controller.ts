@@ -8,9 +8,11 @@ import {
   deleteProductImageService,
   getInventoryService,
   getProductImageService,
+  getProductListing,
   updateInventoryService,
   updateProductImageService,
 } from "./products.service";
+import { getProductschema } from "./products.validation";
 
 export const createProductController = async (
   req: Request,
@@ -209,6 +211,30 @@ export const deleteProductImagesController = async (
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Image deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const productListingsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const parsed = getProductschema.safeParse(req.query)
+
+    if(!parsed.success){
+     return res.status(400).json({
+        message: "Invalid query parameters",
+        errors: parsed.error
+      })
+    }
+
+    const result = await getProductListing(parsed.data)
+    return res.status(StatusCodes.OK).json({
+      success: true,
+      result
     });
   } catch (error) {
     next(error);

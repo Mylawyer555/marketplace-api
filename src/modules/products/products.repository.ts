@@ -5,6 +5,7 @@ import {
   CreateProduct,
   CreateProductImages,
   CreateProductVariant,
+  ProductQuery,
   UpdateProductImages,
 } from "./products.type";
 import { StatusCodes } from "http-status-codes";
@@ -233,4 +234,71 @@ export const deleteProductImage = async (productImageId: number) => {
       },
     });
   });
+};
+
+export const getProducts = async (query: ProductQuery) => {
+  const {
+    search,
+    categoryId,
+    minPrice,
+    maxPrice,
+    sortBy,
+    sortOrder,
+    page = 1,
+    limit = 20,
+  } = query;
+
+  const where = {
+    ...(search && {
+      product_name: {
+        contains: search,
+        mode: "insensitive" as const,
+      },
+    }),
+
+    ...(categoryId && {
+      category_id: categoryId,
+    }),
+
+    ...(minPrice !== undefined || maxPrice !== undefined
+      ? {
+          price: {
+            ...(minPrice !== undefined && { gte: minPrice }),
+            ...(maxPrice !== undefined && { lte: maxPrice }),
+          },
+        }
+      : {}),
+  };
+
+  const orderBy = sortBy
+    ? {
+        [sortBy === "createdAt" ? "created_at" : sortBy]: sortOrder ?? "desc",
+      }
+    : {
+        created_at: "desc" as const,
+      };
+
+    const skip = (page - 1) * limit
+
+    const products = await db.product.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit
+    })
+
+    const total = await db.product.count({
+        where,
+    })
+
+    return {
+        products,
+        total,
+        pagination: {
+          page,
+          limit,
+          totalPages: Math.ceil(total/ limit)
+        }
+        
+    }
 };

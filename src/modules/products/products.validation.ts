@@ -45,3 +45,14 @@ export const updateProductImageSchema = z
       message: "Atleast one field is required!",
     },
   );
+
+  export const getProductschema = z.object({
+    search: z.string().optional().describe("Search term must be a string"),
+    categoryId: z.coerce.number().int().nonnegative().optional(),
+    minPrice: z.coerce.number().optional(),
+    maxPrice: z.coerce.number().optional(),
+    sortBy: z.enum(["price", "createdAt", "name"]).optional(),
+    sortOrder: z.enum(["asc", "desc"]).optional(),
+    page: z.coerce.number().int().positive().optional(),
+    limit: z.coerce.number().int().positive().optional()
+  });
