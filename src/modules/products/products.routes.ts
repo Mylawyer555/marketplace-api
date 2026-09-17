@@ -15,6 +15,7 @@ import {
   getProductImagesController,
   productListingsController,
   updateInventoryController,
+  updateProductController,
   updateProductImagesController,
 } from "./products.controller";
 
@@ -48,7 +49,8 @@ productRoutes.post(
   createProductImageController,
 );
 productRoutes.get("/:productId/product-image", getProductImagesController);
-productRoutes.post(
+
+productRoutes.patch(
   "/:productId/product-image/:productImageId",
   validate(updateProductImageSchema),
   authenticate,
@@ -56,6 +58,9 @@ productRoutes.post(
 );
 
 productRoutes.delete("/:productId/product-image/:productImageId", authenticate, deleteProductImagesController)
-productRoutes.get("/products", productListingsController)
+
+productRoutes.get("/products", productListingsController);
+
+productRoutes.patch("/:productId", authenticate, updateProductController)
 
 export default productRoutes;

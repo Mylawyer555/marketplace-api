@@ -7,6 +7,7 @@ import {
   CreateProductVariant,
   ProductQuery,
   updateInventory,
+  UpdateProduct,
   UpdateProductImages,
 } from "./products.type";
 import { findStoreBySellerId } from "../stores/stores.repository";
@@ -24,6 +25,7 @@ import {
   getProductImages,
   getProducts,
   updatedInventory,
+  updateProduct,
   updateProductImages,
 } from "./products.repository";
 import { generateSlug } from "../../utils/createSlug";
@@ -363,4 +365,40 @@ export const getProductListing = async (queryParams: ProductQuery) => {
   if( limit > 50) limit = 50
 
   return await getProducts(queryParams)
-}
+};
+
+export const updateProductService = async (sellerId:number, productId:number, data:UpdateProduct) => {
+  const user = await findUserById(sellerId);
+  if (!user) {
+    throw new AppError("User does not exist", StatusCodes.NOT_FOUND);
+  };
+
+  if (user.role !== "SELLER") {
+    throw new AppError("user must be a seller", StatusCodes.FORBIDDEN);
+  };
+
+  const store = await findStoreBySellerId(sellerId);
+  if (!store) {
+    throw new AppError("seller must have a store", StatusCodes.NOT_FOUND);
+  };
+
+  const product = await findProductById(productId);
+  if (!product) {
+    throw new AppError("product does not exist", StatusCodes.NOT_FOUND);
+  };
+
+  if (store.store_id !== product.store_id) {
+    throw new AppError("You're not permitted to perform this action!", StatusCodes.FORBIDDEN);
+  };
+
+  if (data.categoryId !== undefined) {
+    const category = await findCategoryById(data.categoryId);
+
+    if (!category) {
+      throw new AppError("category does not exist", StatusCodes.NOT_FOUND);
+    };
+  };
+  const updatedProduct = await updateProduct(product.product_id, data);
+
+  return updatedProduct;
+};

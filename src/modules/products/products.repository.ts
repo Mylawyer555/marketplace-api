@@ -6,9 +6,11 @@ import {
   CreateProductImages,
   CreateProductVariant,
   ProductQuery,
+  UpdateProduct,
   UpdateProductImages,
 } from "./products.type";
 import { StatusCodes } from "http-status-codes";
+import { Prisma } from "../../generated/prisma/client";
 
 export const createProduct = async (
   storeId: number,
@@ -302,3 +304,26 @@ export const getProducts = async (query: ProductQuery) => {
         
     }
 };
+
+export const updateProduct = async (productId: number, data: UpdateProduct) => {
+  return db.product.update({
+      where: {
+        product_id: productId,
+      },
+      data: {
+        ...(data.productName !== undefined && {product_name: data.productName}),
+        ...(data.description !== undefined && {description: data.description}),
+        ...(data.metadata !== undefined && {metadata: data.metadata as Prisma.InputJsonValue}),
+        ...(data.categoryId !== undefined && {
+          category: {
+            connect: {
+              category_id: data.categoryId
+            }
+          }
+        }),
+
+      }
+    })
+}
+
+

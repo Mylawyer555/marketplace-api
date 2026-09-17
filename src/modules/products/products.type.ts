@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createProductImageSchema, createProductSchema, getProductschema, updateProductImageSchema } from "./products.validation";
+import { createProductImageSchema, createProductSchema, getProductschema, updateProductImageSchema, updateProductSchema } from "./products.validation";
 
 export type CreateProduct = z.infer<typeof createProductSchema>;
 
@@ -20,3 +20,5 @@ export type CreateProductImages = z.infer<typeof createProductImageSchema>;
 export type UpdateProductImages = z.infer<typeof updateProductImageSchema>;
 
 export type ProductQuery = z.infer<typeof getProductschema>;
+
+export type UpdateProduct = z.infer<typeof updateProductSchema>;

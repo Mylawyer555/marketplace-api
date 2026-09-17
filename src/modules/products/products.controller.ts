@@ -11,13 +11,14 @@ import {
   getProductListing,
   updateInventoryService,
   updateProductImageService,
+  updateProductService,
 } from "./products.service";
 import { getProductschema } from "./products.validation";
 
 export const createProductController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -40,7 +41,7 @@ export const createProductController = async (
 export const createProductVariantController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -53,7 +54,7 @@ export const createProductVariantController = async (
     const variant = await createProductVariantService(
       sellerId,
       productId,
-      data,
+      data
     );
     res.status(StatusCodes.CREATED).json({
       success: true,
@@ -68,7 +69,7 @@ export const createProductVariantController = async (
 export const getInventoryController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -90,7 +91,7 @@ export const getInventoryController = async (
 export const updateInventoryController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -103,7 +104,7 @@ export const updateInventoryController = async (
     const inventoryUpdate = await updateInventoryService(
       sellerId,
       variantId,
-      data,
+      data
     );
     res.status(StatusCodes.OK).json({
       success: true,
@@ -117,7 +118,7 @@ export const updateInventoryController = async (
 export const createProductImageController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -130,7 +131,7 @@ export const createProductImageController = async (
     const productImage = await createProductImageService(
       sellerId,
       productId,
-      data,
+      data
     );
     res.status(StatusCodes.CREATED).json({
       success: true,
@@ -144,7 +145,7 @@ export const createProductImageController = async (
 export const getProductImagesController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const productId = Number(req.params.productId);
@@ -162,7 +163,7 @@ export const getProductImagesController = async (
 export const updateProductImagesController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -178,7 +179,7 @@ export const updateProductImagesController = async (
       sellerId,
       productId,
       imageId,
-      data,
+      data
     );
     res.status(StatusCodes.OK).json({
       success: true,
@@ -192,7 +193,7 @@ export const updateProductImagesController = async (
 export const deleteProductImagesController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     if (!req.user) {
@@ -206,7 +207,7 @@ export const deleteProductImagesController = async (
     const deletedImage = await deleteProductImageService(
       sellerId,
       productId,
-      imageId,
+      imageId
     );
     res.status(StatusCodes.OK).json({
       success: true,
@@ -219,22 +220,51 @@ export const deleteProductImagesController = async (
 export const productListingsController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
-    const parsed = getProductschema.safeParse(req.query)
+    const parsed = getProductschema.safeParse(req.query);
 
-    if(!parsed.success){
-     return res.status(400).json({
+    if (!parsed.success) {
+      return res.status(400).json({
         message: "Invalid query parameters",
-        errors: parsed.error
-      })
+        errors: parsed.error,
+      });
     }
 
-    const result = await getProductListing(parsed.data)
+    const result = await getProductListing(parsed.data);
     return res.status(StatusCodes.OK).json({
       success: true,
-      result
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProductController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("authenticate user!", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = Number(req.user.userId);
+    const productId = Number(req.params.productId);
+    const data = req.body;
+
+    const result = await updateProductService(
+      sellerId,
+      productId,
+      data
+    );
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Product updated successfully!",
+      data: result,
     });
   } catch (error) {
     next(error);
