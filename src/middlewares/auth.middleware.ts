@@ -3,56 +3,48 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { AppError } from "../utils/AppError";
 import { StatusCodes } from "http-status-codes";
 
-
 export const authenticate = (
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
-    const result = req.headers.authorization;
-    
-    if(!result){
-        throw new AppError("authorization header missing", StatusCodes.UNAUTHORIZED)
-    }
+  const result = req.headers.authorization;
 
-    const parts = result.split(" ");
+  if (!result) {
+    throw new AppError(
+      "authorization header missing",
+      StatusCodes.UNAUTHORIZED
+    );
+  }
 
-    if (parts.length !== 2 || parts[0] !== "Bearer") {
-        throw new AppError(
-            "Invalid authoriation header",
-            StatusCodes.UNAUTHORIZED
-        );
-    };
+  const parts = result.split(" ");
 
-    const token = parts[1];
-    if(typeof token !== "string"){
-        throw new AppError(
-            "Invalid token",
-            StatusCodes.UNAUTHORIZED
-        );
-    };
+  if (parts.length !== 2 || parts[0] !== "Bearer") {
+    throw new AppError("Invalid authoriation header", StatusCodes.UNAUTHORIZED);
+  }
 
-    const JWT_SECRET = process.env.JWT_SECRET;
+  const token = parts[1];
+  if (typeof token !== "string") {
+    throw new AppError("Invalid token", StatusCodes.UNAUTHORIZED);
+  }
 
-    if(!JWT_SECRET){
-        throw new AppError(
-            "JWT secret not defined",
-            StatusCodes.INTERNAL_SERVER_ERROR
-        );
-    };
+  const JWT_SECRET = process.env.JWT_SECRET;
 
-    const decode = jwt.verify(token, JWT_SECRET) as JwtPayload
+  if (!JWT_SECRET) {
+    throw new AppError(
+      "JWT secret not defined",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
 
-    console.log(decode)
+  const decode = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
-    req.user = {
-        userId: decode.userId,
-        role: decode.role
+  console.log(decode);
 
-    }
+  req.user = {
+    userId: decode.userId,
+    role: decode.role,
+  };
 
-
-    next()
-
-
-}
+  next();
+};
