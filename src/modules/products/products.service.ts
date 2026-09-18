@@ -402,3 +402,4 @@ export const updateProductService = async (sellerId:number, productId:number, da
 
   return updatedProduct;
 };
+

@@ -280,50 +280,102 @@ export const getProducts = async (query: ProductQuery) => {
         created_at: "desc" as const,
       };
 
-    const skip = (page - 1) * limit
+  const skip = (page - 1) * limit;
 
-    const products = await db.product.findMany({
-        where,
-        orderBy,
-        skip,
-        take: limit
-    })
+  const products = await db.product.findMany({
+    where,
+    orderBy,
+    skip,
+    take: limit,
+  });
 
-    const total = await db.product.count({
-        where,
-    })
+  const total = await db.product.count({
+    where,
+  });
 
-    return {
-        products,
-        total,
-        pagination: {
-          page,
-          limit,
-          totalPages: Math.ceil(total/ limit)
-        }
-        
-    }
+  return {
+    products,
+    total,
+    pagination: {
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 export const updateProduct = async (productId: number, data: UpdateProduct) => {
   return db.product.update({
-      where: {
+    where: {
+      product_id: productId,
+    },
+    data: {
+      ...(data.productName !== undefined && { product_name: data.productName }),
+      ...(data.description !== undefined && { description: data.description }),
+      ...(data.metadata !== undefined && {
+        metadata: data.metadata as Prisma.InputJsonValue,
+      }),
+      ...(data.categoryId !== undefined && {
+        category: {
+          connect: {
+            category_id: data.categoryId,
+          },
+        },
+      }),
+    },
+  });
+};
+
+export const deleteProduct = async (
+  tx: Prisma.TransactionClient,
+  productId: number,
+) => {
+  return db.product.delete({
+    where: {
+      product_id: productId,
+    },
+  });
+};
+
+export const deleteWishlistByProductId = async (
+  tx: Prisma.TransactionClient,
+  productId: number,
+) => {
+  return db.wishlist.deleteMany({
+    where: {
+      product_id: productId,
+    },
+  });
+};
+
+export const deleteReviewsByProductId = async (
+  tx: Prisma.TransactionClient,
+  productId: number,
+) => {
+  return db.review.deleteMany({
+    where: {
+      product_id: productId,
+    },
+  });
+};
+
+export const cartItemByProductId = async (
+  tx: Prisma.TransactionClient,
+  productId: number,
+) => {
+  return db.cartItem.deleteMany({
+    where: {
+      variant: {
         product_id: productId,
       },
-      data: {
-        ...(data.productName !== undefined && {product_name: data.productName}),
-        ...(data.description !== undefined && {description: data.description}),
-        ...(data.metadata !== undefined && {metadata: data.metadata as Prisma.InputJsonValue}),
-        ...(data.categoryId !== undefined && {
-          category: {
-            connect: {
-              category_id: data.categoryId
-            }
-          }
-        }),
+    },
+  });
+};
 
-      }
-    })
-}
-
-
+export const countOrderItemByProductId = async (productId: number) => {
+  return db.orderItem.count({
+    where: {
+      product_id: productId,
+    },
+  });
+};
