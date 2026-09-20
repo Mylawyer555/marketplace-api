@@ -23,6 +23,7 @@ export const createProduct = async (
       product_name: data.productName,
       description: data.description,
       category_id: data.categoryId,
+      metadata: data.metadata as Prisma.InputJsonValue,
       slug,
     },
   });

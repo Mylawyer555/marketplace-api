@@ -6,6 +6,7 @@ import {
   createProductService,
   createProductVariantService,
   deleteProductImageService,
+  deleteProductService,
   getInventoryService,
   getProductImageService,
   getProductListing,
@@ -265,6 +266,29 @@ export const updateProductController = async (
       success: true,
       message: "Product updated successfully!",
       data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const deleteProductController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("authenticate user!", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = Number(req.user.userId);
+    const productId = Number(req.params.productId);
+   
+
+    const deleted = await deleteProductService(sellerId, productId)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Product deleted successfully!",
     });
   } catch (error) {
     next(error);

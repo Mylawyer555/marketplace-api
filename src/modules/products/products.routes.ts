@@ -10,6 +10,7 @@ import {
   createProductController,
   createProductImageController,
   createProductVariantController,
+  deleteProductController,
   deleteProductImagesController,
   getInventoryController,
   getProductImagesController,
@@ -57,10 +58,16 @@ productRoutes.patch(
   updateProductImagesController,
 );
 
-productRoutes.delete("/:productId/product-image/:productImageId", authenticate, deleteProductImagesController)
+productRoutes.delete(
+  "/:productId/product-image/:productImageId",
+  authenticate,
+  deleteProductImagesController,
+);
 
 productRoutes.get("/products", productListingsController);
 
-productRoutes.patch("/:productId", authenticate, updateProductController)
+productRoutes.patch("/:productId", authenticate, updateProductController);
+
+productRoutes.delete("/:productId", authenticate, deleteProductController);
 
 export default productRoutes;
