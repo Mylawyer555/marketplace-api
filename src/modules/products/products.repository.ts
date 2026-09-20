@@ -8,6 +8,7 @@ import {
   ProductQuery,
   UpdateProduct,
   UpdateProductImages,
+  UpdateProductStatus,
 } from "./products.type";
 import { StatusCodes } from "http-status-codes";
 import { Prisma } from "../../generated/prisma/client";
@@ -377,6 +378,33 @@ export const countOrderItemByProductId = async (productId: number) => {
   return db.orderItem.count({
     where: {
       product_id: productId,
+    },
+  });
+};
+
+export const updateProductStatus = async (productId:number, status: UpdateProductStatus) => {
+  return db.product.update({
+    where: {
+      product_id: productId,
+    },
+    data: {
+      status: status.status
+    }
+  })
+}
+
+export const findProductForStatusUpdate = async (productId: number) => {
+  return db.product.findUnique({
+    where: {
+      product_id: productId
+    },
+    include: {
+      variants: {
+        select: {
+          inventory: true,
+        },
+      },
+      images: true,
     },
   });
 };

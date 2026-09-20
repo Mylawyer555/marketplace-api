@@ -74,3 +74,7 @@ export const updateProductSchema = z.object({
     message: "Atleast one field is required"
   }
 )
+
+export const updateProductStatusSchema = z.object({
+  status: z.enum(["DRAFT", "ACTIVE", "DISABLED", "ARCHIVED"])
+});
