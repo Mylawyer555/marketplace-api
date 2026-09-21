@@ -9,6 +9,7 @@ import {
   updateInventory,
   UpdateProduct,
   UpdateProductImages,
+  UpdateProductStatus,
 } from "./products.type";
 import { findStoreBySellerId } from "../stores/stores.repository";
 import {
@@ -25,6 +26,7 @@ import {
   findInventoryByVariantId,
   findProductById,
   findProductBySlug,
+  findProductForStatusUpdate,
   findProductImage,
   findVariantWithProduct,
   getProductImages,
@@ -32,9 +34,11 @@ import {
   updatedInventory,
   updateProduct,
   updateProductImages,
+  updateProductStatus,
 } from "./products.repository";
 import { generateSlug } from "../../utils/createSlug";
 import { db } from "../../config/db";
+import { product_status } from "../../generated/prisma/enums";
 
 export const createProductService = async (
   sellerId: number,
@@ -488,4 +492,79 @@ export const deleteProductService = async (
     await cartItemByProductId(tx, product.product_id);
     await deleteProduct(tx, product.product_id);
   });
+};
+
+export const updateProductStatusService = async (
+  sellerId: number,
+  productId: number,
+  status: UpdateProductStatus,
+) => {
+  const user = await findUserById(sellerId);
+  if (!user) {
+    throw new AppError("user does not exist", StatusCodes.NOT_FOUND);
+  }
+
+  if (user.role !== "SELLER") {
+    throw new AppError("user must be a seller", StatusCodes.FORBIDDEN);
+  }
+
+  const store = await findStoreBySellerId(sellerId);
+  if (!store) {
+    throw new AppError("seller must have a store", StatusCodes.FORBIDDEN);
+  }
+
+  const product = await findProductForStatusUpdate(productId);
+  if (!product) {
+    throw new AppError("Product does not exist", StatusCodes.NOT_FOUND);
+  }
+
+  if (store.store_id !== product.store_id) {
+    throw new AppError(
+      "You're not permitted to perform such action",
+      StatusCodes.FORBIDDEN,
+    );
+  }
+
+  
+  
+  if (product.status === status.status){
+    throw new AppError(`Product is already ${status.status}`, StatusCodes.BAD_REQUEST)
+  }
+  
+  //transition rule
+  const allowedTransitions: Record<product_status, product_status[]> = {
+    DRAFT: ["ACTIVE"],
+    ACTIVE: ["DISABLED", "ARCHIVED"],
+    DISABLED: ["ACTIVE"],
+    ARCHIVED: []
+  };
+  
+  const allowedStatuses = allowedTransitions[product.status];
+  
+  if (!allowedStatuses.includes(status.status)){
+    throw new AppError(`Cannot change ${product.status} to ${status.status}`, StatusCodes.BAD_REQUEST);
+  };
+
+  if (status.status === "ACTIVE") {
+    if (product.variants.length === 0) {
+      throw new AppError(
+        "Product must have atleast 1 varaint",
+        StatusCodes.BAD_REQUEST,
+      );
+    }
+  
+    if (product.images.length === 0) {
+      throw new AppError(
+        "Product must have atleast 1 image",
+        StatusCodes.BAD_REQUEST,
+      );
+    }
+  
+    const hasMissingInventory = product.variants.some((variant) => !variant.inventory);
+    if (hasMissingInventory) {
+      throw new AppError("Every product must have inventory", StatusCodes.BAD_REQUEST);
+    };
+  }
+
+  return await updateProductStatus(product.product_id, status)
 };

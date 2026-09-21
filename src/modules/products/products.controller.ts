@@ -13,6 +13,7 @@ import {
   updateInventoryService,
   updateProductImageService,
   updateProductService,
+  updateProductStatusService,
 } from "./products.service";
 import { getProductschema } from "./products.validation";
 
@@ -289,6 +290,31 @@ export const deleteProductController = async (
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Product deleted successfully!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateProductStatusController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("authenticate user!", StatusCodes.UNAUTHORIZED);
+    }
+
+    const sellerId = Number(req.user.userId);
+    const productId = Number(req.params.productId);
+    const status = req.body
+   
+
+    const statusUpdate = await updateProductStatusService(sellerId, productId, status);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Product status updated successfully!",
+      data: statusUpdate
     });
   } catch (error) {
     next(error);

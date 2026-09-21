@@ -10,7 +10,6 @@ import {
   UpdateProductImages,
   UpdateProductStatus,
 } from "./products.type";
-import { StatusCodes } from "http-status-codes";
 import { Prisma } from "../../generated/prisma/client";
 
 export const createProduct = async (

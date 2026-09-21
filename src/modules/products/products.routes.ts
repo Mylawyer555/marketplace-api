@@ -4,6 +4,7 @@ import {
   createProductSchema,
   createProductVariantSchema,
   updateProductImageSchema,
+  updateProductStatusSchema,
 } from "./products.validation";
 import { authenticate } from "../../middlewares/auth.middleware";
 import {
@@ -18,9 +19,13 @@ import {
   updateInventoryController,
   updateProductController,
   updateProductImagesController,
+  updateProductStatusController,
 } from "./products.controller";
 
 const productRoutes = express.Router();
+productRoutes.get("/", productListingsController);
+
+productRoutes.get("/:productId/product-image", getProductImagesController);
 
 productRoutes.post(
   "/",
@@ -28,6 +33,30 @@ productRoutes.post(
   validate(createProductSchema),
   createProductController,
 );
+
+productRoutes.patch(
+  "/:productId/status",
+  authenticate,
+  validate(updateProductStatusSchema),
+  updateProductStatusController,
+);
+
+productRoutes.patch("/:productId", authenticate, updateProductController);
+
+productRoutes.delete("/:productId", authenticate, deleteProductController);
+
+productRoutes.patch(
+  "/:productId/product-image/:productImageId",
+  authenticate,
+  validate(updateProductImageSchema),
+  updateProductImagesController,
+);
+productRoutes.delete(
+  "/:productId/product-image/:productImageId",
+  authenticate,
+  deleteProductImagesController,
+);
+
 productRoutes.post(
   "/:productId/variants",
   authenticate,
@@ -49,25 +78,5 @@ productRoutes.post(
   authenticate,
   createProductImageController,
 );
-productRoutes.get("/:productId/product-image", getProductImagesController);
-
-productRoutes.patch(
-  "/:productId/product-image/:productImageId",
-  validate(updateProductImageSchema),
-  authenticate,
-  updateProductImagesController,
-);
-
-productRoutes.delete(
-  "/:productId/product-image/:productImageId",
-  authenticate,
-  deleteProductImagesController,
-);
-
-productRoutes.get("/products", productListingsController);
-
-productRoutes.patch("/:productId", authenticate, updateProductController);
-
-productRoutes.delete("/:productId", authenticate, deleteProductController);
 
 export default productRoutes;
