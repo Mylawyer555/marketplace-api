@@ -4,6 +4,7 @@ import {
   createCart,
   createCartItem,
   findCartByUserId,
+  findCartByUserWithItems,
   findCartItem,
   findVariantForCart,
   updateCartItem,
@@ -54,4 +55,12 @@ export const addToCart = async (data: AddToCart, userId: number) => {
   }
 };
 
+export const getCartService = async (userId: number) => {
+  const cart = await findCartByUserWithItems(userId);
 
+  if (!cart) {
+    throw new AppError("cart not found", StatusCodes.NOT_FOUND);
+  }
+
+  return cart;
+};

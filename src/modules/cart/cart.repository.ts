@@ -77,3 +77,36 @@ export const updateCartItem = async (cartItemId: number, quantity: number) => {
     },
   });
 };
+
+export const findCartByUserWithItems = async (userId: number) => {
+  return db.cart.findUnique({
+    where: {
+      user_id: userId,
+    },
+    select: {
+      cart_items: {
+        select: {
+           cart_id: true,
+           cart_item_id: true,
+           price: true,
+           quantity: true,
+           variant: {
+            select: {
+              variant_id: true,
+              sku: true,
+              color: true,
+              variant_storage: true,
+              product: {
+                select: {
+                  product_id: true,
+                  product_name: true,
+                  status: true,
+                },
+              },
+            },
+           },
+        },
+      },
+    },
+  });
+};
