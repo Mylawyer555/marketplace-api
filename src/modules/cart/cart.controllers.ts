@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../../utils/AppError";
 import { StatusCodes } from "http-status-codes";
-import { addToCart, getCartService, updateCartQuantityService } from "./cart.service";
+import { addToCart, getCartService, removeCartItemService, updateCartQuantityService } from "./cart.service";
 import { createCartSchema, updateCartQuantitySchema } from "./cart.valiadtion";
 
 export const addToCartController = async(
@@ -72,6 +72,30 @@ export const updateCartQuantityController = async(
             success: true,
             message: "Cart updated successfully!",
             data: updatedCartItem
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const removeCartItemController = async(
+    req:Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        if (!req.user){
+            throw new AppError("Authenticate user", StatusCodes.UNAUTHORIZED);
+        };
+
+        const userId = Number(req.user.userId);
+        const cartItemId = Number(req.params.cartItemId);
+        const result = await removeCartItemService(cartItemId, userId)
+       
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: "CartItem deleted successfully!",
         })
 
     } catch (error) {

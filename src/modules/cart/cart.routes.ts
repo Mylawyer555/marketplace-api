@@ -1,6 +1,6 @@
 import express from 'express'
 import { authenticate } from '../../middlewares/auth.middleware';
-import { addToCartController, getCartController, updateCartQuantityController } from './cart.controllers';
+import { addToCartController, getCartController, removeCartItemController, updateCartQuantityController } from './cart.controllers';
 
 const cartRoutes = express.Router();
 
@@ -10,5 +10,8 @@ cartRoutes.get("/", authenticate, getCartController);
 
 cartRoutes.patch("/items/:cartItemId", authenticate, updateCartQuantityController);
 
+cartRoutes.delete("/items/:cartItemId", authenticate, removeCartItemController);
+
 
 export default cartRoutes;
+

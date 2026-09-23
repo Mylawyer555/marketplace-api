@@ -3,6 +3,7 @@ import { AppError } from "../../utils/AppError";
 import {
   createCart,
   createCartItem,
+  deleteCartItem,
   findCartByUserId,
   findCartByUserWithItems,
   findCartItem,
@@ -104,3 +105,15 @@ export const updateCartQuantityService = async (
   
 };
 
+export const removeCartItemService = async (cartItemId:number, userId: number) => {
+  const cartItem = await findCartItemById(cartItemId);
+  if (!cartItem) {
+    throw new AppError("cart item does not exist", StatusCodes.NOT_FOUND);
+  };
+
+  if (cartItem.carts.user_id !== userId) {
+    throw new AppError("You're not permitted to perform this operation", StatusCodes.FORBIDDEN);
+  };
+
+  return await deleteCartItem(cartItem.cart_item_id);
+};

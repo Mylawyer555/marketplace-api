@@ -151,3 +151,11 @@ export const updateCartQuantity = async (cartItemId:number, data: UpdateCartQuan
     },
   });
 };
+
+export const deleteCartItem = async (cartItem: number) => {
+  return db.cartItem.delete({
+    where: {
+      cart_item_id: cartItem,
+    },
+  });
+};
