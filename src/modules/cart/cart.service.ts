@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../utils/AppError";
 import {
+  clearCart,
   createCart,
   createCartItem,
   deleteCartItem,
@@ -99,21 +100,35 @@ export const updateCartQuantityService = async (
 
   if (data.quantity > availableQuantity) {
     throw new AppError("Out of stock!", StatusCodes.BAD_REQUEST);
-  };
-  
+  }
+
   return await updateCartQuantity(cartItem.cart_item_id, data);
-  
 };
 
-export const removeCartItemService = async (cartItemId:number, userId: number) => {
+export const removeCartItemService = async (
+  cartItemId: number,
+  userId: number,
+) => {
   const cartItem = await findCartItemById(cartItemId);
   if (!cartItem) {
     throw new AppError("cart item does not exist", StatusCodes.NOT_FOUND);
-  };
+  }
 
   if (cartItem.carts.user_id !== userId) {
-    throw new AppError("You're not permitted to perform this operation", StatusCodes.FORBIDDEN);
-  };
+    throw new AppError(
+      "You're not permitted to perform this operation",
+      StatusCodes.FORBIDDEN,
+    );
+  }
 
   return await deleteCartItem(cartItem.cart_item_id);
+};
+
+export const clearCartService = async (userId: number) => {
+  const cart = await findCartByUserId(userId);
+  if (!cart) {
+    throw new AppError("cart does not exist", StatusCodes.NOT_FOUND);
+  }
+
+  return await clearCart(cart.cart_id);
 };

@@ -1,6 +1,6 @@
 import { db } from "../../config/db";
 import { Prisma } from "../../generated/prisma/client";
-import { AddToCart, UpdateCartQuantity} from "./cart.types";
+import { AddToCart, UpdateCartQuantity } from "./cart.types";
 
 export const findVariantForCart = async (variantId: number) => {
   return db.productVariant.findUnique({
@@ -86,11 +86,11 @@ export const findCartByUserWithItems = async (userId: number) => {
     select: {
       cart_items: {
         select: {
-           cart_id: true,
-           cart_item_id: true,
-           price: true,
-           quantity: true,
-           variant: {
+          cart_id: true,
+          cart_item_id: true,
+          price: true,
+          quantity: true,
+          variant: {
             select: {
               variant_id: true,
               sku: true,
@@ -104,7 +104,7 @@ export const findCartByUserWithItems = async (userId: number) => {
                 },
               },
             },
-           },
+          },
         },
       },
     },
@@ -115,7 +115,6 @@ export const findCartItemById = async (cartItemId: number) => {
   return db.cartItem.findUnique({
     where: {
       cart_item_id: cartItemId,
-      
     },
     select: {
       cart_id: true,
@@ -124,24 +123,26 @@ export const findCartItemById = async (cartItemId: number) => {
       carts: {
         select: {
           user_id: true,
-        }
+        },
       },
       variant: {
-       select: {
-        inventory: {
-          select: {
-             reserved_quantity: true,
-             stock_quantity: true
-          }
-        }
-       }
+        select: {
+          inventory: {
+            select: {
+              reserved_quantity: true,
+              stock_quantity: true,
+            },
+          },
+        },
       },
     },
   });
 };
 
-
-export const updateCartQuantity = async (cartItemId:number, data: UpdateCartQuantity) => {
+export const updateCartQuantity = async (
+  cartItemId: number,
+  data: UpdateCartQuantity,
+) => {
   return db.cartItem.update({
     where: {
       cart_item_id: cartItemId,
@@ -156,6 +157,14 @@ export const deleteCartItem = async (cartItem: number) => {
   return db.cartItem.delete({
     where: {
       cart_item_id: cartItem,
+    },
+  });
+};
+
+export const clearCart = async (cartId: number) => {
+  return db.cartItem.deleteMany({
+    where: {
+      cart_id: cartId,
     },
   });
 };
