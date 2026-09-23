@@ -4,3 +4,6 @@ export interface AddToCart{
     quantity: number;
 };
 
+export interface UpdateCartQuantity {
+    quantity: number;
+}

@@ -6,10 +6,12 @@ import {
   findCartByUserId,
   findCartByUserWithItems,
   findCartItem,
+  findCartItemById,
   findVariantForCart,
   updateCartItem,
+  updateCartQuantity,
 } from "./cart.repository";
-import { AddToCart } from "./cart.types";
+import { AddToCart, UpdateCartQuantity } from "./cart.types";
 import { findUserById } from "../auth/auth.repository";
 import { Prisma } from "../../generated/prisma/client";
 
@@ -64,3 +66,41 @@ export const getCartService = async (userId: number) => {
 
   return cart;
 };
+
+export const updateCartQuantityService = async (
+  cartItemId: number,
+  data: UpdateCartQuantity,
+  userId: number,
+) => {
+  const cartItem = await findCartItemById(cartItemId);
+
+  if (!cartItem) {
+    throw new AppError("Cart-item does not exist", StatusCodes.NOT_FOUND);
+  }
+
+  if (cartItem.carts.user_id !== userId) {
+    throw new AppError(
+      "You're not permitted to perform this action",
+      StatusCodes.FORBIDDEN,
+    );
+  }
+
+  const inventory = cartItem.variant.inventory;
+  if (!inventory) {
+    throw new AppError(
+      "This product must have an inventory in other to update cart",
+      StatusCodes.FORBIDDEN,
+    );
+  }
+
+  const availableQuantity =
+    inventory.stock_quantity - inventory.reserved_quantity;
+
+  if (data.quantity > availableQuantity) {
+    throw new AppError("Out of stock!", StatusCodes.BAD_REQUEST);
+  };
+  
+  return await updateCartQuantity(cartItem.cart_item_id, data);
+  
+};
+

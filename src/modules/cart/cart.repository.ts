@@ -1,6 +1,6 @@
 import { db } from "../../config/db";
 import { Prisma } from "../../generated/prisma/client";
-import { AddToCart} from "./cart.types";
+import { AddToCart, UpdateCartQuantity} from "./cart.types";
 
 export const findVariantForCart = async (variantId: number) => {
   return db.productVariant.findUnique({
@@ -107,6 +107,47 @@ export const findCartByUserWithItems = async (userId: number) => {
            },
         },
       },
+    },
+  });
+};
+
+export const findCartItemById = async (cartItemId: number) => {
+  return db.cartItem.findUnique({
+    where: {
+      cart_item_id: cartItemId,
+      
+    },
+    select: {
+      cart_id: true,
+      cart_item_id: true,
+      variant_id: true,
+      carts: {
+        select: {
+          user_id: true,
+        }
+      },
+      variant: {
+       select: {
+        inventory: {
+          select: {
+             reserved_quantity: true,
+             stock_quantity: true
+          }
+        }
+       }
+      },
+    },
+  });
+};
+
+
+export const updateCartQuantity = async (cartItemId:number, data: UpdateCartQuantity) => {
+  return db.cartItem.update({
+    where: {
+      cart_item_id: cartItemId,
+    },
+    data: {
+      quantity: data.quantity,
     },
   });
 };
