@@ -1,4 +1,5 @@
 import { db } from "../../config/db";
+import { Order_Status } from "./orders.types";
 
 export const findOrdersByUserId = async (userId: number) => {
   return db.order.findMany({
@@ -25,33 +26,47 @@ export const findOrdersByUserId = async (userId: number) => {
 };
 
 export const findOrderByOrderId = async (orderId: number) => {
-    return db.order.findUnique({
-        where: {
-            order_id: orderId,
-        },
+  return db.order.findUnique({
+    where: {
+      order_id: orderId,
+    },
+    select: {
+      order_id: true,
+      order_number: true,
+      buyer_id: true,
+      total_amount: true,
+      status: true,
+      created_at: true,
+      order_items: {
         select: {
-            order_id: true,
-            order_number: true,
-            buyer_id: true,
-            total_amount: true,
-            status: true,
-            created_at: true,
-            order_items: {
-                select: {
-                    item_id: true,
-                    product_id: true,
-                    variant_id: true,
-                    quantity: true,
-                    price_at_purchase: true,
-                    variant: {
-                        select: {
-                            sku: true,
-                            color: true,
-                            variant_storage: true,
-                        },
-                    },
-                },
+          item_id: true,
+          product_id: true,
+          variant_id: true,
+          quantity: true,
+          price_at_purchase: true,
+          variant: {
+            select: {
+              sku: true,
+              color: true,
+              variant_storage: true,
             },
+          },
         },
-    });
+      },
+    },
+  });
+};
+
+export const updateOrderStatus = async (
+  orderId: number,
+  data: Order_Status,
+) => {
+  return db.order.update({
+    where: {
+      order_id: orderId,
+    },
+    data: {
+      status: data.status,
+    },
+  });
 };
