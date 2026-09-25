@@ -9,6 +9,7 @@ import categoryRoutes from "./modules/categories/categories.routes";
 import cartRoutes from "./modules/cart/cart.routes";
 import wishlistRoute from "./modules/wishlist/wishlist.route";
 import checkoutRoute from "./modules/checkout/checkout.routes";
+import ordersRoute from "./modules/orders/orders.routes";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/wishlist", wishlistRoute);
 app.use("/api/v1/checkout", checkoutRoute);
+app.use("/api/v1/orders", ordersRoute);
 
 // Global Error handler
 app.use(errorHandler);
