@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import {
   getMyOrdersService,
   getOrderByIdService,
+  orderCancellationService,
   orderStatusTransitionService,
 } from "./orders.service";
 import { orderStatusSchema } from "./orders.validation";
@@ -79,6 +80,31 @@ export const orderStatusTransitionController = async (
       success: true,
       message: "Order status updated successfully",
       data: updatedOrderStatus,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const orderCancellationController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (!req.user) {
+      throw new AppError("Authenticate user!", StatusCodes.UNAUTHORIZED);
+    }
+
+    const userId = req.user.userId;
+    const orderId = Number(req.params.orderId);
+    if (Number.isNaN(orderId) || orderId <= 0) {
+      throw new AppError("Invalid order ID", StatusCodes.BAD_REQUEST);
+    }
+    const updatedOrderCancellationStatus = await orderCancellationService(orderId, userId)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Order cancelled successfully",
+      data: updatedOrderCancellationStatus,
     });
   } catch (error) {
     next(error);
