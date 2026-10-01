@@ -177,6 +177,7 @@ model Payment {
   refunds           Refund?
 
   @@map("payments")
+  @@index([order_id])
 }
 
 model ProductVariant {
