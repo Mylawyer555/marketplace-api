@@ -1,35 +1,177 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../utils/AppError";
-import { createPayment, findOrderForPayment, findPendingPayment } from "./payments.repository";
+import {
+  createPayment,
+  finalizeInventory,
+  findInventoryForPaymentProcessing,
+  findOrderForPayment,
+  findOrderForPaymentProcessing,
+  findOrderItemsForProcessing,
+  findPaymentForProcessing,
+  findPendingPayment,
+  markOrderPaid,
+  markPaymentSuccess,
+} from "./payments.repository";
 import { PaymentMethod } from "./payments.types";
 import { generatePaymentReference } from "../../utils/payment_reference_generator";
+import { db } from "../../config/db";
 
-export const createPaymentService = async (orderId:number, userId:number, data:PaymentMethod) => {
-    const order = await findOrderForPayment(orderId);
-    if (!order) {
-        throw new AppError("order does not exist", StatusCodes.NOT_FOUND)
-    };
 
-    if (order.buyer_id !== userId) {
-        throw new AppError("You're not permitted to perform this action", StatusCodes.FORBIDDEN);
-    };
+export const createPaymentService = async (
+  orderId: number,
+  userId: number,
+  data: PaymentMethod,
+) => {
+  const order = await findOrderForPayment(orderId);
+  if (!order) {
+    throw new AppError("order does not exist", StatusCodes.NOT_FOUND);
+  }
 
-    if (order.status !== "PENDING") {
-        throw new AppError(`Order must be PENDING to proceed`, StatusCodes.BAD_REQUEST);
-    };
+  if (order.buyer_id !== userId) {
+    throw new AppError(
+      "You're not permitted to perform this action",
+      StatusCodes.FORBIDDEN,
+    );
+  }
 
-    const payment = await findPendingPayment(orderId);
-    if (payment) {
-        throw new AppError("Payment already exist for this order", StatusCodes.CONFLICT)
+  if (order.status !== "PENDING") {
+    throw new AppError(
+      `Order must be PENDING to proceed`,
+      StatusCodes.BAD_REQUEST,
+    );
+  }
+
+  const payment = await findPendingPayment(orderId);
+  if (payment) {
+    throw new AppError(
+      "Payment already exist for this order",
+      StatusCodes.CONFLICT,
+    );
+  }
+
+  const amount = order.total_amount;
+
+  const payment_reference = generatePaymentReference();
+
+  const newPayment = await createPayment(
+    orderId,
+    payment_reference,
+    amount,
+    data,
+  );
+
+  return newPayment;
+};
+
+export const processPaymentService = async (paymentId: number) => {
+  return db.$transaction(async (tx) => {
+    // 1. Lock payment row
+    const payment = await findPaymentForProcessing(paymentId, tx);
+
+    if (payment.length === 0) {
+      throw new AppError(
+        "Payment does not exist",
+        StatusCodes.NOT_FOUND,
+      );
     }
 
-   
+    const paymentRecord = payment[0]!;
 
-    const amount = order.total_amount;
+    // 2. Prevent duplicate processing
+    if (paymentRecord.status !== "PENDING") {
+      throw new AppError(
+        "Payment should not be processed again",
+        StatusCodes.CONFLICT,
+      );
+    }
 
-    const payment_reference = generatePaymentReference();
+    // 3. Lock order row
+    const order = await findOrderForPaymentProcessing(
+      paymentRecord.order_id,
+      tx,
+    );
 
-    const newPayment = await createPayment(orderId, payment_reference, amount, data)
+    if (order.length === 0) {
+      throw new AppError(
+        "Order does not exist",
+        StatusCodes.NOT_FOUND,
+      );
+    }
 
-    return newPayment;
-}
+    const orderRecord = order[0]!;
+
+    // 4. Order must still be pending
+    if (orderRecord.status !== "PENDING") {
+      throw new AppError(
+        "Order must be pending to proceed",
+        StatusCodes.BAD_REQUEST,
+      );
+    }
+
+    // 5. Get all order items
+    const orderItems = await findOrderItemsForProcessing(
+      orderRecord.order_id,
+      tx,
+    );
+
+    if (orderItems.length === 0) {
+      throw new AppError(
+        "Order has no items",
+        StatusCodes.NOT_FOUND,
+      );
+    }
+
+    // 6. Always lock inventory in deterministic order
+    const sortedItems = [...orderItems].sort(
+      (a, b) => a.variant_id - b.variant_id,
+    );
+
+    // 7. Convert reservations into sales
+    for (const item of sortedItems) {
+      const inventory = await findInventoryForPaymentProcessing(
+        item.variant_id,
+        tx,
+      );
+
+      if (inventory.length === 0) {
+        throw new AppError(
+          "Inventory does not exist",
+          StatusCodes.NOT_FOUND,
+        );
+      }
+
+      const inventoryRecord = inventory[0]!;
+
+      // Checkout should already have reserved this quantity.
+      if (inventoryRecord.reserved_quantity < item.quantity) {
+        throw new AppError(
+          `Insufficient reserved inventory for ${item.variant_id}`,
+          StatusCodes.CONFLICT,
+        );
+      }
+
+      await finalizeInventory(
+        item.variant_id,
+        item.quantity,
+        tx,
+      );
+    }
+
+    // 8. Mark payment successful
+    const successfulPayment = await markPaymentSuccess(
+      paymentRecord.payment_id,
+      tx,
+    );
+
+    // 9. Mark order as paid
+    const paidOrder = await markOrderPaid(
+      orderRecord.order_id,
+      tx,
+    );
+
+    return {
+      payment: successfulPayment,
+      order: paidOrder,
+    };
+  });
+};

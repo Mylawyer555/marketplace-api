@@ -119,3 +119,15 @@ export const finalizeInventory = async (variantId: number, quantity:number, tx: 
         }
     })
 }
+
+export const findOrderItemsForProcessing = async (orderId:number, tx: Prisma.TransactionClient) => {
+    return tx.orderItem.findMany({
+        where: {
+           order_id: orderId
+        },
+        select: {
+            variant_id: true,
+            quantity: true
+    }
+})
+}
