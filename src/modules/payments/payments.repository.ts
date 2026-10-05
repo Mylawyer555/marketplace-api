@@ -1,6 +1,11 @@
 import { Decimal } from "@prisma/client/runtime/client";
 import { db } from "../../config/db";
-import { InventoryLock, OrderLock, PaymentLock, PaymentMethod } from "./payments.types";
+import {
+  InventoryLock,
+  OrderLock,
+  PaymentLock,
+  PaymentMethod,
+} from "./payments.types";
 import { Prisma } from "../../generated/prisma/client";
 
 export const findOrderForPayment = async (orderId: number) => {
@@ -65,7 +70,7 @@ export const findInventoryForPaymentProcessing = async (
   variantId: number,
   tx: Prisma.TransactionClient,
 ) => {
-  return tx.$queryRaw <InventoryLock[]>`
+  return tx.$queryRaw<InventoryLock[]>`
        SELECT *
        FROM inventory
        WHERE variant_id = ${variantId}
@@ -83,7 +88,7 @@ export const markPaymentSuccess = async (
     },
     data: {
       status: "SUCCESS",
-      paid_at: new Date
+      paid_at: new Date(),
     },
   });
 };
@@ -98,36 +103,72 @@ export const markOrderPaid = async (
     },
     data: {
       status: "PAID",
-      
     },
   });
 };
 
+export const finalizeInventory = async (
+  variantId: number,
+  quantity: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.inventory.update({
+    where: {
+      variant_id: variantId,
+    },
+    data: {
+      stock_quantity: {
+        decrement: quantity,
+      },
+      reserved_quantity: {
+        decrement: quantity,
+      },
+    },
+  });
+};
 
-export const finalizeInventory = async (variantId: number, quantity:number, tx: Prisma.TransactionClient) => {
-    return tx.inventory.update({
-        where: {
-            variant_id: variantId,
-        },
-        data: {
-            stock_quantity: {
-                decrement: quantity
-            },
-            reserved_quantity: {
-                decrement: quantity
-            }
-        }
-    })
-}
+export const findOrderItemsForProcessing = async (
+  orderId: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.orderItem.findMany({
+    where: {
+      order_id: orderId,
+    },
+    select: {
+      variant_id: true,
+      quantity: true,
+    },
+  });
+};
 
-export const findOrderItemsForProcessing = async (orderId:number, tx: Prisma.TransactionClient) => {
-    return tx.orderItem.findMany({
-        where: {
-           order_id: orderId
-        },
-        select: {
-            variant_id: true,
-            quantity: true
-    }
-})
-}
+export const releaseInventoryReservation = async (
+  variantId: number,
+  quantity: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.inventory.update({
+    where: {
+      variant_id: variantId,
+    },
+    data: {
+      reserved_quantity: {
+        decrement: quantity,
+      },
+    },
+  });
+};
+
+export const markPaymentAsFailed = async (
+  paymentId: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.payment.update({
+    where: {
+      payment_id: paymentId,
+    },
+    data: {
+      status: "FAILED",
+    },
+  });
+};

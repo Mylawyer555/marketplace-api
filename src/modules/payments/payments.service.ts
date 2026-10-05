@@ -10,12 +10,13 @@ import {
   findPaymentForProcessing,
   findPendingPayment,
   markOrderPaid,
+  markPaymentAsFailed,
   markPaymentSuccess,
+  releaseInventoryReservation,
 } from "./payments.repository";
 import { PaymentMethod } from "./payments.types";
 import { generatePaymentReference } from "../../utils/payment_reference_generator";
 import { db } from "../../config/db";
-
 
 export const createPaymentService = async (
   orderId: number,
@@ -69,10 +70,7 @@ export const processPaymentService = async (paymentId: number) => {
     const payment = await findPaymentForProcessing(paymentId, tx);
 
     if (payment.length === 0) {
-      throw new AppError(
-        "Payment does not exist",
-        StatusCodes.NOT_FOUND,
-      );
+      throw new AppError("Payment does not exist", StatusCodes.NOT_FOUND);
     }
 
     const paymentRecord = payment[0]!;
@@ -92,10 +90,7 @@ export const processPaymentService = async (paymentId: number) => {
     );
 
     if (order.length === 0) {
-      throw new AppError(
-        "Order does not exist",
-        StatusCodes.NOT_FOUND,
-      );
+      throw new AppError("Order does not exist", StatusCodes.NOT_FOUND);
     }
 
     const orderRecord = order[0]!;
@@ -115,10 +110,7 @@ export const processPaymentService = async (paymentId: number) => {
     );
 
     if (orderItems.length === 0) {
-      throw new AppError(
-        "Order has no items",
-        StatusCodes.NOT_FOUND,
-      );
+      throw new AppError("Order has no items", StatusCodes.NOT_FOUND);
     }
 
     // 6. Always lock inventory in deterministic order
@@ -134,10 +126,7 @@ export const processPaymentService = async (paymentId: number) => {
       );
 
       if (inventory.length === 0) {
-        throw new AppError(
-          "Inventory does not exist",
-          StatusCodes.NOT_FOUND,
-        );
+        throw new AppError("Inventory does not exist", StatusCodes.NOT_FOUND);
       }
 
       const inventoryRecord = inventory[0]!;
@@ -150,11 +139,7 @@ export const processPaymentService = async (paymentId: number) => {
         );
       }
 
-      await finalizeInventory(
-        item.variant_id,
-        item.quantity,
-        tx,
-      );
+      await finalizeInventory(item.variant_id, item.quantity, tx);
     }
 
     // 8. Mark payment successful
@@ -164,14 +149,90 @@ export const processPaymentService = async (paymentId: number) => {
     );
 
     // 9. Mark order as paid
-    const paidOrder = await markOrderPaid(
-      orderRecord.order_id,
-      tx,
-    );
+    const paidOrder = await markOrderPaid(orderRecord.order_id, tx);
 
     return {
       payment: successfulPayment,
       order: paidOrder,
     };
+  });
+};
+
+export const failPaymentService = async (paymentId: number) => {
+  return db.$transaction(async (tx) => {
+    //lock payment
+    const payment = await findPaymentForProcessing(paymentId, tx);
+    if (payment.length === 0) {
+      throw new AppError("Payment does not exist", StatusCodes.NOT_FOUND);
+    }
+
+    const paymentRecord = payment[0]!;
+
+    if (paymentRecord.status !== "PENDING") {
+      throw new AppError(
+        "Payment should not be processed again",
+        StatusCodes.CONFLICT,
+      );
+    }
+
+    const order = await findOrderForPaymentProcessing(
+      paymentRecord.order_id,
+      tx,
+    );
+    if (order.length === 0) {
+      throw new AppError("Order does not exist", StatusCodes.NOT_FOUND);
+    }
+
+    const orderRecord = order[0]!;
+    if (orderRecord.status !== "PENDING") {
+      throw new AppError(
+        `Order must be PENDING to proceed`,
+        StatusCodes.CONFLICT,
+      );
+    }
+
+    const orderItem = await findOrderItemsForProcessing(
+      orderRecord.order_id,
+      tx,
+    );
+
+    if (orderItem.length === 0) {
+      throw new AppError("Order Item not found", StatusCodes.NOT_FOUND);
+    }
+
+    const sortItems = [...orderItem].sort((a, b) => {
+      return a.variant_id - b.variant_id;
+    });
+
+    // loop through
+    for (const item of sortItems) {
+      //lock each inventory row
+      const inventory = await findInventoryForPaymentProcessing(
+        item.variant_id,
+        tx,
+      );
+
+      if (inventory.length === 0) {
+        throw new AppError("Inventory does not exist", StatusCodes.NOT_FOUND);
+      }
+
+      const inventoryRecord = inventory[0]!;
+      //ensure checkout actually reserved the quantity
+      if (inventoryRecord.reserved_quantity < item.quantity) {
+        throw new AppError(
+          `Insufficient reserved quantity for ${item.variant_id}`,
+          StatusCodes.CONFLICT,
+        );
+      }
+      //released reservation
+      await releaseInventoryReservation(item.variant_id, item.quantity, tx);
+    }
+
+    const markedFailed = await markPaymentAsFailed(
+      paymentRecord.payment_id,
+      tx,
+    );
+
+    return markedFailed;
   });
 };

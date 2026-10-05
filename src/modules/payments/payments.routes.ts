@@ -1,6 +1,6 @@
 import express from 'express';
 import { authenticate } from '../../middlewares/auth.middleware';
-import { createPaymentController, processPaymentController } from './payments.controller';
+import { createPaymentController, failPaymentController, processPaymentController } from './payments.controller';
 
 const paymentRoutes = express.Router();
 
@@ -9,6 +9,11 @@ paymentRoutes.post(
   "/:paymentId/process",
   authenticate,
   processPaymentController,
-);;
+);
+paymentRoutes.post(
+  "/:paymentId/fail",
+  authenticate,
+  failPaymentController,
+);
 
 export default paymentRoutes

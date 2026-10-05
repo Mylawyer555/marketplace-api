@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { paymentMethodSchema } from "./payments.validation";
 import {
   createPaymentService,
+  failPaymentService,
   processPaymentService,
 } from "./payments.service";
 export const createPaymentController = async (
@@ -51,6 +52,28 @@ export const processPaymentController = async (
 
     return res.status(StatusCodes.OK).json({
       message: "Payment processed successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const failPaymentController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const paymentId = Number(req.params.paymentId);
+
+    if (!Number.isInteger(paymentId) || paymentId <= 0) {
+      throw new AppError("Invalid payment ID", StatusCodes.BAD_REQUEST);
+    }
+
+    const result = await failPaymentService(paymentId)
+
+    return res.status(StatusCodes.OK).json({
+      message: "Payment Failed!",
       data: result,
     });
   } catch (error) {
