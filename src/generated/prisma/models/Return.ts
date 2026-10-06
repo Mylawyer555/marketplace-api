@@ -29,17 +29,20 @@ export type AggregateReturn = {
 export type ReturnAvgAggregateOutputType = {
   return_id: number | null
   order_item_id: number | null
+  quantity: number | null
 }
 
 export type ReturnSumAggregateOutputType = {
   return_id: number | null
   order_item_id: number | null
+  quantity: number | null
 }
 
 export type ReturnMinAggregateOutputType = {
   return_id: number | null
   order_item_id: number | null
   reason: string | null
+  quantity: number | null
   status: $Enums.returns_status | null
   requested_at: Date | null
   approved_at: Date | null
@@ -51,6 +54,7 @@ export type ReturnMaxAggregateOutputType = {
   return_id: number | null
   order_item_id: number | null
   reason: string | null
+  quantity: number | null
   status: $Enums.returns_status | null
   requested_at: Date | null
   approved_at: Date | null
@@ -62,6 +66,7 @@ export type ReturnCountAggregateOutputType = {
   return_id: number
   order_item_id: number
   reason: number
+  quantity: number
   status: number
   requested_at: number
   approved_at: number
@@ -74,17 +79,20 @@ export type ReturnCountAggregateOutputType = {
 export type ReturnAvgAggregateInputType = {
   return_id?: true
   order_item_id?: true
+  quantity?: true
 }
 
 export type ReturnSumAggregateInputType = {
   return_id?: true
   order_item_id?: true
+  quantity?: true
 }
 
 export type ReturnMinAggregateInputType = {
   return_id?: true
   order_item_id?: true
   reason?: true
+  quantity?: true
   status?: true
   requested_at?: true
   approved_at?: true
@@ -96,6 +104,7 @@ export type ReturnMaxAggregateInputType = {
   return_id?: true
   order_item_id?: true
   reason?: true
+  quantity?: true
   status?: true
   requested_at?: true
   approved_at?: true
@@ -107,6 +116,7 @@ export type ReturnCountAggregateInputType = {
   return_id?: true
   order_item_id?: true
   reason?: true
+  quantity?: true
   status?: true
   requested_at?: true
   approved_at?: true
@@ -205,6 +215,7 @@ export type ReturnGroupByOutputType = {
   return_id: number
   order_item_id: number
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at: Date | null
   approved_at: Date | null
@@ -239,6 +250,7 @@ export type ReturnWhereInput = {
   return_id?: Prisma.IntFilter<"Return"> | number
   order_item_id?: Prisma.IntFilter<"Return"> | number
   reason?: Prisma.StringFilter<"Return"> | string
+  quantity?: Prisma.IntFilter<"Return"> | number
   status?: Prisma.Enumreturns_statusFilter<"Return"> | $Enums.returns_status
   requested_at?: Prisma.DateTimeNullableFilter<"Return"> | Date | string | null
   approved_at?: Prisma.DateTimeNullableFilter<"Return"> | Date | string | null
@@ -251,6 +263,7 @@ export type ReturnOrderByWithRelationInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
   reason?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requested_at?: Prisma.SortOrderInput | Prisma.SortOrder
   approved_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -266,6 +279,7 @@ export type ReturnWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ReturnWhereInput | Prisma.ReturnWhereInput[]
   order_item_id?: Prisma.IntFilter<"Return"> | number
   reason?: Prisma.StringFilter<"Return"> | string
+  quantity?: Prisma.IntFilter<"Return"> | number
   status?: Prisma.Enumreturns_statusFilter<"Return"> | $Enums.returns_status
   requested_at?: Prisma.DateTimeNullableFilter<"Return"> | Date | string | null
   approved_at?: Prisma.DateTimeNullableFilter<"Return"> | Date | string | null
@@ -278,6 +292,7 @@ export type ReturnOrderByWithAggregationInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
   reason?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requested_at?: Prisma.SortOrderInput | Prisma.SortOrder
   approved_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -297,6 +312,7 @@ export type ReturnScalarWhereWithAggregatesInput = {
   return_id?: Prisma.IntWithAggregatesFilter<"Return"> | number
   order_item_id?: Prisma.IntWithAggregatesFilter<"Return"> | number
   reason?: Prisma.StringWithAggregatesFilter<"Return"> | string
+  quantity?: Prisma.IntWithAggregatesFilter<"Return"> | number
   status?: Prisma.Enumreturns_statusWithAggregatesFilter<"Return"> | $Enums.returns_status
   requested_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Return"> | Date | string | null
   approved_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Return"> | Date | string | null
@@ -306,6 +322,7 @@ export type ReturnScalarWhereWithAggregatesInput = {
 
 export type ReturnCreateInput = {
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at?: Date | string | null
   approved_at?: Date | string | null
@@ -318,6 +335,7 @@ export type ReturnUncheckedCreateInput = {
   return_id?: number
   order_item_id: number
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at?: Date | string | null
   approved_at?: Date | string | null
@@ -327,6 +345,7 @@ export type ReturnUncheckedCreateInput = {
 
 export type ReturnUpdateInput = {
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -339,6 +358,7 @@ export type ReturnUncheckedUpdateInput = {
   return_id?: Prisma.IntFieldUpdateOperationsInput | number
   order_item_id?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -350,6 +370,7 @@ export type ReturnCreateManyInput = {
   return_id?: number
   order_item_id: number
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at?: Date | string | null
   approved_at?: Date | string | null
@@ -359,6 +380,7 @@ export type ReturnCreateManyInput = {
 
 export type ReturnUpdateManyMutationInput = {
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -370,6 +392,7 @@ export type ReturnUncheckedUpdateManyInput = {
   return_id?: Prisma.IntFieldUpdateOperationsInput | number
   order_item_id?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -391,6 +414,7 @@ export type ReturnCountOrderByAggregateInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
   reason?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requested_at?: Prisma.SortOrder
   approved_at?: Prisma.SortOrder
@@ -401,12 +425,14 @@ export type ReturnCountOrderByAggregateInput = {
 export type ReturnAvgOrderByAggregateInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ReturnMaxOrderByAggregateInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
   reason?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requested_at?: Prisma.SortOrder
   approved_at?: Prisma.SortOrder
@@ -418,6 +444,7 @@ export type ReturnMinOrderByAggregateInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
   reason?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requested_at?: Prisma.SortOrder
   approved_at?: Prisma.SortOrder
@@ -428,6 +455,7 @@ export type ReturnMinOrderByAggregateInput = {
 export type ReturnSumOrderByAggregateInput = {
   return_id?: Prisma.SortOrder
   order_item_id?: Prisma.SortOrder
+  quantity?: Prisma.SortOrder
 }
 
 export type ReturnCreateNestedManyWithoutOrder_itemsInput = {
@@ -478,6 +506,7 @@ export type Enumreturns_statusFieldUpdateOperationsInput = {
 
 export type ReturnCreateWithoutOrder_itemsInput = {
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at?: Date | string | null
   approved_at?: Date | string | null
@@ -488,6 +517,7 @@ export type ReturnCreateWithoutOrder_itemsInput = {
 export type ReturnUncheckedCreateWithoutOrder_itemsInput = {
   return_id?: number
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at?: Date | string | null
   approved_at?: Date | string | null
@@ -528,6 +558,7 @@ export type ReturnScalarWhereInput = {
   return_id?: Prisma.IntFilter<"Return"> | number
   order_item_id?: Prisma.IntFilter<"Return"> | number
   reason?: Prisma.StringFilter<"Return"> | string
+  quantity?: Prisma.IntFilter<"Return"> | number
   status?: Prisma.Enumreturns_statusFilter<"Return"> | $Enums.returns_status
   requested_at?: Prisma.DateTimeNullableFilter<"Return"> | Date | string | null
   approved_at?: Prisma.DateTimeNullableFilter<"Return"> | Date | string | null
@@ -538,6 +569,7 @@ export type ReturnScalarWhereInput = {
 export type ReturnCreateManyOrder_itemsInput = {
   return_id?: number
   reason: string
+  quantity: number
   status: $Enums.returns_status
   requested_at?: Date | string | null
   approved_at?: Date | string | null
@@ -547,6 +579,7 @@ export type ReturnCreateManyOrder_itemsInput = {
 
 export type ReturnUpdateWithoutOrder_itemsInput = {
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -557,6 +590,7 @@ export type ReturnUpdateWithoutOrder_itemsInput = {
 export type ReturnUncheckedUpdateWithoutOrder_itemsInput = {
   return_id?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -567,6 +601,7 @@ export type ReturnUncheckedUpdateWithoutOrder_itemsInput = {
 export type ReturnUncheckedUpdateManyWithoutOrder_itemsInput = {
   return_id?: Prisma.IntFieldUpdateOperationsInput | number
   reason?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.Enumreturns_statusFieldUpdateOperationsInput | $Enums.returns_status
   requested_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -580,6 +615,7 @@ export type ReturnSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   return_id?: boolean
   order_item_id?: boolean
   reason?: boolean
+  quantity?: boolean
   status?: boolean
   requested_at?: boolean
   approved_at?: boolean
@@ -592,6 +628,7 @@ export type ReturnSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   return_id?: boolean
   order_item_id?: boolean
   reason?: boolean
+  quantity?: boolean
   status?: boolean
   requested_at?: boolean
   approved_at?: boolean
@@ -604,6 +641,7 @@ export type ReturnSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   return_id?: boolean
   order_item_id?: boolean
   reason?: boolean
+  quantity?: boolean
   status?: boolean
   requested_at?: boolean
   approved_at?: boolean
@@ -616,6 +654,7 @@ export type ReturnSelectScalar = {
   return_id?: boolean
   order_item_id?: boolean
   reason?: boolean
+  quantity?: boolean
   status?: boolean
   requested_at?: boolean
   approved_at?: boolean
@@ -623,7 +662,7 @@ export type ReturnSelectScalar = {
   updated_at?: boolean
 }
 
-export type ReturnOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"return_id" | "order_item_id" | "reason" | "status" | "requested_at" | "approved_at" | "created_at" | "updated_at", ExtArgs["result"]["return"]>
+export type ReturnOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"return_id" | "order_item_id" | "reason" | "quantity" | "status" | "requested_at" | "approved_at" | "created_at" | "updated_at", ExtArgs["result"]["return"]>
 export type ReturnInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order_items?: boolean | Prisma.OrderItemDefaultArgs<ExtArgs>
 }
@@ -643,6 +682,7 @@ export type $ReturnPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     return_id: number
     order_item_id: number
     reason: string
+    quantity: number
     status: $Enums.returns_status
     requested_at: Date | null
     approved_at: Date | null
@@ -1075,6 +1115,7 @@ export interface ReturnFieldRefs {
   readonly return_id: Prisma.FieldRef<"Return", 'Int'>
   readonly order_item_id: Prisma.FieldRef<"Return", 'Int'>
   readonly reason: Prisma.FieldRef<"Return", 'String'>
+  readonly quantity: Prisma.FieldRef<"Return", 'Int'>
   readonly status: Prisma.FieldRef<"Return", 'returns_status'>
   readonly requested_at: Prisma.FieldRef<"Return", 'DateTime'>
   readonly approved_at: Prisma.FieldRef<"Return", 'DateTime'>

@@ -315,6 +315,7 @@ export const ReturnScalarFieldEnum = {
   return_id: 'return_id',
   order_item_id: 'order_item_id',
   reason: 'reason',
+  quantity: 'quantity',
   status: 'status',
   requested_at: 'requested_at',
   approved_at: 'approved_at',

@@ -68,7 +68,7 @@ model Cart {
 
 model Category {
   category_id   Int       @id @default(autoincrement())
-  category_name String    @db.VarChar(255) @unique
+  category_name String    @unique @db.VarChar(255)
   created_at    DateTime? @default(now()) @db.Timestamptz(6)
   updated_at    DateTime? @updatedAt @db.Timestamptz(6)
   products      Product[]
@@ -176,8 +176,8 @@ model Payment {
   orders            Order          @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
   refunds           Refund?
 
-  @@map("payments")
   @@index([order_id])
+  @@map("payments")
 }
 
 model ProductVariant {
@@ -252,6 +252,7 @@ model Return {
   return_id     Int            @id @default(autoincrement())
   order_item_id Int
   reason        String
+  quantity      Int
   status        returns_status
   requested_at  DateTime?      @db.Timestamptz(6)
   approved_at   DateTime?      @db.Timestamptz(6)
@@ -259,6 +260,7 @@ model Return {
   updated_at    DateTime?      @updatedAt @db.Timestamptz(6)
   order_items   OrderItem      @relation(fields: [order_item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction)
 
+  @@index([order_item_id])
   @@map("returns")
 }
 
