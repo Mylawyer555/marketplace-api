@@ -8,9 +8,12 @@ import {
   findOrderForPaymentProcessing,
   findOrderItemsForProcessing,
   findPaymentForProcessing,
+  findPaymentForRefund,
   findPendingPayment,
+  markOrderAsRefunded,
   markOrderPaid,
   markPaymentAsFailed,
+  markPaymentAsRefunded,
   markPaymentSuccess,
   releaseInventoryReservation,
 } from "./payments.repository";
@@ -234,5 +237,69 @@ export const failPaymentService = async (paymentId: number) => {
     );
 
     return markedFailed;
+  });
+};
+
+export const refundPaymentService = async (paymentId: number) => {
+  return db.$transaction(async (tx) => {
+    // Lock payment
+    const payment = await findPaymentForRefund(
+      paymentId,
+      tx,
+    );
+
+    if (payment.length === 0) {
+      throw new AppError(
+        "Payment does not exist",
+        StatusCodes.NOT_FOUND,
+      );
+    }
+
+    const paymentRecord = payment[0]!;
+
+    // Only successful payments can be refunded
+    if (paymentRecord.status !== "SUCCESS") {
+      throw new AppError(
+        "Only successful payments can be refunded",
+        StatusCodes.CONFLICT,
+      );
+    }
+
+    // Lock order
+    const order = await findOrderForPaymentProcessing(
+      paymentRecord.order_id,
+      tx,
+    );
+
+    if (order.length === 0) {
+      throw new AppError(
+        "Order does not exist",
+        StatusCodes.NOT_FOUND,
+      );
+    }
+
+    const orderRecord = order[0]!;
+
+    // Only PAID orders can be refunded
+    if (orderRecord.status !== "PAID") {
+      throw new AppError(
+        "Order must be PAID before it can be refunded",
+        StatusCodes.BAD_REQUEST,
+      );
+    }
+
+    // Payment → REFUNDED
+    const paymentRefunded = await markPaymentAsRefunded(
+      paymentId,
+      tx,
+    );
+
+    // Order → REFUNDED
+    await markOrderAsRefunded(
+      orderRecord.order_id,
+      tx,
+    );
+
+    return paymentRefunded;
   });
 };

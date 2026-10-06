@@ -1,7 +1,12 @@
 import z from "zod";
 import { paymentMethodSchema } from "./payments.validation";
 import { Decimal } from "../../generated/prisma/internal/prismaNamespace";
-import { order_status, payment_method, payment_status } from "../../generated/prisma/enums";
+import {
+  order_status,
+  payment_method,
+  payment_status,
+  refund_status,
+} from "../../generated/prisma/enums";
 
 export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
 
@@ -31,3 +36,12 @@ export type InventoryLock = {
   updated_at: Date | null;
 };
 
+export type RefundLock = {
+  refund_id: number;
+  payment_id: number;
+  amount: Decimal;
+  status: refund_status;
+  processed_at: Date | null;
+  created_at: Date | null;
+  updated_at: Date | null;
+};

@@ -5,6 +5,7 @@ import {
   OrderLock,
   PaymentLock,
   PaymentMethod,
+  RefundLock,
 } from "./payments.types";
 import { Prisma } from "../../generated/prisma/client";
 
@@ -169,6 +170,46 @@ export const markPaymentAsFailed = async (
     },
     data: {
       status: "FAILED",
+    },
+  });
+};
+
+export const findPaymentForRefund = async (
+  paymentId: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.$queryRaw<PaymentLock[]>`
+  SELECT *
+  FROM payments 
+  WHERE payment_id = ${paymentId}
+  FOR UPDATE 
+  `;
+};
+
+export const markOrderAsRefunded = async (
+  orderId: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.order.update({
+    where: {
+      order_id: orderId,
+    },
+    data: {
+      status: "REFUNDED",
+    },
+  });
+};
+
+export const markPaymentAsRefunded = async (
+  paymentId: number,
+  tx: Prisma.TransactionClient,
+) => {
+  return tx.payment.update({
+    where: {
+      payment_id: paymentId,
+    },
+    data: {
+      status: "REFUNDED",
     },
   });
 };

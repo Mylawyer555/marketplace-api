@@ -1,6 +1,11 @@
-import express from 'express';
-import { authenticate } from '../../middlewares/auth.middleware';
-import { createPaymentController, failPaymentController, processPaymentController } from './payments.controller';
+import express from "express";
+import { authenticate } from "../../middlewares/auth.middleware";
+import {
+  createPaymentController,
+  failPaymentController,
+  processPaymentController,
+  refundPaymentController,
+} from "./payments.controller";
 
 const paymentRoutes = express.Router();
 
@@ -10,10 +15,7 @@ paymentRoutes.post(
   authenticate,
   processPaymentController,
 );
-paymentRoutes.post(
-  "/:paymentId/fail",
-  authenticate,
-  failPaymentController,
-);
+paymentRoutes.post("/:paymentId/fail", authenticate, failPaymentController);
+paymentRoutes.post("/:paymentId/refund", authenticate, refundPaymentController);
 
-export default paymentRoutes
+export default paymentRoutes;
