@@ -1,0 +1,144 @@
+import * as runtime from "@prisma/client/runtime/client";
+import * as $Class from "./internal/class";
+import * as Prisma from "./internal/prismaNamespace";
+export * as $Enums from './enums';
+export * from "./enums";
+/**
+ * ## Prisma Client
+ *
+ * Type-safe database client for TypeScript
+ * @example
+ * ```
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
+ * // Fetch zero or more Addresses
+ * const addresses = await prisma.address.findMany()
+ * ```
+ *
+ * Read more in our [docs](https://pris.ly/d/client).
+ */
+export declare const PrismaClient: $Class.PrismaClientConstructor;
+export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>;
+export { Prisma };
+/**
+ * Model Address
+ *
+ */
+export type Address = Prisma.AddressModel;
+/**
+ * Model Auditlog
+ *
+ */
+export type Auditlog = Prisma.AuditlogModel;
+/**
+ * Model CartItem
+ *
+ */
+export type CartItem = Prisma.CartItemModel;
+/**
+ * Model Cart
+ *
+ */
+export type Cart = Prisma.CartModel;
+/**
+ * Model Category
+ *
+ */
+export type Category = Prisma.CategoryModel;
+/**
+ * Model Coupon
+ *
+ */
+export type Coupon = Prisma.CouponModel;
+/**
+ * Model Inventory
+ *
+ */
+export type Inventory = Prisma.InventoryModel;
+/**
+ * Model Notification
+ *
+ */
+export type Notification = Prisma.NotificationModel;
+/**
+ * Model OrderItem
+ *
+ */
+export type OrderItem = Prisma.OrderItemModel;
+/**
+ * Model Order
+ *
+ */
+export type Order = Prisma.OrderModel;
+/**
+ * Model Payment
+ *
+ */
+export type Payment = Prisma.PaymentModel;
+/**
+ * Model ProductVariant
+ *
+ */
+export type ProductVariant = Prisma.ProductVariantModel;
+/**
+ * Model ProductImage
+ *
+ */
+export type ProductImage = Prisma.ProductImageModel;
+/**
+ * Model Product
+ *
+ */
+export type Product = Prisma.ProductModel;
+/**
+ * Model Refund
+ *
+ */
+export type Refund = Prisma.RefundModel;
+/**
+ * Model Return
+ *
+ */
+export type Return = Prisma.ReturnModel;
+/**
+ * Model Review
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type Review = Prisma.ReviewModel;
+/**
+ * Model SellersPayout
+ *
+ */
+export type SellersPayout = Prisma.SellersPayoutModel;
+/**
+ * Model ShippingInfo
+ *
+ */
+export type ShippingInfo = Prisma.ShippingInfoModel;
+/**
+ * Model Store
+ *
+ */
+export type Store = Prisma.StoreModel;
+/**
+ * Model User
+ *
+ */
+export type User = Prisma.UserModel;
+/**
+ * Model Wishlist
+ *
+ */
+export type Wishlist = Prisma.WishlistModel;
+/**
+ * Model RefreshToken
+ *
+ */
+export type RefreshToken = Prisma.RefreshTokenModel;
+/**
+ * Model ResetToken
+ *
+ */
+export type ResetToken = Prisma.ResetTokenModel;
+//# sourceMappingURL=client.d.ts.map

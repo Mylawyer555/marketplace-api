@@ -1,0 +1,1 @@
+{"version":3,"file":"stores.type.d.ts","sourceRoot":"","sources":["../../../src/modules/stores/stores.type.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,CAAC,EAAC,MAAM,KAAK,CAAC;AACtB,OAAO,EAAE,iBAAiB,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AAE3E,MAAM,MAAM,WAAW,GAAG,CAAC,CAAC,KAAK,CAAC,OAAO,iBAAiB,CAAC,CAAC;AAE5D,MAAM,MAAM,WAAW,GAAG,CAAC,CAAC,KAAK,CAAC,OAAO,iBAAiB,CAAC,CAAA"}

@@ -7,6 +7,7 @@ import {
   findOrderForPayment,
   findOrderForPaymentProcessing,
   findOrderItemsForProcessing,
+  findPaymentByIdempotencyKey,
   findPaymentForProcessing,
   findPaymentForRefund,
   findPendingPayment,
@@ -20,51 +21,94 @@ import {
 import { PaymentMethod } from "./payments.types";
 import { generatePaymentReference } from "../../utils/payment_reference_generator";
 import { db } from "../../config/db";
+import { Prisma } from "../../generated/prisma/client";
 
 export const createPaymentService = async (
   orderId: number,
   userId: number,
   data: PaymentMethod,
+  key: string,
 ) => {
-  const order = await findOrderForPayment(orderId);
-  if (!order) {
-    throw new AppError("order does not exist", StatusCodes.NOT_FOUND);
-  }
+  try {
+    const order = await findOrderForPayment(orderId);
+    if (!order) {
+      throw new AppError("order does not exist", StatusCodes.NOT_FOUND);
+    }
 
-  if (order.buyer_id !== userId) {
-    throw new AppError(
-      "You're not permitted to perform this action",
-      StatusCodes.FORBIDDEN,
+    if (order.buyer_id !== userId) {
+      throw new AppError(
+        "You're not permitted to perform this action",
+        StatusCodes.FORBIDDEN,
+      );
+    }
+
+    const existingPayment = await findPaymentByIdempotencyKey(key);
+
+    if (existingPayment) {
+      if (
+        existingPayment.order_id !== orderId ||
+        existingPayment.method !== data.method
+      ) {
+        throw new AppError(
+          "Idempotency key was already used for a different request",
+          StatusCodes.CONFLICT,
+        );
+      }
+
+      return existingPayment;
+    }
+
+    if (order.status !== "PENDING") {
+      throw new AppError(
+        `Order must be PENDING to proceed`,
+        StatusCodes.BAD_REQUEST,
+      );
+    }
+
+    const payment = await findPendingPayment(orderId);
+    if (payment) {
+      throw new AppError(
+        "Payment already exist for this order",
+        StatusCodes.CONFLICT,
+      );
+    }
+
+    const amount = order.total_amount;
+
+    const payment_reference = generatePaymentReference();
+
+    const newPayment = await createPayment(
+      orderId,
+      payment_reference,
+      amount,
+      data,
+      key,
     );
+
+    return newPayment;
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const existingPayment = await findPaymentByIdempotencyKey(key);
+
+      if (existingPayment) {
+        if (
+          existingPayment.order_id !== orderId ||
+          existingPayment.method !== data.method
+        ) {
+          throw new AppError(
+            "Idempotency key was already used for a different request",
+            StatusCodes.CONFLICT,
+          );
+        }
+        return existingPayment;
+      }
+      // The unique constraint violation wasn't resolved by the idempotency lookup.
+    }
+    throw error;
   }
-
-  if (order.status !== "PENDING") {
-    throw new AppError(
-      `Order must be PENDING to proceed`,
-      StatusCodes.BAD_REQUEST,
-    );
-  }
-
-  const payment = await findPendingPayment(orderId);
-  if (payment) {
-    throw new AppError(
-      "Payment already exist for this order",
-      StatusCodes.CONFLICT,
-    );
-  }
-
-  const amount = order.total_amount;
-
-  const payment_reference = generatePaymentReference();
-
-  const newPayment = await createPayment(
-    orderId,
-    payment_reference,
-    amount,
-    data,
-  );
-
-  return newPayment;
 };
 
 export const processPaymentService = async (paymentId: number) => {
@@ -243,16 +287,10 @@ export const failPaymentService = async (paymentId: number) => {
 export const refundPaymentService = async (paymentId: number) => {
   return db.$transaction(async (tx) => {
     // Lock payment
-    const payment = await findPaymentForRefund(
-      paymentId,
-      tx,
-    );
+    const payment = await findPaymentForRefund(paymentId, tx);
 
     if (payment.length === 0) {
-      throw new AppError(
-        "Payment does not exist",
-        StatusCodes.NOT_FOUND,
-      );
+      throw new AppError("Payment does not exist", StatusCodes.NOT_FOUND);
     }
 
     const paymentRecord = payment[0]!;
@@ -272,10 +310,7 @@ export const refundPaymentService = async (paymentId: number) => {
     );
 
     if (order.length === 0) {
-      throw new AppError(
-        "Order does not exist",
-        StatusCodes.NOT_FOUND,
-      );
+      throw new AppError("Order does not exist", StatusCodes.NOT_FOUND);
     }
 
     const orderRecord = order[0]!;
@@ -289,16 +324,10 @@ export const refundPaymentService = async (paymentId: number) => {
     }
 
     // Payment → REFUNDED
-    const paymentRefunded = await markPaymentAsRefunded(
-      paymentId,
-      tx,
-    );
+    const paymentRefunded = await markPaymentAsRefunded(paymentId, tx);
 
     // Order → REFUNDED
-    await markOrderAsRefunded(
-      orderRecord.order_id,
-      tx,
-    );
+    await markOrderAsRefunded(orderRecord.order_id, tx);
 
     return paymentRefunded;
   });

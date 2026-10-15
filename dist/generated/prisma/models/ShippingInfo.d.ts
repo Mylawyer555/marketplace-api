@@ -1,0 +1,1394 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums";
+import type * as Prisma from "../internal/prismaNamespace";
+/**
+ * Model ShippingInfo
+ *
+ */
+export type ShippingInfoModel = runtime.Types.Result.DefaultSelection<Prisma.$ShippingInfoPayload>;
+export type AggregateShippingInfo = {
+    _count: ShippingInfoCountAggregateOutputType | null;
+    _avg: ShippingInfoAvgAggregateOutputType | null;
+    _sum: ShippingInfoSumAggregateOutputType | null;
+    _min: ShippingInfoMinAggregateOutputType | null;
+    _max: ShippingInfoMaxAggregateOutputType | null;
+};
+export type ShippingInfoAvgAggregateOutputType = {
+    shipping_id: number | null;
+    order_id: number | null;
+};
+export type ShippingInfoSumAggregateOutputType = {
+    shipping_id: number | null;
+    order_id: number | null;
+};
+export type ShippingInfoMinAggregateOutputType = {
+    shipping_id: number | null;
+    order_id: number | null;
+    courier_name: string | null;
+    tracking_number: string | null;
+    shipping_status: $Enums.shipping_status | null;
+    estimated_delivery_date: Date | null;
+    shipped_at: Date | null;
+    delivered_at: Date | null;
+    created_at: Date | null;
+    updated_at: Date | null;
+};
+export type ShippingInfoMaxAggregateOutputType = {
+    shipping_id: number | null;
+    order_id: number | null;
+    courier_name: string | null;
+    tracking_number: string | null;
+    shipping_status: $Enums.shipping_status | null;
+    estimated_delivery_date: Date | null;
+    shipped_at: Date | null;
+    delivered_at: Date | null;
+    created_at: Date | null;
+    updated_at: Date | null;
+};
+export type ShippingInfoCountAggregateOutputType = {
+    shipping_id: number;
+    order_id: number;
+    courier_name: number;
+    tracking_number: number;
+    shipping_status: number;
+    estimated_delivery_date: number;
+    shipped_at: number;
+    delivered_at: number;
+    created_at: number;
+    updated_at: number;
+    _all: number;
+};
+export type ShippingInfoAvgAggregateInputType = {
+    shipping_id?: true;
+    order_id?: true;
+};
+export type ShippingInfoSumAggregateInputType = {
+    shipping_id?: true;
+    order_id?: true;
+};
+export type ShippingInfoMinAggregateInputType = {
+    shipping_id?: true;
+    order_id?: true;
+    courier_name?: true;
+    tracking_number?: true;
+    shipping_status?: true;
+    estimated_delivery_date?: true;
+    shipped_at?: true;
+    delivered_at?: true;
+    created_at?: true;
+    updated_at?: true;
+};
+export type ShippingInfoMaxAggregateInputType = {
+    shipping_id?: true;
+    order_id?: true;
+    courier_name?: true;
+    tracking_number?: true;
+    shipping_status?: true;
+    estimated_delivery_date?: true;
+    shipped_at?: true;
+    delivered_at?: true;
+    created_at?: true;
+    updated_at?: true;
+};
+export type ShippingInfoCountAggregateInputType = {
+    shipping_id?: true;
+    order_id?: true;
+    courier_name?: true;
+    tracking_number?: true;
+    shipping_status?: true;
+    estimated_delivery_date?: true;
+    shipped_at?: true;
+    delivered_at?: true;
+    created_at?: true;
+    updated_at?: true;
+    _all?: true;
+};
+export type ShippingInfoAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingInfo to aggregate.
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ShippingInfos to fetch.
+     */
+    orderBy?: Prisma.ShippingInfoOrderByWithRelationInput | Prisma.ShippingInfoOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.ShippingInfoWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ShippingInfos from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ShippingInfos.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned ShippingInfos
+    **/
+    _count?: true | ShippingInfoCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: ShippingInfoAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: ShippingInfoSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShippingInfoMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShippingInfoMaxAggregateInputType;
+};
+export type GetShippingInfoAggregateType<T extends ShippingInfoAggregateArgs> = {
+    [P in keyof T & keyof AggregateShippingInfo]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateShippingInfo[P]> : Prisma.GetScalarType<T[P], AggregateShippingInfo[P]>;
+};
+export type ShippingInfoGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ShippingInfoWhereInput;
+    orderBy?: Prisma.ShippingInfoOrderByWithAggregationInput | Prisma.ShippingInfoOrderByWithAggregationInput[];
+    by: Prisma.ShippingInfoScalarFieldEnum[] | Prisma.ShippingInfoScalarFieldEnum;
+    having?: Prisma.ShippingInfoScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: ShippingInfoCountAggregateInputType | true;
+    _avg?: ShippingInfoAvgAggregateInputType;
+    _sum?: ShippingInfoSumAggregateInputType;
+    _min?: ShippingInfoMinAggregateInputType;
+    _max?: ShippingInfoMaxAggregateInputType;
+};
+export type ShippingInfoGroupByOutputType = {
+    shipping_id: number;
+    order_id: number;
+    courier_name: string;
+    tracking_number: string | null;
+    shipping_status: $Enums.shipping_status;
+    estimated_delivery_date: Date | null;
+    shipped_at: Date | null;
+    delivered_at: Date | null;
+    created_at: Date | null;
+    updated_at: Date | null;
+    _count: ShippingInfoCountAggregateOutputType | null;
+    _avg: ShippingInfoAvgAggregateOutputType | null;
+    _sum: ShippingInfoSumAggregateOutputType | null;
+    _min: ShippingInfoMinAggregateOutputType | null;
+    _max: ShippingInfoMaxAggregateOutputType | null;
+};
+export type GetShippingInfoGroupByPayload<T extends ShippingInfoGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<ShippingInfoGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof ShippingInfoGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], ShippingInfoGroupByOutputType[P]> : Prisma.GetScalarType<T[P], ShippingInfoGroupByOutputType[P]>;
+}>>;
+export type ShippingInfoWhereInput = {
+    AND?: Prisma.ShippingInfoWhereInput | Prisma.ShippingInfoWhereInput[];
+    OR?: Prisma.ShippingInfoWhereInput[];
+    NOT?: Prisma.ShippingInfoWhereInput | Prisma.ShippingInfoWhereInput[];
+    shipping_id?: Prisma.IntFilter<"ShippingInfo"> | number;
+    order_id?: Prisma.IntFilter<"ShippingInfo"> | number;
+    courier_name?: Prisma.StringFilter<"ShippingInfo"> | string;
+    tracking_number?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFilter<"ShippingInfo"> | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    shipped_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    delivered_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    created_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    updated_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    orders?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>;
+};
+export type ShippingInfoOrderByWithRelationInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+    courier_name?: Prisma.SortOrder;
+    tracking_number?: Prisma.SortOrderInput | Prisma.SortOrder;
+    shipping_status?: Prisma.SortOrder;
+    estimated_delivery_date?: Prisma.SortOrderInput | Prisma.SortOrder;
+    shipped_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    delivered_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    created_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    updated_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    orders?: Prisma.OrderOrderByWithRelationInput;
+};
+export type ShippingInfoWhereUniqueInput = Prisma.AtLeast<{
+    shipping_id?: number;
+    tracking_number?: string;
+    AND?: Prisma.ShippingInfoWhereInput | Prisma.ShippingInfoWhereInput[];
+    OR?: Prisma.ShippingInfoWhereInput[];
+    NOT?: Prisma.ShippingInfoWhereInput | Prisma.ShippingInfoWhereInput[];
+    order_id?: Prisma.IntFilter<"ShippingInfo"> | number;
+    courier_name?: Prisma.StringFilter<"ShippingInfo"> | string;
+    shipping_status?: Prisma.Enumshipping_statusFilter<"ShippingInfo"> | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    shipped_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    delivered_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    created_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    updated_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    orders?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>;
+}, "shipping_id" | "tracking_number">;
+export type ShippingInfoOrderByWithAggregationInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+    courier_name?: Prisma.SortOrder;
+    tracking_number?: Prisma.SortOrderInput | Prisma.SortOrder;
+    shipping_status?: Prisma.SortOrder;
+    estimated_delivery_date?: Prisma.SortOrderInput | Prisma.SortOrder;
+    shipped_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    delivered_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    created_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    updated_at?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.ShippingInfoCountOrderByAggregateInput;
+    _avg?: Prisma.ShippingInfoAvgOrderByAggregateInput;
+    _max?: Prisma.ShippingInfoMaxOrderByAggregateInput;
+    _min?: Prisma.ShippingInfoMinOrderByAggregateInput;
+    _sum?: Prisma.ShippingInfoSumOrderByAggregateInput;
+};
+export type ShippingInfoScalarWhereWithAggregatesInput = {
+    AND?: Prisma.ShippingInfoScalarWhereWithAggregatesInput | Prisma.ShippingInfoScalarWhereWithAggregatesInput[];
+    OR?: Prisma.ShippingInfoScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.ShippingInfoScalarWhereWithAggregatesInput | Prisma.ShippingInfoScalarWhereWithAggregatesInput[];
+    shipping_id?: Prisma.IntWithAggregatesFilter<"ShippingInfo"> | number;
+    order_id?: Prisma.IntWithAggregatesFilter<"ShippingInfo"> | number;
+    courier_name?: Prisma.StringWithAggregatesFilter<"ShippingInfo"> | string;
+    tracking_number?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null;
+    shipping_status?: Prisma.Enumshipping_statusWithAggregatesFilter<"ShippingInfo"> | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.DateTimeNullableWithAggregatesFilter<"ShippingInfo"> | Date | string | null;
+    shipped_at?: Prisma.DateTimeNullableWithAggregatesFilter<"ShippingInfo"> | Date | string | null;
+    delivered_at?: Prisma.DateTimeNullableWithAggregatesFilter<"ShippingInfo"> | Date | string | null;
+    created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"ShippingInfo"> | Date | string | null;
+    updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"ShippingInfo"> | Date | string | null;
+};
+export type ShippingInfoCreateInput = {
+    courier_name: string;
+    tracking_number?: string | null;
+    shipping_status?: $Enums.shipping_status;
+    estimated_delivery_date?: Date | string | null;
+    shipped_at?: Date | string | null;
+    delivered_at?: Date | string | null;
+    created_at?: Date | string | null;
+    updated_at?: Date | string | null;
+    orders: Prisma.OrderCreateNestedOneWithoutShippinginfoInput;
+};
+export type ShippingInfoUncheckedCreateInput = {
+    shipping_id?: number;
+    order_id: number;
+    courier_name: string;
+    tracking_number?: string | null;
+    shipping_status?: $Enums.shipping_status;
+    estimated_delivery_date?: Date | string | null;
+    shipped_at?: Date | string | null;
+    delivered_at?: Date | string | null;
+    created_at?: Date | string | null;
+    updated_at?: Date | string | null;
+};
+export type ShippingInfoUpdateInput = {
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    orders?: Prisma.OrderUpdateOneRequiredWithoutShippinginfoNestedInput;
+};
+export type ShippingInfoUncheckedUpdateInput = {
+    shipping_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    order_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ShippingInfoCreateManyInput = {
+    shipping_id?: number;
+    order_id: number;
+    courier_name: string;
+    tracking_number?: string | null;
+    shipping_status?: $Enums.shipping_status;
+    estimated_delivery_date?: Date | string | null;
+    shipped_at?: Date | string | null;
+    delivered_at?: Date | string | null;
+    created_at?: Date | string | null;
+    updated_at?: Date | string | null;
+};
+export type ShippingInfoUpdateManyMutationInput = {
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ShippingInfoUncheckedUpdateManyInput = {
+    shipping_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    order_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ShippingInfoListRelationFilter = {
+    every?: Prisma.ShippingInfoWhereInput;
+    some?: Prisma.ShippingInfoWhereInput;
+    none?: Prisma.ShippingInfoWhereInput;
+};
+export type ShippingInfoOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type ShippingInfoCountOrderByAggregateInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+    courier_name?: Prisma.SortOrder;
+    tracking_number?: Prisma.SortOrder;
+    shipping_status?: Prisma.SortOrder;
+    estimated_delivery_date?: Prisma.SortOrder;
+    shipped_at?: Prisma.SortOrder;
+    delivered_at?: Prisma.SortOrder;
+    created_at?: Prisma.SortOrder;
+    updated_at?: Prisma.SortOrder;
+};
+export type ShippingInfoAvgOrderByAggregateInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+};
+export type ShippingInfoMaxOrderByAggregateInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+    courier_name?: Prisma.SortOrder;
+    tracking_number?: Prisma.SortOrder;
+    shipping_status?: Prisma.SortOrder;
+    estimated_delivery_date?: Prisma.SortOrder;
+    shipped_at?: Prisma.SortOrder;
+    delivered_at?: Prisma.SortOrder;
+    created_at?: Prisma.SortOrder;
+    updated_at?: Prisma.SortOrder;
+};
+export type ShippingInfoMinOrderByAggregateInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+    courier_name?: Prisma.SortOrder;
+    tracking_number?: Prisma.SortOrder;
+    shipping_status?: Prisma.SortOrder;
+    estimated_delivery_date?: Prisma.SortOrder;
+    shipped_at?: Prisma.SortOrder;
+    delivered_at?: Prisma.SortOrder;
+    created_at?: Prisma.SortOrder;
+    updated_at?: Prisma.SortOrder;
+};
+export type ShippingInfoSumOrderByAggregateInput = {
+    shipping_id?: Prisma.SortOrder;
+    order_id?: Prisma.SortOrder;
+};
+export type ShippingInfoCreateNestedManyWithoutOrdersInput = {
+    create?: Prisma.XOR<Prisma.ShippingInfoCreateWithoutOrdersInput, Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput> | Prisma.ShippingInfoCreateWithoutOrdersInput[] | Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput[];
+    connectOrCreate?: Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput | Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput[];
+    createMany?: Prisma.ShippingInfoCreateManyOrdersInputEnvelope;
+    connect?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+};
+export type ShippingInfoUncheckedCreateNestedManyWithoutOrdersInput = {
+    create?: Prisma.XOR<Prisma.ShippingInfoCreateWithoutOrdersInput, Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput> | Prisma.ShippingInfoCreateWithoutOrdersInput[] | Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput[];
+    connectOrCreate?: Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput | Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput[];
+    createMany?: Prisma.ShippingInfoCreateManyOrdersInputEnvelope;
+    connect?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+};
+export type ShippingInfoUpdateManyWithoutOrdersNestedInput = {
+    create?: Prisma.XOR<Prisma.ShippingInfoCreateWithoutOrdersInput, Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput> | Prisma.ShippingInfoCreateWithoutOrdersInput[] | Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput[];
+    connectOrCreate?: Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput | Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput[];
+    upsert?: Prisma.ShippingInfoUpsertWithWhereUniqueWithoutOrdersInput | Prisma.ShippingInfoUpsertWithWhereUniqueWithoutOrdersInput[];
+    createMany?: Prisma.ShippingInfoCreateManyOrdersInputEnvelope;
+    set?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    disconnect?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    delete?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    connect?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    update?: Prisma.ShippingInfoUpdateWithWhereUniqueWithoutOrdersInput | Prisma.ShippingInfoUpdateWithWhereUniqueWithoutOrdersInput[];
+    updateMany?: Prisma.ShippingInfoUpdateManyWithWhereWithoutOrdersInput | Prisma.ShippingInfoUpdateManyWithWhereWithoutOrdersInput[];
+    deleteMany?: Prisma.ShippingInfoScalarWhereInput | Prisma.ShippingInfoScalarWhereInput[];
+};
+export type ShippingInfoUncheckedUpdateManyWithoutOrdersNestedInput = {
+    create?: Prisma.XOR<Prisma.ShippingInfoCreateWithoutOrdersInput, Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput> | Prisma.ShippingInfoCreateWithoutOrdersInput[] | Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput[];
+    connectOrCreate?: Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput | Prisma.ShippingInfoCreateOrConnectWithoutOrdersInput[];
+    upsert?: Prisma.ShippingInfoUpsertWithWhereUniqueWithoutOrdersInput | Prisma.ShippingInfoUpsertWithWhereUniqueWithoutOrdersInput[];
+    createMany?: Prisma.ShippingInfoCreateManyOrdersInputEnvelope;
+    set?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    disconnect?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    delete?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    connect?: Prisma.ShippingInfoWhereUniqueInput | Prisma.ShippingInfoWhereUniqueInput[];
+    update?: Prisma.ShippingInfoUpdateWithWhereUniqueWithoutOrdersInput | Prisma.ShippingInfoUpdateWithWhereUniqueWithoutOrdersInput[];
+    updateMany?: Prisma.ShippingInfoUpdateManyWithWhereWithoutOrdersInput | Prisma.ShippingInfoUpdateManyWithWhereWithoutOrdersInput[];
+    deleteMany?: Prisma.ShippingInfoScalarWhereInput | Prisma.ShippingInfoScalarWhereInput[];
+};
+export type Enumshipping_statusFieldUpdateOperationsInput = {
+    set?: $Enums.shipping_status;
+};
+export type ShippingInfoCreateWithoutOrdersInput = {
+    courier_name: string;
+    tracking_number?: string | null;
+    shipping_status?: $Enums.shipping_status;
+    estimated_delivery_date?: Date | string | null;
+    shipped_at?: Date | string | null;
+    delivered_at?: Date | string | null;
+    created_at?: Date | string | null;
+    updated_at?: Date | string | null;
+};
+export type ShippingInfoUncheckedCreateWithoutOrdersInput = {
+    shipping_id?: number;
+    courier_name: string;
+    tracking_number?: string | null;
+    shipping_status?: $Enums.shipping_status;
+    estimated_delivery_date?: Date | string | null;
+    shipped_at?: Date | string | null;
+    delivered_at?: Date | string | null;
+    created_at?: Date | string | null;
+    updated_at?: Date | string | null;
+};
+export type ShippingInfoCreateOrConnectWithoutOrdersInput = {
+    where: Prisma.ShippingInfoWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ShippingInfoCreateWithoutOrdersInput, Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput>;
+};
+export type ShippingInfoCreateManyOrdersInputEnvelope = {
+    data: Prisma.ShippingInfoCreateManyOrdersInput | Prisma.ShippingInfoCreateManyOrdersInput[];
+    skipDuplicates?: boolean;
+};
+export type ShippingInfoUpsertWithWhereUniqueWithoutOrdersInput = {
+    where: Prisma.ShippingInfoWhereUniqueInput;
+    update: Prisma.XOR<Prisma.ShippingInfoUpdateWithoutOrdersInput, Prisma.ShippingInfoUncheckedUpdateWithoutOrdersInput>;
+    create: Prisma.XOR<Prisma.ShippingInfoCreateWithoutOrdersInput, Prisma.ShippingInfoUncheckedCreateWithoutOrdersInput>;
+};
+export type ShippingInfoUpdateWithWhereUniqueWithoutOrdersInput = {
+    where: Prisma.ShippingInfoWhereUniqueInput;
+    data: Prisma.XOR<Prisma.ShippingInfoUpdateWithoutOrdersInput, Prisma.ShippingInfoUncheckedUpdateWithoutOrdersInput>;
+};
+export type ShippingInfoUpdateManyWithWhereWithoutOrdersInput = {
+    where: Prisma.ShippingInfoScalarWhereInput;
+    data: Prisma.XOR<Prisma.ShippingInfoUpdateManyMutationInput, Prisma.ShippingInfoUncheckedUpdateManyWithoutOrdersInput>;
+};
+export type ShippingInfoScalarWhereInput = {
+    AND?: Prisma.ShippingInfoScalarWhereInput | Prisma.ShippingInfoScalarWhereInput[];
+    OR?: Prisma.ShippingInfoScalarWhereInput[];
+    NOT?: Prisma.ShippingInfoScalarWhereInput | Prisma.ShippingInfoScalarWhereInput[];
+    shipping_id?: Prisma.IntFilter<"ShippingInfo"> | number;
+    order_id?: Prisma.IntFilter<"ShippingInfo"> | number;
+    courier_name?: Prisma.StringFilter<"ShippingInfo"> | string;
+    tracking_number?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFilter<"ShippingInfo"> | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    shipped_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    delivered_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    created_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+    updated_at?: Prisma.DateTimeNullableFilter<"ShippingInfo"> | Date | string | null;
+};
+export type ShippingInfoCreateManyOrdersInput = {
+    shipping_id?: number;
+    courier_name: string;
+    tracking_number?: string | null;
+    shipping_status?: $Enums.shipping_status;
+    estimated_delivery_date?: Date | string | null;
+    shipped_at?: Date | string | null;
+    delivered_at?: Date | string | null;
+    created_at?: Date | string | null;
+    updated_at?: Date | string | null;
+};
+export type ShippingInfoUpdateWithoutOrdersInput = {
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ShippingInfoUncheckedUpdateWithoutOrdersInput = {
+    shipping_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ShippingInfoUncheckedUpdateManyWithoutOrdersInput = {
+    shipping_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    courier_name?: Prisma.StringFieldUpdateOperationsInput | string;
+    tracking_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    shipping_status?: Prisma.Enumshipping_statusFieldUpdateOperationsInput | $Enums.shipping_status;
+    estimated_delivery_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    shipped_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    delivered_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type ShippingInfoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    shipping_id?: boolean;
+    order_id?: boolean;
+    courier_name?: boolean;
+    tracking_number?: boolean;
+    shipping_status?: boolean;
+    estimated_delivery_date?: boolean;
+    shipped_at?: boolean;
+    delivered_at?: boolean;
+    created_at?: boolean;
+    updated_at?: boolean;
+    orders?: boolean | Prisma.OrderDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["shippingInfo"]>;
+export type ShippingInfoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    shipping_id?: boolean;
+    order_id?: boolean;
+    courier_name?: boolean;
+    tracking_number?: boolean;
+    shipping_status?: boolean;
+    estimated_delivery_date?: boolean;
+    shipped_at?: boolean;
+    delivered_at?: boolean;
+    created_at?: boolean;
+    updated_at?: boolean;
+    orders?: boolean | Prisma.OrderDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["shippingInfo"]>;
+export type ShippingInfoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    shipping_id?: boolean;
+    order_id?: boolean;
+    courier_name?: boolean;
+    tracking_number?: boolean;
+    shipping_status?: boolean;
+    estimated_delivery_date?: boolean;
+    shipped_at?: boolean;
+    delivered_at?: boolean;
+    created_at?: boolean;
+    updated_at?: boolean;
+    orders?: boolean | Prisma.OrderDefaultArgs<ExtArgs>;
+}, ExtArgs["result"]["shippingInfo"]>;
+export type ShippingInfoSelectScalar = {
+    shipping_id?: boolean;
+    order_id?: boolean;
+    courier_name?: boolean;
+    tracking_number?: boolean;
+    shipping_status?: boolean;
+    estimated_delivery_date?: boolean;
+    shipped_at?: boolean;
+    delivered_at?: boolean;
+    created_at?: boolean;
+    updated_at?: boolean;
+};
+export type ShippingInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"shipping_id" | "order_id" | "courier_name" | "tracking_number" | "shipping_status" | "estimated_delivery_date" | "shipped_at" | "delivered_at" | "created_at" | "updated_at", ExtArgs["result"]["shippingInfo"]>;
+export type ShippingInfoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    orders?: boolean | Prisma.OrderDefaultArgs<ExtArgs>;
+};
+export type ShippingInfoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    orders?: boolean | Prisma.OrderDefaultArgs<ExtArgs>;
+};
+export type ShippingInfoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    orders?: boolean | Prisma.OrderDefaultArgs<ExtArgs>;
+};
+export type $ShippingInfoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "ShippingInfo";
+    objects: {
+        orders: Prisma.$OrderPayload<ExtArgs>;
+    };
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        shipping_id: number;
+        order_id: number;
+        courier_name: string;
+        tracking_number: string | null;
+        shipping_status: $Enums.shipping_status;
+        estimated_delivery_date: Date | null;
+        shipped_at: Date | null;
+        delivered_at: Date | null;
+        created_at: Date | null;
+        updated_at: Date | null;
+    }, ExtArgs["result"]["shippingInfo"]>;
+    composites: {};
+};
+export type ShippingInfoGetPayload<S extends boolean | null | undefined | ShippingInfoDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload, S>;
+export type ShippingInfoCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<ShippingInfoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: ShippingInfoCountAggregateInputType | true;
+};
+export interface ShippingInfoDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['ShippingInfo'];
+        meta: {
+            name: 'ShippingInfo';
+        };
+    };
+    /**
+     * Find zero or one ShippingInfo that matches the filter.
+     * @param {ShippingInfoFindUniqueArgs} args - Arguments to find a ShippingInfo
+     * @example
+     * // Get one ShippingInfo
+     * const shippingInfo = await prisma.shippingInfo.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShippingInfoFindUniqueArgs>(args: Prisma.SelectSubset<T, ShippingInfoFindUniqueArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one ShippingInfo that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ShippingInfoFindUniqueOrThrowArgs} args - Arguments to find a ShippingInfo
+     * @example
+     * // Get one ShippingInfo
+     * const shippingInfo = await prisma.shippingInfo.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShippingInfoFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, ShippingInfoFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first ShippingInfo that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoFindFirstArgs} args - Arguments to find a ShippingInfo
+     * @example
+     * // Get one ShippingInfo
+     * const shippingInfo = await prisma.shippingInfo.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShippingInfoFindFirstArgs>(args?: Prisma.SelectSubset<T, ShippingInfoFindFirstArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first ShippingInfo that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoFindFirstOrThrowArgs} args - Arguments to find a ShippingInfo
+     * @example
+     * // Get one ShippingInfo
+     * const shippingInfo = await prisma.shippingInfo.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShippingInfoFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, ShippingInfoFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more ShippingInfos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ShippingInfos
+     * const shippingInfos = await prisma.shippingInfo.findMany()
+     *
+     * // Get first 10 ShippingInfos
+     * const shippingInfos = await prisma.shippingInfo.findMany({ take: 10 })
+     *
+     * // Only select the `shipping_id`
+     * const shippingInfoWithShipping_idOnly = await prisma.shippingInfo.findMany({ select: { shipping_id: true } })
+     *
+     */
+    findMany<T extends ShippingInfoFindManyArgs>(args?: Prisma.SelectSubset<T, ShippingInfoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a ShippingInfo.
+     * @param {ShippingInfoCreateArgs} args - Arguments to create a ShippingInfo.
+     * @example
+     * // Create one ShippingInfo
+     * const ShippingInfo = await prisma.shippingInfo.create({
+     *   data: {
+     *     // ... data to create a ShippingInfo
+     *   }
+     * })
+     *
+     */
+    create<T extends ShippingInfoCreateArgs>(args: Prisma.SelectSubset<T, ShippingInfoCreateArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many ShippingInfos.
+     * @param {ShippingInfoCreateManyArgs} args - Arguments to create many ShippingInfos.
+     * @example
+     * // Create many ShippingInfos
+     * const shippingInfo = await prisma.shippingInfo.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends ShippingInfoCreateManyArgs>(args?: Prisma.SelectSubset<T, ShippingInfoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many ShippingInfos and returns the data saved in the database.
+     * @param {ShippingInfoCreateManyAndReturnArgs} args - Arguments to create many ShippingInfos.
+     * @example
+     * // Create many ShippingInfos
+     * const shippingInfo = await prisma.shippingInfo.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many ShippingInfos and only return the `shipping_id`
+     * const shippingInfoWithShipping_idOnly = await prisma.shippingInfo.createManyAndReturn({
+     *   select: { shipping_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends ShippingInfoCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, ShippingInfoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a ShippingInfo.
+     * @param {ShippingInfoDeleteArgs} args - Arguments to delete one ShippingInfo.
+     * @example
+     * // Delete one ShippingInfo
+     * const ShippingInfo = await prisma.shippingInfo.delete({
+     *   where: {
+     *     // ... filter to delete one ShippingInfo
+     *   }
+     * })
+     *
+     */
+    delete<T extends ShippingInfoDeleteArgs>(args: Prisma.SelectSubset<T, ShippingInfoDeleteArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one ShippingInfo.
+     * @param {ShippingInfoUpdateArgs} args - Arguments to update one ShippingInfo.
+     * @example
+     * // Update one ShippingInfo
+     * const shippingInfo = await prisma.shippingInfo.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends ShippingInfoUpdateArgs>(args: Prisma.SelectSubset<T, ShippingInfoUpdateArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more ShippingInfos.
+     * @param {ShippingInfoDeleteManyArgs} args - Arguments to filter ShippingInfos to delete.
+     * @example
+     * // Delete a few ShippingInfos
+     * const { count } = await prisma.shippingInfo.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends ShippingInfoDeleteManyArgs>(args?: Prisma.SelectSubset<T, ShippingInfoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more ShippingInfos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ShippingInfos
+     * const shippingInfo = await prisma.shippingInfo.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends ShippingInfoUpdateManyArgs>(args: Prisma.SelectSubset<T, ShippingInfoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more ShippingInfos and returns the data updated in the database.
+     * @param {ShippingInfoUpdateManyAndReturnArgs} args - Arguments to update many ShippingInfos.
+     * @example
+     * // Update many ShippingInfos
+     * const shippingInfo = await prisma.shippingInfo.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more ShippingInfos and only return the `shipping_id`
+     * const shippingInfoWithShipping_idOnly = await prisma.shippingInfo.updateManyAndReturn({
+     *   select: { shipping_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends ShippingInfoUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, ShippingInfoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one ShippingInfo.
+     * @param {ShippingInfoUpsertArgs} args - Arguments to update or create a ShippingInfo.
+     * @example
+     * // Update or create a ShippingInfo
+     * const shippingInfo = await prisma.shippingInfo.upsert({
+     *   create: {
+     *     // ... data to create a ShippingInfo
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ShippingInfo we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShippingInfoUpsertArgs>(args: Prisma.SelectSubset<T, ShippingInfoUpsertArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of ShippingInfos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoCountArgs} args - Arguments to filter ShippingInfos to count.
+     * @example
+     * // Count the number of ShippingInfos
+     * const count = await prisma.shippingInfo.count({
+     *   where: {
+     *     // ... the filter for the ShippingInfos we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShippingInfoCountArgs>(args?: Prisma.Subset<T, ShippingInfoCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], ShippingInfoCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a ShippingInfo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShippingInfoAggregateArgs>(args: Prisma.Subset<T, ShippingInfoAggregateArgs>): Prisma.PrismaPromise<GetShippingInfoAggregateType<T>>;
+    /**
+     * Group by ShippingInfo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShippingInfoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends ShippingInfoGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: ShippingInfoGroupByArgs['orderBy'];
+    } : {
+        orderBy?: ShippingInfoGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, ShippingInfoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShippingInfoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the ShippingInfo model
+     */
+    readonly fields: ShippingInfoFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for ShippingInfo.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__ShippingInfoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    orders<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the ShippingInfo model
+ */
+export interface ShippingInfoFieldRefs {
+    readonly shipping_id: Prisma.FieldRef<"ShippingInfo", 'Int'>;
+    readonly order_id: Prisma.FieldRef<"ShippingInfo", 'Int'>;
+    readonly courier_name: Prisma.FieldRef<"ShippingInfo", 'String'>;
+    readonly tracking_number: Prisma.FieldRef<"ShippingInfo", 'String'>;
+    readonly shipping_status: Prisma.FieldRef<"ShippingInfo", 'shipping_status'>;
+    readonly estimated_delivery_date: Prisma.FieldRef<"ShippingInfo", 'DateTime'>;
+    readonly shipped_at: Prisma.FieldRef<"ShippingInfo", 'DateTime'>;
+    readonly delivered_at: Prisma.FieldRef<"ShippingInfo", 'DateTime'>;
+    readonly created_at: Prisma.FieldRef<"ShippingInfo", 'DateTime'>;
+    readonly updated_at: Prisma.FieldRef<"ShippingInfo", 'DateTime'>;
+}
+/**
+ * ShippingInfo findUnique
+ */
+export type ShippingInfoFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * Filter, which ShippingInfo to fetch.
+     */
+    where: Prisma.ShippingInfoWhereUniqueInput;
+};
+/**
+ * ShippingInfo findUniqueOrThrow
+ */
+export type ShippingInfoFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * Filter, which ShippingInfo to fetch.
+     */
+    where: Prisma.ShippingInfoWhereUniqueInput;
+};
+/**
+ * ShippingInfo findFirst
+ */
+export type ShippingInfoFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * Filter, which ShippingInfo to fetch.
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ShippingInfos to fetch.
+     */
+    orderBy?: Prisma.ShippingInfoOrderByWithRelationInput | Prisma.ShippingInfoOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for ShippingInfos.
+     */
+    cursor?: Prisma.ShippingInfoWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ShippingInfos from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ShippingInfos.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ShippingInfos.
+     */
+    distinct?: Prisma.ShippingInfoScalarFieldEnum | Prisma.ShippingInfoScalarFieldEnum[];
+};
+/**
+ * ShippingInfo findFirstOrThrow
+ */
+export type ShippingInfoFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * Filter, which ShippingInfo to fetch.
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ShippingInfos to fetch.
+     */
+    orderBy?: Prisma.ShippingInfoOrderByWithRelationInput | Prisma.ShippingInfoOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for ShippingInfos.
+     */
+    cursor?: Prisma.ShippingInfoWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ShippingInfos from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ShippingInfos.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ShippingInfos.
+     */
+    distinct?: Prisma.ShippingInfoScalarFieldEnum | Prisma.ShippingInfoScalarFieldEnum[];
+};
+/**
+ * ShippingInfo findMany
+ */
+export type ShippingInfoFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * Filter, which ShippingInfos to fetch.
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ShippingInfos to fetch.
+     */
+    orderBy?: Prisma.ShippingInfoOrderByWithRelationInput | Prisma.ShippingInfoOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing ShippingInfos.
+     */
+    cursor?: Prisma.ShippingInfoWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ShippingInfos from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ShippingInfos.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ShippingInfos.
+     */
+    distinct?: Prisma.ShippingInfoScalarFieldEnum | Prisma.ShippingInfoScalarFieldEnum[];
+};
+/**
+ * ShippingInfo create
+ */
+export type ShippingInfoCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a ShippingInfo.
+     */
+    data: Prisma.XOR<Prisma.ShippingInfoCreateInput, Prisma.ShippingInfoUncheckedCreateInput>;
+};
+/**
+ * ShippingInfo createMany
+ */
+export type ShippingInfoCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ShippingInfos.
+     */
+    data: Prisma.ShippingInfoCreateManyInput | Prisma.ShippingInfoCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * ShippingInfo createManyAndReturn
+ */
+export type ShippingInfoCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * The data used to create many ShippingInfos.
+     */
+    data: Prisma.ShippingInfoCreateManyInput | Prisma.ShippingInfoCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoIncludeCreateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * ShippingInfo update
+ */
+export type ShippingInfoUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a ShippingInfo.
+     */
+    data: Prisma.XOR<Prisma.ShippingInfoUpdateInput, Prisma.ShippingInfoUncheckedUpdateInput>;
+    /**
+     * Choose, which ShippingInfo to update.
+     */
+    where: Prisma.ShippingInfoWhereUniqueInput;
+};
+/**
+ * ShippingInfo updateMany
+ */
+export type ShippingInfoUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ShippingInfos.
+     */
+    data: Prisma.XOR<Prisma.ShippingInfoUpdateManyMutationInput, Prisma.ShippingInfoUncheckedUpdateManyInput>;
+    /**
+     * Filter which ShippingInfos to update
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * Limit how many ShippingInfos to update.
+     */
+    limit?: number;
+};
+/**
+ * ShippingInfo updateManyAndReturn
+ */
+export type ShippingInfoUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * The data used to update ShippingInfos.
+     */
+    data: Prisma.XOR<Prisma.ShippingInfoUpdateManyMutationInput, Prisma.ShippingInfoUncheckedUpdateManyInput>;
+    /**
+     * Filter which ShippingInfos to update
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * Limit how many ShippingInfos to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoIncludeUpdateManyAndReturn<ExtArgs> | null;
+};
+/**
+ * ShippingInfo upsert
+ */
+export type ShippingInfoUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the ShippingInfo to update in case it exists.
+     */
+    where: Prisma.ShippingInfoWhereUniqueInput;
+    /**
+     * In case the ShippingInfo found by the `where` argument doesn't exist, create a new ShippingInfo with this data.
+     */
+    create: Prisma.XOR<Prisma.ShippingInfoCreateInput, Prisma.ShippingInfoUncheckedCreateInput>;
+    /**
+     * In case the ShippingInfo was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.ShippingInfoUpdateInput, Prisma.ShippingInfoUncheckedUpdateInput>;
+};
+/**
+ * ShippingInfo delete
+ */
+export type ShippingInfoDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+    /**
+     * Filter which ShippingInfo to delete.
+     */
+    where: Prisma.ShippingInfoWhereUniqueInput;
+};
+/**
+ * ShippingInfo deleteMany
+ */
+export type ShippingInfoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ShippingInfos to delete
+     */
+    where?: Prisma.ShippingInfoWhereInput;
+    /**
+     * Limit how many ShippingInfos to delete.
+     */
+    limit?: number;
+};
+/**
+ * ShippingInfo without action
+ */
+export type ShippingInfoDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShippingInfo
+     */
+    select?: Prisma.ShippingInfoSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ShippingInfo
+     */
+    omit?: Prisma.ShippingInfoOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ShippingInfoInclude<ExtArgs> | null;
+};
+//# sourceMappingURL=ShippingInfo.d.ts.map

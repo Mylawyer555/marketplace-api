@@ -25,9 +25,14 @@ export const createPaymentController = async (
     if (Number.isNaN(orderId) || orderId <= 0) {
       throw new AppError("Invalid order ID", StatusCodes.BAD_REQUEST);
     }
+
+    const key = req.get("Idempotency-key")?.trim();
+    if (!key || key.length > 100) {
+      throw new AppError("A valid Idempotency-Key header is required (maximum 100 characters)", StatusCodes.BAD_REQUEST)
+    }
     const data = paymentMethodSchema.parse(req.body);
 
-    const result = await createPaymentService(orderId, userId, data);
+    const result = await createPaymentService(orderId, userId, data, key);
     res.status(StatusCodes.CREATED).json({
       success: true,
       message: "payment created successfully",

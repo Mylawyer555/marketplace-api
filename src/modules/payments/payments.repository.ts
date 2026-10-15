@@ -31,6 +31,7 @@ export const createPayment = async (
   paymentReference: string,
   amount: Decimal,
   { method }: PaymentMethod,
+  key: string
 ) => {
   return db.payment.create({
     data: {
@@ -39,6 +40,7 @@ export const createPayment = async (
       amount,
       method,
       status: "PENDING",
+      idempotency_key: key
     },
   });
 };
@@ -213,3 +215,11 @@ export const markPaymentAsRefunded = async (
     },
   });
 };
+
+export const findPaymentByIdempotencyKey = async (key: string) => {
+  return db.payment.findUnique({
+    where: {
+      idempotency_key: key
+    }
+  })
+}
