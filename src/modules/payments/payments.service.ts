@@ -87,6 +87,8 @@ export const createPaymentService = async (
 
     return newPayment;
   } catch (error) {
+
+
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
@@ -105,6 +107,7 @@ export const createPaymentService = async (
         }
         return existingPayment;
       }
+
       // The unique constraint violation wasn't resolved by the idempotency lookup.
     }
     throw error;
