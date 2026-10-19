@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.clearCart = exports.createOrderItem = exports.createOrder = exports.updateInventory = exports.lockInventory = exports.getCartByUserId = void 0;
+const http_status_codes_1 = require("http-status-codes");
+const AppError_1 = require("../../utils/AppError");
 const getCartByUserId = async (userId, tx) => {
     return tx.cart.findUnique({
         where: {
@@ -48,16 +50,16 @@ const lockInventory = async (variantId, tx) => {
 };
 exports.lockInventory = lockInventory;
 const updateInventory = async (variantId, quantity, tx) => {
-    return tx.inventory.update({
-        where: {
-            variant_id: variantId,
-        },
-        data: {
-            reserved_quantity: {
-                increment: quantity,
-            },
-        },
-    });
+    const result = await tx.$executeRaw `
+    UPDATE "inventory"
+    SET "reserved_quantity" = "reserved_quantity" + ${quantity}
+    WHERE "variant_id" = ${variantId}
+      AND ${quantity} > 0
+      AND "reserved_quantity" + ${quantity} <= "stock_quantity"
+  `;
+    if (result !== 1) {
+        throw new AppError_1.AppError("Inventory reservation failed", http_status_codes_1.StatusCodes.CONFLICT);
+    }
 };
 exports.updateInventory = updateInventory;
 const createOrder = async (buyerId, orderNumber, totalAmount, data, tx) => {

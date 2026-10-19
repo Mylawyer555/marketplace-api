@@ -47,7 +47,8 @@ export const createPaymentService = async (
     if (existingPayment) {
       if (
         existingPayment.order_id !== orderId ||
-        existingPayment.method !== data.method
+        existingPayment.method !== data.method ||
+        !existingPayment.amount.equals(order.total_amount)
       ) {
         throw new AppError(
           "Idempotency key was already used for a different request",
@@ -87,8 +88,6 @@ export const createPaymentService = async (
 
     return newPayment;
   } catch (error) {
-
-
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"

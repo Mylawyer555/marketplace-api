@@ -23,13 +23,7 @@ export declare const getCartByUserId: (userId: number, tx: Prisma.TransactionCli
     }[];
 } | null>;
 export declare const lockInventory: (variantId: number, tx: Prisma.TransactionClient) => Promise<InventoryLock[]>;
-export declare const updateInventory: (variantId: number, quantity: number, tx: Prisma.TransactionClient) => Promise<{
-    inventory_id: number;
-    variant_id: number;
-    stock_quantity: number;
-    reserved_quantity: number;
-    updated_at: Date | null;
-}>;
+export declare const updateInventory: (variantId: number, quantity: number, tx: Prisma.TransactionClient) => Promise<void>;
 export declare const createOrder: (buyerId: number, orderNumber: string, totalAmount: Decimal, data: Checkout, tx: Prisma.TransactionClient) => Promise<{
     order_id: number;
     order_number: string;

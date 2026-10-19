@@ -1,6 +1,8 @@
+import { StatusCodes } from "http-status-codes";
 import { db } from "../../config/db";
 import { Prisma } from "../../generated/prisma/client";
 import { Decimal } from "../../generated/prisma/internal/prismaNamespace";
+import { AppError } from "../../utils/AppError";
 import { Checkout, InventoryLock } from "./checkout.type";
 
 export const getCartByUserId = async (
@@ -60,16 +62,20 @@ export const updateInventory = async (
   quantity: number,
   tx: Prisma.TransactionClient,
 ) => {
-  return tx.inventory.update({
-    where: {
-      variant_id: variantId,
-    },
-    data: {
-      reserved_quantity: {
-        increment: quantity,
-      },
-    },
-  });
+  const result = await tx.$executeRaw`
+    UPDATE "inventory"
+    SET "reserved_quantity" = "reserved_quantity" + ${quantity}
+    WHERE "variant_id" = ${variantId}
+      AND ${quantity} > 0
+      AND "reserved_quantity" + ${quantity} <= "stock_quantity"
+  `;
+
+  if (result !== 1) {
+    throw new AppError(
+      "Inventory reservation failed",
+      StatusCodes.CONFLICT,
+    );
+  }
 };
 
 export const createOrder = async (

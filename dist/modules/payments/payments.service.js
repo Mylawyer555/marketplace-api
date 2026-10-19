@@ -19,7 +19,8 @@ const createPaymentService = async (orderId, userId, data, key) => {
         const existingPayment = await (0, payments_repository_1.findPaymentByIdempotencyKey)(key);
         if (existingPayment) {
             if (existingPayment.order_id !== orderId ||
-                existingPayment.method !== data.method) {
+                existingPayment.method !== data.method ||
+                !existingPayment.amount.equals(order.total_amount)) {
                 throw new AppError_1.AppError("Idempotency key was already used for a different request", http_status_codes_1.StatusCodes.CONFLICT);
             }
             return existingPayment;
